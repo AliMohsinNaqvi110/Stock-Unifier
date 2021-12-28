@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_management/Screens/home.dart';
+import 'package:inventory_management/Screens/authentication/login.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:inventory_management/Screens/home/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -16,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: const Login(),
     );
   }
 }
