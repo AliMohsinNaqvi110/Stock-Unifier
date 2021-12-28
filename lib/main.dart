@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/Screens/authentication/login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:inventory_management/services/auth.dart';
+import 'package:inventory_management/wrapper.dart';
+import 'package:provider/provider.dart';
 import 'package:inventory_management/Screens/home/home.dart';
 
 void main() async {
@@ -15,12 +18,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return StreamProvider.value(
+      initialData: null,
+      value: AuthService().user,
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: const Wrapper(),
       ),
-      home: const Login(),
     );
   }
 }
