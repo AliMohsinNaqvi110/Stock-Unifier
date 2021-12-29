@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/Screens/authentication/login.dart';
+import 'package:inventory_management/Screens/authentication/register.dart';
 
-class Authenticate extends StatelessWidget {
+class Authenticate extends StatefulWidget {
   const Authenticate({Key? key}) : super(key: key);
 
   @override
+  State<Authenticate> createState() => _AuthenticateState();
+}
+
+class _AuthenticateState extends State<Authenticate> {
+
+  bool showSignin = true;
+
+  void ToggleView() {
+    setState(() {
+      showSignin = !showSignin;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Login();
+
+    if(showSignin){
+     return Login(ToggleView);
+    }
+    else {
+      return Register(ToggleView);
+    }
   }
 }
