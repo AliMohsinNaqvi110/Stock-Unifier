@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_management/Screens/authentication/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:inventory_management/services/auth.dart';
 import 'package:inventory_management/wrapper.dart';
 import 'package:provider/provider.dart';
-import 'package:inventory_management/Screens/home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +22,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.indigo,
         ),
         home: const Wrapper(),
       ),

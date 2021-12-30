@@ -8,6 +8,7 @@ class DatabaseService {
 
   //Collection Reference
   final CollectionReference userCollection = FirebaseFirestore.instance.collection("users");
+  final CollectionReference inventoryCollection = FirebaseFirestore.instance.collection("inventory");
 
   Future updateUserData(String email, String password) async {
     return await userCollection.doc(uid).set({
@@ -16,4 +17,11 @@ class DatabaseService {
     });
   }
 
+  Future addToInventory(String category, String name, int quantity) async {
+    return await inventoryCollection.doc().set({
+      "Category" : category,
+      "Item_Name" : name,
+      "Quantity" : quantity
+    });
+  }
 }
