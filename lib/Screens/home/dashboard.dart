@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory_management/models/TheUser.dart';
 import 'package:inventory_management/services/auth.dart';
+import 'package:inventory_management/services/database.dart';
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -29,7 +33,7 @@ class _DashboardState extends State<Dashboard> {
           )]
       ),
       body: Center(
-        child: Text("Dashboard Screen"),
+        child: Text("Dashboard screen"),
       ),
     );
   }

@@ -12,7 +12,7 @@ class AuthService{
     return User!= null ? TheUser(user.uid) : null;
   }
 
-  //Auth state change stream
+  //Auth state change stream to listen for auth changes
   Stream<User?> get user {
     return _auth.authStateChanges();
   }
@@ -36,7 +36,8 @@ class AuthService{
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       //create a new user with the uid
-      await DatabaseService(user!.uid).updateUserData("dummy email", "dummy password");
+      await DatabaseService(user!.uid).updateUserData(email, password);
+      await DatabaseService(user.uid).createInventory("", "", 0, 0);
       return _userFromFirebaseUser(user);
     }
     catch(e) {

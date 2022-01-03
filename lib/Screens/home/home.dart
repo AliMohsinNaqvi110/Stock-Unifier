@@ -1,12 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:inventory_management/Screens/home/add_items.dart';
 import 'package:inventory_management/Screens/home/dashboard.dart';
 import 'package:inventory_management/Screens/home/manage_inventory.dart';
-import 'package:inventory_management/services/auth.dart';
-import 'package:inventory_management/services/database.dart';
-import 'package:provider/provider.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);

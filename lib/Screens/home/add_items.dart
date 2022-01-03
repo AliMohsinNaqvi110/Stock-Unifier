@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:inventory_management/services/auth.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:provider/provider.dart';
+import 'package:number_inc_dec/number_inc_dec.dart';
 
 class AddItems extends StatefulWidget {
   const AddItems({Key? key}) : super(key: key);
@@ -18,9 +19,11 @@ class _AddItemsState extends State<AddItems> {
   String _selectedCategory = "";
   String _itemName = "";
   int _quantity = 0;
+  int _price = 0;
   final categoryController = TextEditingController();
   final itemNameController = TextEditingController();
   final quantityController = TextEditingController();
+  final priceController = TextEditingController();
 
   var categories = [
     "Groceries", "Confectionary", "Health care", "Utilities"
@@ -31,6 +34,7 @@ class _AddItemsState extends State<AddItems> {
     categoryController.dispose();
     itemNameController.dispose();
     quantityController.dispose();
+    priceController.dispose();
     super.dispose();
   }
 
@@ -58,6 +62,7 @@ class _AddItemsState extends State<AddItems> {
             child: Form(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DropdownButtonFormField(
                     decoration: const InputDecoration(
@@ -76,18 +81,6 @@ class _AddItemsState extends State<AddItems> {
                       );
                     }).toList(),
                   ),
-                  /*  TextFormField(
-                  controller: categoryController,
-                  decoration: InputDecoration(
-                    hintText: "Enter Category",
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (val) {
-                    setState(() {
-                      _category = val;
-                    });
-                  },
-                ),*/
                   TextFormField(
                     controller: itemNameController,
                     decoration: InputDecoration(
@@ -101,27 +94,42 @@ class _AddItemsState extends State<AddItems> {
                     },
                   ),
                   TextFormField(
-                    controller: quantityController,
+                    controller: priceController,
                     keyboardType: TextInputType.number,
                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                     decoration: InputDecoration(
-                      hintText: "Enter Quantity",
+                      hintText: "Enter Price",
                       border: OutlineInputBorder(),
                     ),
                     onChanged: (val) {
                       setState(() {
-                        _quantity = int.parse(val);
+                        _price = int.parse(val);
                       });
                     },
                   ),
-                  ElevatedButton(
-                      onPressed: () async {
-                        await DatabaseService(user.uid).addToInventory(_selectedCategory, _itemName, _quantity);
-                        categoryController.clear();
-                        itemNameController.clear();
-                        quantityController.clear();
-                      },
-                      child: Text("Insert item to inventory"))
+                  NumberInputWithIncrementDecrement(
+                    numberFieldDecoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: "Quantity",
+                      labelText: "Quantity",
+                    ),
+                    controller: quantityController,
+                    min: 0,
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          await DatabaseService(user.uid).addToInventory(_selectedCategory, _itemName, _price, _quantity);
+                          categoryController.clear();
+                          itemNameController.clear();
+                          quantityController.clear();
+                          priceController.clear();
+                        },
+                        child: Text("Insert item to inventory")),
+                  )
                 ],
               ),
             ),
