@@ -13,7 +13,7 @@ class _AuthenticateState extends State<Authenticate> {
 
   bool showSignin = true;
 
-  void ToggleView() {
+  void toggleView() {
     setState(() {
       showSignin = !showSignin;
     });
@@ -23,10 +23,10 @@ class _AuthenticateState extends State<Authenticate> {
   Widget build(BuildContext context) {
 
     if(showSignin){
-     return Login(ToggleView);
+     return Login(toggleView);
     }
     else {
-      return Register(ToggleView);
+      return Register(toggleView);
     }
   }
 }

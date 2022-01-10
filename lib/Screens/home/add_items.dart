@@ -111,8 +111,12 @@ class _AddItemsState extends State<AddItems> {
                     numberFieldDecoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: "Quantity",
-                      labelText: "Quantity",
                     ),
+                    onChanged: (val) {
+                      setState(() {
+                        _quantity = val.toInt();
+                      });
+                    },
                     controller: quantityController,
                     min: 0,
                   ),

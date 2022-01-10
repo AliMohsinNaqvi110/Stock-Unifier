@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/services/auth.dart';
-import 'package:email_validator/email_validator.dart';
 
 class Login extends StatefulWidget {
 
   final void Function() toggleView;
-  Login(this.toggleView);
+  const Login(this.toggleView);
 
   @override
   _LoginState createState() => _LoginState();
@@ -17,7 +16,7 @@ class _LoginState extends State<Login> {
   String _password = "";
   String _error = "";
 
-  AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -35,7 +34,7 @@ class _LoginState extends State<Login> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
               child: TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Enter your Email",
                   labelText: "Email"
@@ -58,7 +57,7 @@ class _LoginState extends State<Login> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20),
               child: TextFormField(
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: "Enter your Password",
                     labelText: "Password",
@@ -69,7 +68,7 @@ class _LoginState extends State<Login> {
                 },
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
                 onPressed: () {
                   if(_formKey.currentState!.validate()) {
@@ -77,8 +76,8 @@ class _LoginState extends State<Login> {
                     setState(() => _error = "Enter a valid email or password");
                   }
                 },
-                child: Text("Sign in")),
-            SizedBox(height: 50),
+                child: const Text("Sign in")),
+            const SizedBox(height: 50),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

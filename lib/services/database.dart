@@ -4,8 +4,8 @@ import 'package:inventory_management/models/items.dart';
 
 class DatabaseService {
 
-  final String uid;
   DatabaseService(this.uid);
+  final String uid;
 
   //Collection Reference
   final CollectionReference userCollection = FirebaseFirestore.instance.collection("users");
@@ -41,40 +41,39 @@ class DatabaseService {
     }
   }
 
-/*  //users list from snapshot
-  Stream<QuerySnapshot> get items {
-    return inventoryCollection.snapshots();
-  }*/
-
-  // List<Items> _ItemsListFromSnapshot(QuerySnapshot snapshot){
+  // List<Items> _itemsFromSnapshot(QuerySnapshot snapshot) {
   //   return snapshot.docs.map((doc) {
   //     return Items(
-  //         (doc.data() as dynamic)['category'] ?? '',
-  //       (doc.data() as dynamic)['Item_Name'] ?? '',
-  //       (doc.data() as dynamic)['Quantity'] ?? "",
+  //       category : (doc.data() as dynamic)['Category'] ?? '',
+  //       name : (doc.data() as dynamic)['Item_Name'] ?? '',
+  //       price : (doc.data() as dynamic)['Price'] ?? "",
+  //       quantity : (doc.data() as dynamic)['Quantity'] ?? "",
   //     );
   //   }).toList();
+  //   }
+
+  // Items _itemsFromSnapshot(DocumentSnapshot snapshot) {
+  //   return Items(
+  //     category : (snapshot.data() as dynamic)["Category"],
+  //     name : (snapshot.data() as dynamic)["Item_Name"],
+  //     price : (snapshot.data() as dynamic)["Price"],
+  //     quantity : (snapshot.data() as dynamic)["Quantity"],
+  //   );
   // }
 
-  //get items stream
-  // Stream<List<Items>>? get items {
-  //   final items = inventoryCollection.snapshots().map((event) => _ItemsListFromSnapshot(event));
-  //   return items;
-  // }
+  List<Items> _itemsFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Items(
+        category : (doc.data as dynamic)["Category"],
+        name : (doc.data as dynamic)["Item_Name"],
+        price : (doc.data as dynamic)["Price"],
+        quantity : (doc.data as dynamic)["Quantity"],
+      );
+    }).toList();
+  }
 
-  /*List<>
-
-  Future getInventory() async {
-    try{
-      await inventoryCollection.get().then((querysnapshot) {
-        querysnapshot.docs.forEach((element) {
-
-        });
-      });
-    }
-    catch(e) {
-      print(e.toString());
-    }
-  }*/
-
+  Stream<List<Items>> get items {
+    return userCollection.doc(uid).collection("inventory").snapshots()
+        .map(_itemsFromSnapshot);
+  }
 }
