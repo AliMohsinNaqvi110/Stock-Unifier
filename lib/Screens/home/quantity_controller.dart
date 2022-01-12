@@ -15,13 +15,15 @@ class _Quantity_ControllerState extends State<Quantity_Controller> {
 
   @override
   Widget build(BuildContext context) {
+
+    // final items = Provider.of<Items>(context);
+
     return Container(
       decoration: BoxDecoration(color: th.lightYellow,
         borderRadius: BorderRadius.circular(50),),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // IconButton(onPressed: (){}, icon: Icon(Icons.remove)),
           GestureDetector(onTap: () {
             if(selected_quantity == 0) {
               return null;

@@ -53,16 +53,11 @@ class _SelectedCategoryState extends State<SelectedCategory> {
                     spreadRadius: 10,
                   )
                 ]
-                // borderRadius: BorderRadius.only(
-                //   topLeft: Radius.circular(10),
-                //   topRight: Radius.circular(10)
-                // )
               ),
               height: MediaQuery.of(context).size.height * 0.10,
               width: MediaQuery.of(context).size.width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
@@ -89,7 +84,6 @@ class _SelectedCategoryState extends State<SelectedCategory> {
                                 ]
                               ),
                             ),
-
                         Text("Items Selected: 358 pcs",
                           style: TextStyle(
                               color: Colors.white,

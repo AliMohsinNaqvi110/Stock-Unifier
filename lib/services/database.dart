@@ -60,20 +60,20 @@ class DatabaseService {
   //     quantity : (snapshot.data() as dynamic)["Quantity"],
   //   );
   // }
-
-  List<Items> _itemsFromSnapshot(QuerySnapshot snapshot) {
-    return snapshot.docs.map((doc) {
-      return Items(
-        category : (doc.data as dynamic)["Category"],
-        name : (doc.data as dynamic)["Item_Name"],
-        price : (doc.data as dynamic)["Price"],
-        quantity : (doc.data as dynamic)["Quantity"],
-      );
-    }).toList();
-  }
-
-  Stream<List<Items>> get items {
-    return userCollection.doc(uid).collection("inventory").snapshots()
-        .map(_itemsFromSnapshot);
-  }
+  //
+  // List<Items> _itemsFromSnapshot(QuerySnapshot snapshot) {
+  //   return snapshot.docs.map((doc) {
+  //     return Items(
+  //       category : (doc.data as dynamic)["Category"],
+  //       name : (doc.data as dynamic)["Item_Name"],
+  //       price : (doc.data as dynamic)["Price"],
+  //       quantity : (doc.data as dynamic)["Quantity"],
+  //     );
+  //   }).toList();
+  // }
+  //
+  // Stream<List<Items>> get items {
+  //   return userCollection.doc(uid).collection("inventory").snapshots()
+  //       .map(_itemsFromSnapshot);
+  // }
 }

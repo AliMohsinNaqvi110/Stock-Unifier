@@ -16,7 +16,8 @@ class ItemTile extends StatefulWidget {
 
 class _ItemTileState extends State<ItemTile> {
   bool isEven = false;
-  //List<String> _selectedItems = [];
+  Map<String, dynamic> _selectedItems = {
+  };
 
   AppTheme th = AppTheme();
   @override
@@ -52,60 +53,33 @@ class _ItemTileState extends State<ItemTile> {
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 0),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(8),
-                      tileColor: isEven ? Colors.white : Colors.grey
-                          .withOpacity(0.4),
-                      title: Text(_items["Item_Name"]),
-                      subtitle: Text("Available: " + _items["Quantity"].toString() + " Pieces"),
-                      leading: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("Rs " + _items["Price"].toString()),
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          _selectedItems["Category"] = _items["Category"];
+                          _selectedItems["Name"] = _items["Item_Name"];
+                          _selectedItems["Price"] = _items["Price"];
+                          _selectedItems["Quantity"] = _items["Quantity"];
+                        });
+                        print(_selectedItems);
+                      },
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(8),
+                        tileColor: isEven ? Colors.white : Colors.grey
+                            .withOpacity(0.4),
+                        title: Text(_items["Item_Name"]),
+                        subtitle: Text("Available: " + _items["Quantity"].toString() + " Pieces"),
+                        leading: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text("Rs " + _items["Price"].toString()),
+                        ),
+                        trailing: Quantity_Controller()
                       ),
-                      // trailing: NumberInputWithIncrementDecrement(
-                      //   controller: _quantityController,
-                      //   min: 0,
-                      // )
-                      trailing: Quantity_Controller()
                     ),
                   );
                 }
               }
           );
         });
-
-    // return StreamBuilder<List<Items>>(
-    //   initialData: null,
-    //   stream: DatabaseService(user.uid).items,
-    //     builder: (context, AsyncSnapshot snapshot) {
-    //       if (snapshot.hasError) {
-    //         dynamic _error = snapshot.error;
-    //         print(_error);
-    //         return const Center(
-    //           child: Text("Something went wrong"),
-    //         );
-    //       }
-    //       if (!snapshot.hasData) {
-    //         return const Center(
-    //           child: Text("No notice found"),
-    //         );
-    //       }
-    //       if (snapshot.connectionState == ConnectionState.waiting) {
-    //         return const Center(child: CircularProgressIndicator());
-    //       }
-    //     if (snapshot.hasData) {
-    //         List<Items> _items = snapshot.data();
-    //         return ListView.builder(
-    //           itemCount: _items.length,
-    //             itemBuilder: (context, index) {
-    //              return ListTile(
-    //                title: Text(_items[index].category),
-    //              );
-    //             }
-    //         );
-    //       }
-    //       else return Center(child : Text("Fetching Data"));
-    //     }
-    // );
   }
 }

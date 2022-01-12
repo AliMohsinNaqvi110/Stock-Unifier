@@ -23,9 +23,7 @@ class MyApp extends StatelessWidget {
           initialData: null,
           value: AuthService().user,
         ),
-          // StreamProvider.value(
-          //     value: DatabaseService().items,
-          //     initialData: "Fetching values"),
+
         ],
         child: MaterialApp(
           title: 'Flutter Demo',
