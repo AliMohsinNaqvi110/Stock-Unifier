@@ -9,7 +9,7 @@ class AuthService{
   // create user obj from firebase user
   TheUser? _userFromFirebaseUser(User user) {
 
-    return User!= null ? TheUser(user.uid) : null;
+    return User != null ? TheUser(user.uid) : null;
   }
 
   //Auth state change stream to listen for auth changes
@@ -18,25 +18,25 @@ class AuthService{
   }
 
 
-  //Sign in Anonymously
-  Future signInAnon() async {
-   try {
-     dynamic authResult = await _auth.signInAnonymously();
-     User user = authResult.user;
-     return _userFromFirebaseUser(user);
-   }
-   catch(e) {
-     return null;
-   }
-  }
+  // //Sign in Anonymously
+  // Future signInAnon() async {
+  //  try {
+  //    dynamic authResult = await _auth.signInAnonymously();
+  //    User user = authResult.user;
+  //    return _userFromFirebaseUser(user);
+  //  }
+  //  catch(e) {
+  //    return null;
+  //  }
+  // }
 
   //register
-  Future register(String email, String password) async {
+  Future register(String userName , String email, String password) async {
     try{
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       //create a new user with the uid
-      await DatabaseService(user!.uid).updateUserData(email, password);
+      await DatabaseService(user!.uid).updateUserData(userName, email, password);
       await DatabaseService(user.uid).createInventory("", "", 0, 0);
       return _userFromFirebaseUser(user);
     }

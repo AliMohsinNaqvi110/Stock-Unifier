@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/Screens/home/add_items.dart';
+import 'package:inventory_management/Screens/home/categories.dart';
 import 'package:inventory_management/Screens/home/dashboard.dart';
 import 'package:inventory_management/Screens/home/cart.dart';
 import 'package:inventory_management/Screens/home/sales_history.dart';
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: [
-        Dashboard(),
+        Categories(),
         AddItems(),
         Cart(),
         SalesHistory(),

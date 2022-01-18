@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:inventory_management/models/items.dart';
 import 'package:inventory_management/services/auth.dart';
 import 'package:inventory_management/wrapper.dart';
 import 'package:provider/provider.dart';
@@ -23,9 +24,10 @@ class MyApp extends StatelessWidget {
           initialData: null,
           value: AuthService().user,
         ),
-
+          ChangeNotifierProvider(create: (context) => Items())
         ],
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.indigo,

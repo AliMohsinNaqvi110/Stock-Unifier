@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_management/Screens/authentication/login.dart';
-import 'package:inventory_management/Screens/authentication/register.dart';
+import 'package:inventory_management/Screens/authentication/sign_in.dart';
+import 'package:inventory_management/Screens/authentication/sign_up.dart';
 
 class Authenticate extends StatefulWidget {
   const Authenticate({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class _AuthenticateState extends State<Authenticate> {
      return Login(toggleView);
     }
     else {
-      return Register(toggleView);
+      return Sign_up(toggleView);
     }
   }
 }

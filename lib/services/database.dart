@@ -1,6 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:inventory_management/models/items.dart';
 
 class DatabaseService {
 
@@ -9,10 +7,10 @@ class DatabaseService {
 
   //Collection Reference
   final CollectionReference userCollection = FirebaseFirestore.instance.collection("users");
-  // final CollectionReference inventoryCollection = FirebaseFirestore.instance.collection("inventory");
 
-  Future updateUserData(String email, String password) async {
+  Future updateUserData(String userName, String email, String password) async {
     return await userCollection.doc(uid).set({
+      "userName" : userName,
       "Email" : email,
       "Password" : password
     });
@@ -40,40 +38,4 @@ class DatabaseService {
       print(e.toString());
     }
   }
-
-  // List<Items> _itemsFromSnapshot(QuerySnapshot snapshot) {
-  //   return snapshot.docs.map((doc) {
-  //     return Items(
-  //       category : (doc.data() as dynamic)['Category'] ?? '',
-  //       name : (doc.data() as dynamic)['Item_Name'] ?? '',
-  //       price : (doc.data() as dynamic)['Price'] ?? "",
-  //       quantity : (doc.data() as dynamic)['Quantity'] ?? "",
-  //     );
-  //   }).toList();
-  //   }
-
-  // Items _itemsFromSnapshot(DocumentSnapshot snapshot) {
-  //   return Items(
-  //     category : (snapshot.data() as dynamic)["Category"],
-  //     name : (snapshot.data() as dynamic)["Item_Name"],
-  //     price : (snapshot.data() as dynamic)["Price"],
-  //     quantity : (snapshot.data() as dynamic)["Quantity"],
-  //   );
-  // }
-  //
-  // List<Items> _itemsFromSnapshot(QuerySnapshot snapshot) {
-  //   return snapshot.docs.map((doc) {
-  //     return Items(
-  //       category : (doc.data as dynamic)["Category"],
-  //       name : (doc.data as dynamic)["Item_Name"],
-  //       price : (doc.data as dynamic)["Price"],
-  //       quantity : (doc.data as dynamic)["Quantity"],
-  //     );
-  //   }).toList();
-  // }
-  //
-  // Stream<List<Items>> get items {
-  //   return userCollection.doc(uid).collection("inventory").snapshots()
-  //       .map(_itemsFromSnapshot);
-  // }
 }
