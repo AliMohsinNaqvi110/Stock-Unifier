@@ -86,12 +86,9 @@ class _Sign_upState extends State<Sign_up> {
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide:
-                                        new BorderSide(color: Colors.white)),
+                                        new BorderSide(color: th.klemon)),
                                     border: new OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
                                         borderSide:
                                         new BorderSide(color: Colors.white)),
                                     hintText: 'User Name',
@@ -121,12 +118,9 @@ class _Sign_upState extends State<Sign_up> {
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide:
-                                        new BorderSide(color: Colors.white)),
+                                        new BorderSide(color: th.klemon)),
                                     border: new OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
                                         borderSide:
                                         new BorderSide(color: Colors.white)),
                                     hintText: 'Email Address',
@@ -149,13 +143,9 @@ class _Sign_upState extends State<Sign_up> {
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide:
-                                        new BorderSide(color: Colors.white)),
+                                        new BorderSide(color: th.klemon)),
                                     border: new OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(50.0),
+                                        borderRadius: BorderRadius.circular(12),
                                         borderSide:
                                         new BorderSide(color: Colors.white)),
                                     hintText: 'Enter Your Password',

@@ -1,51 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:inventory_management/Screens/home/add_items.dart';
-import 'package:inventory_management/Screens/home/categories.dart';
-import 'package:inventory_management/Screens/home/dashboard.dart';
 import 'package:inventory_management/Screens/home/cart.dart';
+import 'package:inventory_management/Screens/home/dashboard.dart';
 import 'package:inventory_management/Screens/home/sales_history.dart';
+import 'package:inventory_management/constants/colors.dart';
 
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  const Home({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<Home> createState() => _HomeState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeState extends State<Home> {
 
-  int _selectedIndex = 0;
-
+  Apptheme th = Apptheme();
+  PageController controller = PageController();
+  int _selectedIndex =0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: [
-        Categories(),
-        AddItems(),
-        Cart(),
-        SalesHistory(),
-      ].elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.indigo[800],
-        currentIndex: _selectedIndex,
-        items: const <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(icon: Icon(Icons.home), label: ('Home')),
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.add), label: ('Add Items')),
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart_outlined), label: ('Cart')),
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.access_time_outlined), label: ('Sales History')),
-        ],
-        onTap: (index) {
+      body: PageView(
+        controller: controller,
+          children: const [
+            Dashboard(),
+            AddItems(),
+            Cart(),
+            SalesHistory(),
+          ],
+          onPageChanged: (page) {
           setState(() {
-            _selectedIndex = index;
+            _selectedIndex = page;
           });
-        },
+          },
       ),
+      bottomNavigationBar: GNav(
+            tabActiveBorder: Border.all(color: th.klemon, width: 1), // tab button border
+            curve: Curves.easeInCirc,
+            tabBorderRadius: 24,
+            gap: 10,
+            tabBackgroundColor: th.kyellow,
+          iconSize: 24,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          tabs: [
+            GButton(
+              icon: Icons.home,
+              text: 'Home',
+            ),
+            GButton(
+              icon: Icons.add,
+              text: 'Add Items',
+            ),
+            GButton(
+              icon: Icons.shopping_cart_outlined,
+              text: 'Cart',
+            ),
+            GButton(
+              icon: Icons.access_time,
+              text: 'History',
+            )
+          ],
+            selectedIndex: _selectedIndex,
+            onTabChange: (index) {
+            setState(() {
+              _selectedIndex = index;
+              controller.animateToPage(_selectedIndex, duration: const Duration(milliseconds: 200), curve: Curves.linear);
+            });
+          }),
     );
   }
 }
+

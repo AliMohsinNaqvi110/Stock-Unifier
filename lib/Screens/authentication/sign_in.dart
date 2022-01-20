@@ -92,12 +92,9 @@ class _LoginState extends State<Login> {
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide:
-                                        new BorderSide(color: Colors.white)),
+                                        new BorderSide(color: th.klemon)),
                                     border: new OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
                                         borderSide:
                                         new BorderSide(color: Colors.white)),
                                     hintText: 'Email Address',
@@ -120,12 +117,9 @@ class _LoginState extends State<Login> {
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                        new BorderSide(color: Colors.white)),
+                                        new BorderSide(color: th.klemon)),
                                     border: new OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(50.0),
+                                        borderRadius: BorderRadius.circular(12.0),
                                         borderSide:
                                         new BorderSide(color: Colors.white)),
                                     hintText: 'Enter Your Password',
@@ -141,8 +135,8 @@ class _LoginState extends State<Login> {
                                       },
                                       child: Icon(
                                         _showPassword
-                                            ? Icons.visibility_outlined
-                                            : Icons.visibility_off_outlined,
+                                            ? Icons.visibility_off_outlined
+                                            : Icons.visibility_outlined,
                                         color: th.kbluish,
                                       ),
                                     ),
@@ -168,24 +162,6 @@ class _LoginState extends State<Login> {
                                     ),
                                   ],
                                 ),
-                                // Padding(
-                                //   padding: const EdgeInsets.fromLTRB(180, 0, 0, 0),
-                                //   child: GestureDetector(
-                                //     onTap: () {
-                                //       setState(() {
-                                //         Navigator.push(
-                                //             context,
-                                //             MaterialPageRoute(
-                                //                 builder: (context) =>
-                                //                     const forgetpass()));
-                                //       });
-                                //     },
-                                //     child: Text(
-                                //       "Forgot Password",
-                                //       textAlign: TextAlign.right,
-                                //     ),
-                                //   ),
-                                // ),
                                 Container(
                                     width: double.infinity,
                                     height: 50,

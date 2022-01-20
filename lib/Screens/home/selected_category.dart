@@ -22,6 +22,7 @@ class _SelectedCategoryState extends State<SelectedCategory> {
     final _items = Provider.of<Items>(context);
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: th.kbluish,
         title: const Text("Selected Category"),
         centerTitle: true,
         actions: [

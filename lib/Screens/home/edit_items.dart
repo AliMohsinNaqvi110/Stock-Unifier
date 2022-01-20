@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:inventory_management/Screens/home/quantity_controller.dart';
+import 'package:inventory_management/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 class Edit_Items extends StatefulWidget {
@@ -13,6 +16,11 @@ class Edit_Items extends StatefulWidget {
 }
 
 class _Edit_ItemsState extends State<Edit_Items> {
+
+  Apptheme th = Apptheme();
+  TextEditingController priceController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
 
@@ -20,6 +28,7 @@ class _Edit_ItemsState extends State<Edit_Items> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: th.kbluish,
         title: Text("Edit " + widget._selectedCategory.toString() + " List"),
         centerTitle: true,
       ),
@@ -38,10 +47,23 @@ class _Edit_ItemsState extends State<Edit_Items> {
                 DocumentSnapshot _items = snapshot.data!.docs[index];
                 return ExpansionTile(
                     title: Text(_items["Item_Name"]),
-                  collapsedBackgroundColor: Colors.grey.withOpacity(0.3),
+                  collapsedBackgroundColor: index % 2 == 0 ? th.kwhite : th.klight_grey,
                   backgroundColor: Colors.white,
                   children: [
-                    Text("Hello World")
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("Price: "),
+                        Container(
+                          height: 30,
+                          width: MediaQuery.of(context).size.width * 0.45,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: th.kyellow
+                          ),
+                        )
+                      ],
+                    )
                   ],
                 );
               });

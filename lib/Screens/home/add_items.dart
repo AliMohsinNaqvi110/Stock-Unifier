@@ -261,46 +261,41 @@ class _AddItemsState extends State<AddItems> {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    padding: const EdgeInsets.symmetric(vertical: 35),
                     child: Image(
                       height: MediaQuery.of(context).size.height * 0.20,
                       image: AssetImage("assets/add_to_inventory_illustration.png"),
                     ),
                   ),
-                  Center(
-                    child: InkWell(
-                      onTap: () async {
-                        if(_formKey.currentState!.validate()) {
-                          await DatabaseService(user.uid).addToInventory(_selectedCategory, _itemName, _price, _quantity);
-                            categoryController.clear();
-                            itemNameController.clear();
-                            quantityController.clear();
-                            priceController.clear();
-                        }
-                        else {
-                          return;
-                        }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 20.0),
-                        child: Container(
-                          height: 45,
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          decoration: BoxDecoration(
-                            color: th.kbluish,
-                            borderRadius: BorderRadius.circular(6)
-                          ),
-                          child: Center(
-                              child: Text(
-                                  "Save",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.white
-                                ),
-                              )),
-                        ),
+                  InkWell(
+                    onTap: () async {
+                      if(_formKey.currentState!.validate()) {
+                        await DatabaseService(user.uid).addToInventory(_selectedCategory, _itemName, _price, _quantity);
+                          categoryController.clear();
+                          itemNameController.clear();
+                          quantityController.clear();
+                          priceController.clear();
+                      }
+                      else {
+                        return;
+                      }
+                    },
+                    child: Container(
+                      height: 45,
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      decoration: BoxDecoration(
+                        color: th.kbluish,
+                        borderRadius: BorderRadius.circular(6)
                       ),
-                    )
+                      child: Center(
+                          child: Text(
+                              "Save",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white
+                            ),
+                          )),
+                    ),
                   ),
                 ],
               ),
