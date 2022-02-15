@@ -21,13 +21,14 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: PageView(
         controller: controller,
           children: const [
             Dashboard(),
             AddItems(),
             Cart(),
-            SalesHistory(),
+            salesHistory(),
           ],
           onPageChanged: (page) {
           setState(() {
@@ -35,39 +36,50 @@ class _HomeState extends State<Home> {
           });
           },
       ),
-      bottomNavigationBar: GNav(
-            tabActiveBorder: Border.all(color: th.klemon, width: 1), // tab button border
-            curve: Curves.easeInCirc,
-            tabBorderRadius: 24,
-            gap: 10,
-            tabBackgroundColor: th.kyellow,
-          iconSize: 24,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          tabs: [
-            GButton(
-              icon: Icons.home,
-              text: 'Home',
-            ),
-            GButton(
-              icon: Icons.add,
-              text: 'Add Items',
-            ),
-            GButton(
-              icon: Icons.shopping_cart_outlined,
-              text: 'Cart',
-            ),
-            GButton(
-              icon: Icons.access_time,
-              text: 'History',
-            )
-          ],
-            selectedIndex: _selectedIndex,
-            onTabChange: (index) {
-            setState(() {
-              _selectedIndex = index;
-              controller.animateToPage(_selectedIndex, duration: const Duration(milliseconds: 200), curve: Curves.linear);
-            });
-          }),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(5.0),
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.85),
+          borderRadius: BorderRadius.circular(100),
+        ),
+        child: GNav(
+              // tabActiveBorder: Border.all(color: th.klemon, width: 1), // tab button border
+              curve: Curves.easeInCirc,
+              tabBorderRadius: 100,
+              backgroundColor: Colors.transparent,
+              // color: Colors.transparent,
+
+              gap: 10,
+              tabBackgroundColor: th.kyellow,
+            iconSize: 24,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            tabs: [
+              GButton(
+                icon: Icons.home,
+                text: 'Home',
+              ),
+              GButton(
+                icon: Icons.add,
+                text: 'Add Items',
+              ),
+              GButton(
+                icon: Icons.shopping_cart_outlined,
+                text: 'Cart',
+              ),
+              GButton(
+                icon: Icons.access_time,
+                text: 'History',
+              )
+            ],
+              selectedIndex: _selectedIndex,
+              onTabChange: (index) {
+              setState(() {
+                _selectedIndex = index;
+                controller.animateToPage(_selectedIndex, duration: const Duration(milliseconds: 200), curve: Curves.linear);
+              });
+            }),
+      ),
     );
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/constants/colors.dart';
-import 'package:inventory_management/models/items.dart';
-import 'package:provider/provider.dart';
 
 class Quantity_Controller extends StatefulWidget {
   const Quantity_Controller({Key? key}) : super(key: key);
@@ -13,11 +11,12 @@ class Quantity_Controller extends StatefulWidget {
 class _Quantity_ControllerState extends State<Quantity_Controller> {
 
   Apptheme th = Apptheme();
+  int _selectedQuantity = 0;
 
   @override
   Widget build(BuildContext context) {
 
-    final items = Provider.of<Items>(context);
+    // final items = Provider.of<Items>(context);
 
     return Container(
       decoration: BoxDecoration(color: th.klemon,
@@ -26,14 +25,14 @@ class _Quantity_ControllerState extends State<Quantity_Controller> {
         mainAxisSize: MainAxisSize.min,
         children: [
           GestureDetector(onTap: () {
-            if(items.quantity == 0) {
-              return null;
-            }
-            else {
-              setState(() {
-                items.quantity--;
-              });
-            }
+              if(_selectedQuantity == 0) {
+                return;
+              }
+              else {
+                setState(() {
+                  _selectedQuantity--;
+                });
+              }
           }, child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Icon(Icons.remove, size: 20),
@@ -45,13 +44,14 @@ class _Quantity_ControllerState extends State<Quantity_Controller> {
             decoration: BoxDecoration(color: Colors.white,
               borderRadius: BorderRadius.circular(50),
             ),
-            child: Text(items.quantity.toString(),
+            child: Text(_selectedQuantity.toString(),
               style: TextStyle(color: Colors.grey.shade800,
                   fontWeight: FontWeight.bold),),),
           // IconButton(onPressed: (){}, icon: Icon(Icons.add)),
           InkWell(onTap: () {
             setState(() {
-              items.quantity++;
+               _selectedQuantity++;
+
             });
           }, child: const Padding(
             padding: const EdgeInsets.all(5.0),

@@ -1,30 +1,27 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class Items with ChangeNotifier {
 
-  Map<String, dynamic> _selecteditems = {
+  List<Items> _cart = [
 
-  };
+  ];
 
-  String category;
-  String name;
-  int price;
-  int quantity;
-  int totalPrice;
+  String? category;
+  String? name;
+  int? price;
+  int? quantity;
+  int? totalPrice;
 
-  Items([this.category = "",  this.name = "",  this.price =0,  this.quantity = 0 , this.totalPrice = 0]);
-
-
-  addItems() {
-    _selecteditems["ItemName"] = name;
-    _selecteditems["Price"] = price;
-    _selecteditems["Quantity"] = quantity;
-    notifyListeners();
+  Items.fromJson(Map<String, dynamic> snapshot) {
+    this.category = snapshot["Category"];
+    this.name = snapshot["Category"];
+    this.price = snapshot["Category"];
+    this.quantity = snapshot["Category"];
+    this.totalPrice = snapshot["Category"];
   }
 
-  calculatePriceForEachItem() {
-    _selecteditems["Price"] = quantity * price;
-    notifyListeners();
-  }
+  // Items([this.category = "",  this.name = "",  this.price =0,  this.quantity = 0 , this.totalPrice = 0]);
+
 }

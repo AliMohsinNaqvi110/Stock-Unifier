@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:inventory_management/models/items.dart';
 
 class DatabaseService {
 
@@ -17,7 +18,7 @@ class DatabaseService {
   }
 
   Future createInventory(String category, String itemName, int price, int quantity) async {
-    return await FirebaseFirestore.instance.collection("users").doc(uid)..collection("inventory").add({
+    return await FirebaseFirestore.instance.collection("users").doc(uid).collection("inventory").add({
       "Category" : category,
       "Item_name" : itemName,
       "price" : price,
@@ -38,4 +39,22 @@ class DatabaseService {
       print(e.toString());
     }
   }
+
+
+  //get Items stream
+
+
+
+  // Future getItems() async {
+  //   try{
+  //     return await FirebaseFirestore.instance.collection("users").doc(uid).collection("inventory").get().then((querySnapshot) {
+  //       Items items = Items.fromJson(querySnapshot);
+  //     });
+  //   }
+  //   catch (e) {
+  //
+  //   }
+  //
+  // }
+
 }

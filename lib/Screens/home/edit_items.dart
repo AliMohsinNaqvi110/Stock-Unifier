@@ -54,12 +54,130 @@ class _Edit_ItemsState extends State<Edit_Items> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Text("Price: "),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0, bottom: 25),
+                          child: Container(
+                            height: MediaQuery.of(context).size.height * 0.06,
+                            width: MediaQuery.of(context).size.width * 0.60,
+                            decoration: BoxDecoration(
+                                color: th.kyellow,
+                                borderRadius: BorderRadius.circular(6)
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                InkWell(
+                                  child: Icon(Icons.remove),
+                                  onTap: () {
+                                    if(_items["Price"] == 0) {
+                                      return null;
+                                    }
+                                    else {
+                                      setState(() {
+                                        _items["Price"];
+                                      });
+                                    }
+                                  },
+                                ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width * 0.40,
+                                  height: MediaQuery.of(context).size.height * 0.05,
+                                  decoration: BoxDecoration(
+                                      color: th.kwhite,
+                                      borderRadius: BorderRadius.circular(6)
+                                  ),
+                                  child: TextFormField(
+                                    textAlign: TextAlign.center,
+                                    controller: priceController,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.only(top: 8.0),
+                                      hintText: _items["Price"].toString(),
+                                      //_items["Price"].toString(),
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    onChanged: (val) {
+                                      setState(() {
+                                        //_items["Price"] = int.parse(val);
+                                      });
+                                    },
+                                  ),
+                                ),
+                                InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        //_items["Price"];
+                                      });
+                                    },
+                                    child: Icon(Icons.add)
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text("Quantity: "),
                         Container(
-                          height: 30,
-                          width: MediaQuery.of(context).size.width * 0.45,
+                          height: MediaQuery.of(context).size.height * 0.06,
+                          width: MediaQuery.of(context).size.width * 0.60,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: th.kyellow
+                              color: th.kyellow,
+                              borderRadius: BorderRadius.circular(6)
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InkWell(
+                                child: Icon(Icons.remove),
+                                onTap: () {
+                                  if(_items["Quantity"] == 0) {
+                                    return null;
+                                  }
+                                  else {
+                                    setState(() {
+                                      // _items["Price"];
+                                    });
+                                  }
+                                },
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.40,
+                                height: MediaQuery.of(context).size.height * 0.05,
+                                decoration: BoxDecoration(
+                                    color: th.kwhite,
+                                    borderRadius: BorderRadius.circular(6)
+                                ),
+                                child: TextFormField(
+                                  textAlign: TextAlign.center,
+                                  controller: quantityController,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(top: 8.0),
+                                    hintText: _items["Quantity"].toString(),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  onChanged: (val) {
+                                    setState(() {
+                                      //_price = int.parse(val);
+                                    });
+                                  },
+                                ),
+                              ),
+                              InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      // _items["Price"]++;
+                                    });
+                                  },
+                                  child: Icon(Icons.add)
+                              ),
+                            ],
                           ),
                         )
                       ],

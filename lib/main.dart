@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           initialData: null,
           value: AuthService().user,
         ),
-          ChangeNotifierProvider(create: (context) => Items())
+         // ChangeNotifierProvider(create: (context) => Items())
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

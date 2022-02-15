@@ -63,7 +63,7 @@ class _ItemTileState extends State<ItemTile> {
                         padding: const EdgeInsets.all(8.0),
                         child: Text("Rs " + _items["Price"].toString()),
                       ),
-                      trailing: Quantity_Controller()
+                      trailing: const Quantity_Controller()
                     ),
                   );
                 }
