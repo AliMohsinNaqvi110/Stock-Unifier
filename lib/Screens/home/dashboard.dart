@@ -13,7 +13,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
 
   Apptheme th = Apptheme();
-  AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
   final List<String> _selectedCategory = [
     "Groceries", "Confectionary", "Snacks", "Beverages", "Medicine", "Cosmetics"
   ];
@@ -24,12 +24,12 @@ class _DashboardState extends State<Dashboard> {
       backgroundColor: th.klight_grey,
       appBar: AppBar(
         backgroundColor: th.kbluish,
-        title: Text(
+        title: const Text(
           "Dashboard"
         ),
           actions: [
             InkWell(
-              child: Icon(
+              child: const Icon(
                   Icons.exit_to_app
               ),
               onTap:  () {
@@ -44,7 +44,8 @@ class _DashboardState extends State<Dashboard> {
               Padding(
                 padding: const EdgeInsets.only(top: 60.0),
                 child: Stack(
-                  overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
+                  //overflow: Overflow.visible,
                   children: [
                     InkWell(
                       onTap: () {
@@ -57,8 +58,8 @@ class _DashboardState extends State<Dashboard> {
                         decoration: BoxDecoration(
                           color: th.kwhite,
                           borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            const BoxShadow(
+                          boxShadow: const [
+                            BoxShadow(
                               color: Colors.grey,
                               blurRadius: 3.0,
                               spreadRadius: 2.0,
@@ -72,7 +73,7 @@ class _DashboardState extends State<Dashboard> {
                           padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "Groceries",
                               style: TextStyle(
@@ -80,7 +81,7 @@ class _DashboardState extends State<Dashboard> {
                                 fontSize: 20.0,
                               ),),
                               Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
+                                padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
                                   "Items Available: 50",
                                   style: TextStyle(
@@ -93,7 +94,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       bottom: 30,
                       right: -10,
                       child: Image(
@@ -109,7 +110,8 @@ class _DashboardState extends State<Dashboard> {
               Padding(
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Stack(
-                  overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
+                  //overflow: Overflow.visible,
                   children: [
                     InkWell(
                       onTap: () {
@@ -122,8 +124,8 @@ class _DashboardState extends State<Dashboard> {
                         decoration: BoxDecoration(
                             color: th.kwhite,
                             borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              const BoxShadow(
+                            boxShadow: const [
+                              BoxShadow(
                                   color: Colors.grey,
                                   blurRadius: 3.0,
                                   spreadRadius: 2.0,
@@ -137,7 +139,7 @@ class _DashboardState extends State<Dashboard> {
                           padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "Confectionary",
                                 style: TextStyle(
@@ -145,7 +147,7 @@ class _DashboardState extends State<Dashboard> {
                                   fontSize: 20.0,
                                 ),),
                               Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
+                                padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
                                   "Items Available: 50",
                                   style: TextStyle(
@@ -158,7 +160,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       bottom: 30,
                       right: -10,
                       child: Image(
@@ -174,7 +176,8 @@ class _DashboardState extends State<Dashboard> {
               Padding(
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Stack(
-                  overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
+                  //overflow: Overflow.visible,
                   children: [
                     InkWell(
                       onTap: () {
@@ -187,8 +190,8 @@ class _DashboardState extends State<Dashboard> {
                         decoration: BoxDecoration(
                             color: th.kwhite,
                             borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              const BoxShadow(
+                            boxShadow: const [
+                              BoxShadow(
                                   color: Colors.grey,
                                   blurRadius: 3.0,
                                   spreadRadius: 2.0,
@@ -202,7 +205,7 @@ class _DashboardState extends State<Dashboard> {
                           padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "Snacks",
                                 style: TextStyle(
@@ -210,7 +213,7 @@ class _DashboardState extends State<Dashboard> {
                                   fontSize: 20.0,
                                 ),),
                               Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
+                                padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
                                   "Items Available: 50",
                                   style: TextStyle(
@@ -223,7 +226,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       bottom: 30,
                       right: -10,
                       child: Image(
@@ -239,7 +242,8 @@ class _DashboardState extends State<Dashboard> {
               Padding(
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Stack(
-                  overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
+                  //overflow: Overflow.visible,
                   children: [
                     InkWell(
                       onTap: () {
@@ -252,8 +256,8 @@ class _DashboardState extends State<Dashboard> {
                         decoration: BoxDecoration(
                             color: th.kwhite,
                             borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              const BoxShadow(
+                            boxShadow: const [
+                              BoxShadow(
                                   color: Colors.grey,
                                   blurRadius: 3.0,
                                   spreadRadius: 2.0,
@@ -267,7 +271,7 @@ class _DashboardState extends State<Dashboard> {
                           padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "Beverages",
                                 style: TextStyle(
@@ -275,7 +279,7 @@ class _DashboardState extends State<Dashboard> {
                                   fontSize: 20.0,
                                 ),),
                               Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
+                                padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
                                   "Items Available: 50",
                                   style: TextStyle(
@@ -288,7 +292,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       bottom: 30,
                       right: -10,
                       child: Image(
@@ -304,7 +308,8 @@ class _DashboardState extends State<Dashboard> {
               Padding(
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Stack(
-                  overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
+                  //overflow: Overflow.visible,
                   children: [
                     InkWell(
                       onTap: () {
@@ -317,8 +322,8 @@ class _DashboardState extends State<Dashboard> {
                         decoration: BoxDecoration(
                             color: th.kwhite,
                             borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              const BoxShadow(
+                            boxShadow: const [
+                              BoxShadow(
                                   color: Colors.grey,
                                   blurRadius: 3.0,
                                   spreadRadius: 2.0,
@@ -332,7 +337,7 @@ class _DashboardState extends State<Dashboard> {
                           padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "Medicine",
                                 style: TextStyle(
@@ -340,7 +345,7 @@ class _DashboardState extends State<Dashboard> {
                                   fontSize: 20.0,
                                 ),),
                               Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
+                                padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
                                   "Items Available: 50",
                                   style: TextStyle(
@@ -353,7 +358,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       bottom: 30,
                       right: -10,
                       child: Image(
@@ -369,7 +374,8 @@ class _DashboardState extends State<Dashboard> {
               Padding(
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Stack(
-                  overflow: Overflow.visible,
+                  clipBehavior: Clip.none,
+                  //overflow: Overflow.visible,
                   children: [
                     InkWell(
                       onTap: () {
@@ -382,8 +388,8 @@ class _DashboardState extends State<Dashboard> {
                         decoration: BoxDecoration(
                             color: th.kwhite,
                             borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              const BoxShadow(
+                            boxShadow: const [
+                              BoxShadow(
                                   color: Colors.grey,
                                   blurRadius: 3.0,
                                   spreadRadius: 2.0,
@@ -397,7 +403,7 @@ class _DashboardState extends State<Dashboard> {
                           padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "Cosmetics",
                                 style: TextStyle(
@@ -405,7 +411,7 @@ class _DashboardState extends State<Dashboard> {
                                   fontSize: 20.0,
                                 ),),
                               Padding(
-                                padding: const EdgeInsets.only(top: 12.0),
+                                padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
                                   "Items Available: 50",
                                   style: TextStyle(
@@ -418,7 +424,7 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       bottom: 30,
                       right: -10,
                       child: Image(

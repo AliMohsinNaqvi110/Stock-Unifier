@@ -95,7 +95,7 @@ class _forgetpassState extends State<forgetpass> {
                                 decoration: BoxDecoration(
                                     color: const Color(0xFF3f3d56),
                                     borderRadius: BorderRadius.circular(10)),
-                                child: FlatButton(
+                                child: TextButton(
                                     onPressed: null,
                                     child: Text(
                                       "Log In",
