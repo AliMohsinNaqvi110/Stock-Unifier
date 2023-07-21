@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/Screens/home/edit_items.dart';
-import 'package:inventory_management/Screens/home/item_tile.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/models/items.dart';
 import 'package:provider/provider.dart';
+
+import '../../widgets/item_tile.dart';
 class SelectedCategory extends StatefulWidget {
 
   SelectedCategory(this._selectedCategory, {Key? key}) : super(key: key);
@@ -90,7 +91,7 @@ class _SelectedCategoryState extends State<SelectedCategory> {
                                   ]
                               ),
                             ),
-                            Text("Items Selected: 358 pcs",
+                            const Text("Items Selected: 358 pcs",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14
@@ -107,7 +108,7 @@ class _SelectedCategoryState extends State<SelectedCategory> {
                             color: th.klemon,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: Center(child: Text("Add to cart", style: TextStyle(fontWeight: FontWeight.bold),)),
+                          child: const Center(child: Text("Add to cart", style: TextStyle(fontWeight: FontWeight.bold),)),
                         ),
                       )
                     ],

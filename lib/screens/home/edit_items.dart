@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:inventory_management/Screens/home/quantity_controller.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -41,7 +40,8 @@ class _Edit_ItemsState extends State<Edit_Items> {
           if(!snapshot.hasData) {
             return const Center(child: Text("No Items yet"));
           }
-          else return ListView.builder(
+          else {
+            return ListView.builder(
               itemCount: snapshot.data?.docs.length,
               itemBuilder: (context, index) {
                 DocumentSnapshot _items = snapshot.data!.docs[index];
@@ -53,7 +53,7 @@ class _Edit_ItemsState extends State<Edit_Items> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text("Price: "),
+                        const Text("Price: "),
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0, bottom: 25),
                           child: Container(
@@ -67,10 +67,10 @@ class _Edit_ItemsState extends State<Edit_Items> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 InkWell(
-                                  child: Icon(Icons.remove),
+                                  child: const Icon(Icons.remove),
                                   onTap: () {
                                     if(_items["Price"] == 0) {
-                                      return null;
+                                      return;
                                     }
                                     else {
                                       setState(() {
@@ -92,10 +92,10 @@ class _Edit_ItemsState extends State<Edit_Items> {
                                     keyboardType: TextInputType.number,
                                     inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                     decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.only(top: 8.0),
+                                      contentPadding: const EdgeInsets.only(top: 8.0),
                                       hintText: _items["Price"].toString(),
                                       //_items["Price"].toString(),
-                                      border: OutlineInputBorder(),
+                                      border: const OutlineInputBorder(),
                                     ),
                                     onChanged: (val) {
                                       setState(() {
@@ -110,7 +110,7 @@ class _Edit_ItemsState extends State<Edit_Items> {
                                         //_items["Price"];
                                       });
                                     },
-                                    child: Icon(Icons.add)
+                                    child: const Icon(Icons.add)
                                 ),
                               ],
                             ),
@@ -121,7 +121,7 @@ class _Edit_ItemsState extends State<Edit_Items> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text("Quantity: "),
+                        const Text("Quantity: "),
                         Container(
                           height: MediaQuery.of(context).size.height * 0.06,
                           width: MediaQuery.of(context).size.width * 0.60,
@@ -133,10 +133,10 @@ class _Edit_ItemsState extends State<Edit_Items> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               InkWell(
-                                child: Icon(Icons.remove),
+                                child: const Icon(Icons.remove),
                                 onTap: () {
                                   if(_items["Quantity"] == 0) {
-                                    return null;
+                                    return;
                                   }
                                   else {
                                     setState(() {
@@ -158,9 +158,9 @@ class _Edit_ItemsState extends State<Edit_Items> {
                                   keyboardType: TextInputType.number,
                                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(top: 8.0),
+                                    contentPadding: const EdgeInsets.only(top: 8.0),
                                     hintText: _items["Quantity"].toString(),
-                                    border: OutlineInputBorder(),
+                                    border: const OutlineInputBorder(),
                                   ),
                                   onChanged: (val) {
                                     setState(() {
@@ -175,7 +175,7 @@ class _Edit_ItemsState extends State<Edit_Items> {
                                       // _items["Price"]++;
                                     });
                                   },
-                                  child: Icon(Icons.add)
+                                  child: const Icon(Icons.add)
                               ),
                             ],
                           ),
@@ -185,6 +185,7 @@ class _Edit_ItemsState extends State<Edit_Items> {
                   ],
                 );
               });
+          }
         },
       ),
     );

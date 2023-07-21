@@ -31,12 +31,12 @@ class AuthService{
   // }
 
   //register
-  Future register(String userName , String email, String password) async {
+  Future register(String userName , String email, String password, String userRole) async {
     try{
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       //create a new user with the uid
-      await DatabaseService(user!.uid).updateUserData(userName, email, password);
+      await DatabaseService(user!.uid).updateUserData(userName, email, password, userRole);
       await DatabaseService(user.uid).createInventory("", "", 0, 0);
       return _userFromFirebaseUser(user);
     }

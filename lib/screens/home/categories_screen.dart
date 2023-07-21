@@ -3,14 +3,16 @@ import 'package:inventory_management/Screens/home/selected_category.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/services/auth.dart';
 
-class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+
+// This Screen is displayed for Vendor, for Distributor we create another screen
+class VendorHome extends StatefulWidget {
+  const VendorHome({Key? key}) : super(key: key);
 
   @override
-  _DashboardState createState() => _DashboardState();
+  _VendorHomeState createState() => _VendorHomeState();
 }
 
-class _DashboardState extends State<Dashboard> {
+class _VendorHomeState extends State<VendorHome> {
 
   Apptheme th = Apptheme();
   final AuthService _auth = AuthService();
@@ -25,7 +27,7 @@ class _DashboardState extends State<Dashboard> {
       appBar: AppBar(
         backgroundColor: th.kbluish,
         title: const Text(
-          "Dashboard"
+          "Home"
         ),
           actions: [
             InkWell(
@@ -438,7 +440,7 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
               Container(
-                height: 20,
+                height: 80,
               )
             ],
           ),

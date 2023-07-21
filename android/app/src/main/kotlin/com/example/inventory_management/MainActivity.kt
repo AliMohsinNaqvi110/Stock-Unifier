@@ -1,4 +1,4 @@
-package com.example.inventory_management
+package com.isra.inventory_management
 
 import io.flutter.embedding.android.FlutterActivity
 

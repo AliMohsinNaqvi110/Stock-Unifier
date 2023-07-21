@@ -1,24 +1,27 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/services/auth.dart';
 
-class Sign_up extends StatefulWidget {
+class SignUp extends StatefulWidget {
   final void Function() toggleView;
-  const Sign_up(this.toggleView);
+  const SignUp(this.toggleView, {Key? key}) : super(key: key);
 
   @override
-  _Sign_upState createState() => _Sign_upState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _Sign_upState extends State<Sign_up> {
+class _SignUpState extends State<SignUp> {
   Apptheme th = Apptheme();
-  bool _showPassword = false;
+  bool _obscureText = true;
   String _userName = "";
   String _email = "";
   String _password = "";
   String _error = "";
+  final String _userRole = "Distributor";
+  final List<String> _userRoles = ["Distributor", "Vendor"];
 
-  AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -34,7 +37,7 @@ class _Sign_upState extends State<Sign_up> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                     child: Text(
                       "CREATE ACCOUNT",
                       style: TextStyle(
@@ -80,17 +83,17 @@ class _Sign_upState extends State<Sign_up> {
                                     setState(() => _userName = val);
                                   },
                                   cursorColor: th.kbluish,
-                                  decoration: new InputDecoration(
+                                  decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: th.klemon)),
-                                    border: new OutlineInputBorder(
+                                        BorderSide(color: th.klemon)),
+                                    border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                         borderSide:
-                                        new BorderSide(color: Colors.white)),
+                                        const BorderSide(color: Colors.white)),
                                     hintText: 'User Name',
                                     prefixIcon: Icon(
                                       Icons.account_circle_outlined,
@@ -112,17 +115,17 @@ class _Sign_upState extends State<Sign_up> {
                                   },
                                   cursorColor: th.kbluish,
                                   obscureText: false,
-                                  decoration: new InputDecoration(
+                                  decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: th.klemon)),
-                                    border: new OutlineInputBorder(
+                                        BorderSide(color: th.klemon)),
+                                    border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                         borderSide:
-                                        new BorderSide(color: Colors.white)),
+                                        const BorderSide(color: Colors.white)),
                                     hintText: 'Email Address',
                                     prefixIcon: Icon(
                                       Icons.email_outlined,
@@ -135,19 +138,19 @@ class _Sign_upState extends State<Sign_up> {
                                   onChanged: (val) {
                                     setState(() => _password = val);
                                   },
-                                  cursorColor: th.kbluish,
-                                  obscureText: _showPassword,
-                                  decoration: new InputDecoration(
+                              cursorColor: th.kbluish,
+                                  obscureText: _obscureText,
+                                  decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: th.klemon)),
-                                    border: new OutlineInputBorder(
+                                        BorderSide(color: th.klemon)),
+                                    border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                         borderSide:
-                                        new BorderSide(color: Colors.white)),
+                                        const BorderSide(color: Colors.white)),
                                     hintText: 'Enter Your Password',
                                     prefixIcon: Icon(
                                       Icons.vpn_key_rounded,
@@ -156,11 +159,11 @@ class _Sign_upState extends State<Sign_up> {
                                     suffixIcon: InkWell(
                                       onTap: () {
                                         setState(() {
-                                          _showPassword = !_showPassword;
+                                          _obscureText = !_obscureText;
                                         });
                                       },
                                       child: Icon(
-                                        _showPassword
+                                        _obscureText
                                             ? Icons.visibility_outlined
                                             : Icons.visibility_off_outlined,
                                         color: th.kbluish,
@@ -168,29 +171,57 @@ class _Sign_upState extends State<Sign_up> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                    width: double.infinity,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                        color: const Color(0xFF3f3d56),
-                                        borderRadius: BorderRadius.circular(10)),
-                                    child: TextButton(
-                                        onPressed: () {
-                                          if(_formKey.currentState!.validate()) {
-                                            dynamic result = _auth.register(_userName, _email, _password);
-                                          }
-                                          else {
-                                            setState(() => _error = "Enter a valid email or password");
-                                            print(_error.toString());
-                                          }
-                                        },
-                                        child: Text(
-                                          "Register",
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: th.kwhite,
-                                              fontWeight: FontWeight.bold),
-                                        ))),
+                                DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                      focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide:
+                                          BorderSide(color: th.klemon)),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(12),
+                                          borderSide:
+                                          const BorderSide(color: Colors.white)),
+                                      hintText: 'Distributor/Vendor',
+                                      prefixIcon: Icon(
+                                        Icons.supervised_user_circle,
+                                        color: th.kbluish,
+                                      ),
+                                    ),
+                                    items: _userRoles.map((String role) {
+                                      return DropdownMenuItem(
+                                          value: role,
+                                          child: Text(role)
+                                      );
+                                    }).toList(),
+                                    onChanged: (val) => _userRole),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Container(
+                                      width: double.infinity,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xFF3f3d56),
+                                          borderRadius: BorderRadius.circular(10)),
+                                      child: TextButton(
+                                          onPressed: () {
+                                            if(_formKey.currentState!.validate()) {
+                                              dynamic result = _auth.register(_userName, _email, _password, _userRole);
+                                            }
+                                            else {
+                                              setState(() => _error = "Enter a valid email or password");
+                                              log(_error.toString());
+                                            }
+                                          },
+                                          child: Text(
+                                            "Register",
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                color: th.kwhite,
+                                                fontWeight: FontWeight.bold),
+                                          ))),
+                                ),
                                 Row(children: <Widget>[
                                   Expanded(
                                     child: Divider(

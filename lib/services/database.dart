@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:inventory_management/models/items.dart';
 
 class DatabaseService {
 
@@ -9,11 +8,12 @@ class DatabaseService {
   //Collection Reference
   final CollectionReference userCollection = FirebaseFirestore.instance.collection("users");
 
-  Future updateUserData(String userName, String email, String password) async {
+  Future updateUserData(String userName, String email, String password, String userRole) async {
     return await userCollection.doc(uid).set({
       "userName" : userName,
       "Email" : email,
-      "Password" : password
+      "Password" : password,
+      "role" : userRole
     });
   }
 

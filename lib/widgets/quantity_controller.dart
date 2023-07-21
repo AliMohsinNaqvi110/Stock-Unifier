@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/constants/colors.dart';
 
-class Quantity_Controller extends StatefulWidget {
-  const Quantity_Controller({Key? key}) : super(key: key);
+class QuantityController extends StatefulWidget {
+  const QuantityController({Key? key}) : super(key: key);
 
   @override
-  _Quantity_ControllerState createState() => _Quantity_ControllerState();
+  _QuantityControllerState createState() => _QuantityControllerState();
 }
 
-class _Quantity_ControllerState extends State<Quantity_Controller> {
+class _QuantityControllerState extends State<QuantityController> {
 
   Apptheme th = Apptheme();
   int _selectedQuantity = 0;

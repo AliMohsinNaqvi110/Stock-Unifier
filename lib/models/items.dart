@@ -1,12 +1,6 @@
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class Items with ChangeNotifier {
-
-  List<Items> _cart = [
-
-  ];
+class Items extends ChangeNotifier {
 
   String? category;
   String? name;
@@ -14,12 +8,12 @@ class Items with ChangeNotifier {
   int? quantity;
   int? totalPrice;
 
-  Items.fromJson(Map<String, dynamic> snapshot) {
-    this.category = snapshot["Category"];
-    this.name = snapshot["Category"];
-    this.price = snapshot["Category"];
-    this.quantity = snapshot["Category"];
-    this.totalPrice = snapshot["Category"];
+  fromJson(Map<String, dynamic> snapshot) {
+    category = snapshot["Category"];
+    name = snapshot["Name"];
+    price = snapshot["Price"];
+    quantity = snapshot["Quantity"];
+    totalPrice = snapshot["Total_Price"];
   }
 
   // Items([this.category = "",  this.name = "",  this.price =0,  this.quantity = 0 , this.totalPrice = 0]);
