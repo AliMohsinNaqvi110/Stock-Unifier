@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:inventory_management/Screens/home/add_items.dart';
-import 'package:inventory_management/Screens/home/cart.dart';
-import 'package:inventory_management/Screens/home/sales_history.dart';
+import 'package:inventory_management/Screens/home/distributor/add_items.dart';
+import 'package:inventory_management/Screens/home/vendor/cart.dart';
+import 'package:inventory_management/Screens/home/distributor/sales_history.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/screens/home/categories_screen.dart';
+import 'package:inventory_management/screens/home/distributor/dashboard.dart';
 
 class DistributorWrapper extends StatefulWidget {
   const DistributorWrapper({Key? key}) : super(key: key);
@@ -14,10 +15,10 @@ class DistributorWrapper extends StatefulWidget {
 }
 
 class _DistributorWrapperState extends State<DistributorWrapper> {
-
   Apptheme th = Apptheme();
   PageController controller = PageController();
   int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,9 +26,14 @@ class _DistributorWrapperState extends State<DistributorWrapper> {
       body: PageView(
         controller: controller,
         children: const [
-          VendorHome(),
+          //first screen will be Dashboard screen
+          Dashboard(),
+          CategoriesScreen(), // this will later be called InventoryManegeScreen
           AddItems(),
+          /*no need for cart screen, instead we will use view inventory,
+          there we can reuse categories screen, with slight differences*/
           Cart(),
+          // VendorManagementScreen
           salesHistory(),
         ],
         onPageChanged: (page) {
@@ -44,7 +50,7 @@ class _DistributorWrapperState extends State<DistributorWrapper> {
           borderRadius: BorderRadius.circular(100),
         ),
         child: GNav(
-          // tabActiveBorder: Border.all(color: th.klemon, width: 1), // tab button border
+            // tabActiveBorder: Border.all(color: th.klemon, width: 1), // tab button border
             curve: Curves.easeInCirc,
             tabBorderRadius: 100,
             backgroundColor: Colors.transparent,
@@ -76,11 +82,12 @@ class _DistributorWrapperState extends State<DistributorWrapper> {
             onTabChange: (index) {
               setState(() {
                 _selectedIndex = index;
-                controller.animateToPage(_selectedIndex, duration: const Duration(milliseconds: 200), curve: Curves.linear);
+                controller.animateToPage(_selectedIndex,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.linear);
               });
             }),
       ),
     );
   }
 }
-

@@ -15,7 +15,7 @@ class AddItems extends StatefulWidget {
 
 class _AddItemsState extends State<AddItems> {
 
-  AuthService _auth = AuthService();
+  final AuthService _auth = AuthService();
   Apptheme th = Apptheme();
   String _selectedCategory = "";
   String _itemName = "";

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_management/Screens/home/edit_items.dart';
+import 'package:inventory_management/Screens/home/distributor/edit_items.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/models/items.dart';
 import 'package:provider/provider.dart';
@@ -7,15 +7,14 @@ import 'package:provider/provider.dart';
 import '../../widgets/item_tile.dart';
 class SelectedCategory extends StatefulWidget {
 
-  SelectedCategory(this._selectedCategory, {Key? key}) : super(key: key);
-  String _selectedCategory;
+  const SelectedCategory(this._selectedCategory, {Key? key}) : super(key: key);
+  final String _selectedCategory;
 
   @override
-  _SelectedCategoryState createState() => _SelectedCategoryState();
+  State<SelectedCategory> createState() => _SelectedCategoryState();
 }
 
 class _SelectedCategoryState extends State<SelectedCategory> {
-
   Apptheme th = Apptheme();
 
   @override

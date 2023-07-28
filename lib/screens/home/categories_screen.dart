@@ -4,15 +4,15 @@ import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/services/auth.dart';
 
 
-// This Screen is displayed for Vendor, for Distributor we create another screen
-class VendorHome extends StatefulWidget {
-  const VendorHome({Key? key}) : super(key: key);
+// This Screen is displayed for Vendor, for Distributor we first show dashboard
+class CategoriesScreen extends StatefulWidget {
+  const CategoriesScreen({Key? key}) : super(key: key);
 
   @override
-  _VendorHomeState createState() => _VendorHomeState();
+  _CategoriesScreenState createState() => _CategoriesScreenState();
 }
 
-class _VendorHomeState extends State<VendorHome> {
+class _CategoriesScreenState extends State<CategoriesScreen> {
 
   Apptheme th = Apptheme();
   final AuthService _auth = AuthService();
@@ -45,7 +45,8 @@ class _VendorHomeState extends State<VendorHome> {
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 60.0),
-                child: Stack(
+                child:
+                Stack(
                   clipBehavior: Clip.none,
                   //overflow: Overflow.visible,
                   children: [
@@ -56,7 +57,8 @@ class _VendorHomeState extends State<VendorHome> {
                           MaterialPageRoute(builder: (context) => SelectedCategory(_selectedCategory[0])),
                         );
                       },
-                      child: Container(
+                      child:
+                      Container(
                         decoration: BoxDecoration(
                           color: th.kwhite,
                           borderRadius: BorderRadius.circular(20),

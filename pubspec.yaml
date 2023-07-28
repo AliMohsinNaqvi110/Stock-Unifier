@@ -42,6 +42,7 @@ dependencies:
   cloud_firestore: ^3.1.5
   number_inc_dec: ^0.8.0
   google_nav_bar: ^5.0.5
+  fl_chart: ^0.62.0
 
 flutter_native_splash:
   color: "##ffb433"
