@@ -52,7 +52,7 @@ class _VendorWrapperState extends State<VendorWrapper> {
               // color: Colors.transparent,
 
               gap: 10,
-              tabBackgroundColor: th.kyellow,
+              tabBackgroundColor: th.kYellow,
             iconSize: 24,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             tabs: const [

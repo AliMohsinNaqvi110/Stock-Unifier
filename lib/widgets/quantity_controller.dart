@@ -19,7 +19,7 @@ class _QuantityControllerState extends State<QuantityController> {
     // final items = Provider.of<Items>(context);
 
     return Container(
-      decoration: BoxDecoration(color: th.klemon,
+      decoration: BoxDecoration(color: th.kLemon,
         borderRadius: BorderRadius.circular(50),),
       child: Row(
         mainAxisSize: MainAxisSize.min,

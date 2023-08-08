@@ -41,7 +41,7 @@ class _LoginState extends State<Login> {
                     child: Text(
                       "Log In To Your Acount",
                       style: TextStyle(
-                          color: th.kbluish,
+                          color: th.kDarkBlue,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1),
@@ -85,14 +85,14 @@ class _LoginState extends State<Login> {
                                   onChanged: (val) {
                                     setState(() => _email = val);
                                   },
-                                  cursorColor: th.kbluish,
+                                  cursorColor: th.kDarkBlue,
                                   decoration: new InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: th.klemon)),
+                                        new BorderSide(color: th.kLemon)),
                                     border: new OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                         borderSide:
@@ -100,7 +100,7 @@ class _LoginState extends State<Login> {
                                     hintText: 'Email Address',
                                     prefixIcon: Icon(
                                       Icons.email_outlined,
-                                      color: th.kbluish,
+                                      color: th.kDarkBlue,
                                     ),
                                   ),
                                 ),
@@ -109,7 +109,7 @@ class _LoginState extends State<Login> {
                                   onChanged: (val) {
                                     setState(() => _password = val);
                                   },
-                                  cursorColor: th.kbluish,
+                                  cursorColor: th.kDarkBlue,
                                   obscureText: _showPassword,
                                   decoration: new InputDecoration(
                                     fillColor: Colors.white,
@@ -117,7 +117,7 @@ class _LoginState extends State<Login> {
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: th.klemon)),
+                                        new BorderSide(color: th.kLemon)),
                                     border: new OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12.0),
                                         borderSide:
@@ -125,7 +125,7 @@ class _LoginState extends State<Login> {
                                     hintText: 'Enter Your Password',
                                     prefixIcon: Icon(
                                       Icons.vpn_key_rounded,
-                                      color: th.kbluish,
+                                      color: th.kDarkBlue,
                                     ),
                                     suffixIcon: InkWell(
                                       onTap: () {
@@ -137,7 +137,7 @@ class _LoginState extends State<Login> {
                                         _showPassword
                                             ? Icons.visibility_off_outlined
                                             : Icons.visibility_outlined,
-                                        color: th.kbluish,
+                                        color: th.kDarkBlue,
                                       ),
                                     ),
                                   ),
@@ -179,28 +179,28 @@ class _LoginState extends State<Login> {
                                           "Log In",
                                           style: TextStyle(
                                               fontSize: 16,
-                                              color: th.kwhite,
+                                              color: th.kWhite,
                                               fontWeight: FontWeight.bold),
                                         ))),
                                 Row(children: <Widget>[
                                   Expanded(
                                     child: Divider(
                                       thickness: 1,
-                                      color: th.kbluish,
+                                      color: th.kDarkBlue,
                                     ),
                                   ),
                                   const Text("  or  "),
                                   Expanded(
                                       child: Divider(
                                         thickness: 1,
-                                        color: th.kbluish,
+                                        color: th.kDarkBlue,
                                       )),
                                 ]),
                                 Container(
                                     width: double.infinity,
                                     height: 50,
                                     decoration: BoxDecoration(
-                                        color: th.klemon,
+                                        color: th.kLemon,
                                         borderRadius: BorderRadius.circular(10)),
                                     child: TextButton(
                                         onPressed: widget.toggleView,
@@ -208,7 +208,7 @@ class _LoginState extends State<Login> {
                                           "Sign up",
                                           style: TextStyle(
                                               fontSize: 16,
-                                              color: th.kblack,
+                                              color: th.kBlack,
                                               fontWeight: FontWeight.bold),
                                         ))),
                               ],

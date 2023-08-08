@@ -27,7 +27,7 @@ class _forgetpassState extends State<forgetpass> {
                     child: Text(
                       "Reset Password",
                       style: TextStyle(
-                          color: th.kbluish,
+                          color: th.kDarkBlue,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1),
@@ -40,7 +40,7 @@ class _forgetpassState extends State<forgetpass> {
                   Text(
                     "We have send an email,with a link to reset your password",
                     style: TextStyle(
-                      color: th.kbluish.withOpacity(0.4),
+                      color: th.kDarkBlue.withOpacity(0.4),
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -66,7 +66,7 @@ class _forgetpassState extends State<forgetpass> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             TextField(
-                              cursorColor: th.kbluish,
+                              cursorColor: th.kDarkBlue,
                               obscureText: false,
                               decoration: new InputDecoration(
                                 fillColor: Colors.white,
@@ -85,7 +85,7 @@ class _forgetpassState extends State<forgetpass> {
                                 hintText: 'Email Address',
                                 prefixIcon: Icon(
                                   Icons.email_outlined,
-                                  color: th.kbluish,
+                                  color: th.kDarkBlue,
                                 ),
                               ),
                             ),
@@ -101,9 +101,9 @@ class _forgetpassState extends State<forgetpass> {
                                       "Log In",
                                       style: TextStyle(
                                           fontSize: 16,
-                                          color: th.kwhite,
+                                          color: th.kWhite,
                                           fontWeight: FontWeight.bold),
-                                    ))),
+                              ))),
                           ],
                         ),
                       )),

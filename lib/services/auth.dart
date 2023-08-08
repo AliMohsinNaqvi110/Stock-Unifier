@@ -45,6 +45,19 @@ class AuthService{
     }
   }
 
+  //Create Vendor
+  Future registerVendor(String vendorName, String email, String password, String distributorUid, int balance, int dues ) async {
+    try{
+      // This is enough to create a new user,
+      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      //create a new vendor with the distributor's uid
+      await DatabaseService(distributorUid).createVendor(distributorUid, vendorName, email, balance, dues);
+    }
+    catch(e) {
+      return null;
+    }
+  }
+
   //sign in
   Future signInWithEmailAndPassword(String email, String password) async {
     try{

@@ -45,7 +45,7 @@ class _AddItemsState extends State<AddItems> {
     final user = Provider.of<User>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: th.kbluish,
+        backgroundColor: th.kDarkBlue,
         title: const Text("Add Items"),
         centerTitle: true,
         actions: [
@@ -141,7 +141,7 @@ class _AddItemsState extends State<AddItems> {
                           height: MediaQuery.of(context).size.height * 0.06,
                           width: MediaQuery.of(context).size.width * 0.60,
                           decoration: BoxDecoration(
-                            color: th.kyellow,
+                            color: th.kYellow,
                             borderRadius: BorderRadius.circular(6)
                           ),
                           child: Row(
@@ -164,7 +164,7 @@ class _AddItemsState extends State<AddItems> {
                                 width: MediaQuery.of(context).size.width * 0.40,
                                 height: MediaQuery.of(context).size.height * 0.05,
                                 decoration: BoxDecoration(
-                                    color: th.kwhite,
+                                    color: th.kWhite,
                                     borderRadius: BorderRadius.circular(6)
                                 ),
                                 child: TextFormField(
@@ -206,7 +206,7 @@ class _AddItemsState extends State<AddItems> {
                         height: MediaQuery.of(context).size.height * 0.06,
                         width: MediaQuery.of(context).size.width * 0.60,
                         decoration: BoxDecoration(
-                            color: th.kyellow,
+                            color: th.kYellow,
                             borderRadius: BorderRadius.circular(6)
                         ),
                         child: Row(
@@ -228,7 +228,7 @@ class _AddItemsState extends State<AddItems> {
                               width: MediaQuery.of(context).size.width * 0.40,
                               height: MediaQuery.of(context).size.height * 0.05,
                               decoration: BoxDecoration(
-                                color: th.kwhite,
+                                color: th.kWhite,
                                 borderRadius: BorderRadius.circular(6)
                               ),
                               child: TextFormField(
@@ -284,14 +284,14 @@ class _AddItemsState extends State<AddItems> {
                       height: 45,
                       width: MediaQuery.of(context).size.width * 0.25,
                       decoration: BoxDecoration(
-                        color: th.kbluish,
+                        color: th.kDarkBlue,
                         borderRadius: BorderRadius.circular(6)
                       ),
                       child: Center(
                           child: Text(
                               "Save",
                             style: TextStyle(
-                              fontSize: 14,
+                             fontSize: 14,
                               color: Colors.white
                             ),
                           )),

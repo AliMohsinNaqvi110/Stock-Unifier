@@ -27,8 +27,8 @@ class _Edit_ItemsState extends State<Edit_Items> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: th.kbluish,
-        title: Text("Edit " + widget._selectedCategory.toString() + " List"),
+        backgroundColor: th.kDarkBlue,
+        title: Text(widget._selectedCategory.toString() + " List"),
         centerTitle: true,
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -47,8 +47,7 @@ class _Edit_ItemsState extends State<Edit_Items> {
                 DocumentSnapshot _items = snapshot.data!.docs[index];
                 return ExpansionTile(
                     title: Text(_items["Item_Name"]),
-                  collapsedBackgroundColor: index % 2 == 0 ? th.kwhite : th.klight_grey,
-                  backgroundColor: Colors.white,
+                  collapsedBackgroundColor: index % 2 == 0 ? th.kWhite : th.kLightGrey,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -60,7 +59,7 @@ class _Edit_ItemsState extends State<Edit_Items> {
                             height: MediaQuery.of(context).size.height * 0.06,
                             width: MediaQuery.of(context).size.width * 0.60,
                             decoration: BoxDecoration(
-                                color: th.kyellow,
+                                color: th.kYellow,
                                 borderRadius: BorderRadius.circular(6)
                             ),
                             child: Row(
@@ -83,9 +82,8 @@ class _Edit_ItemsState extends State<Edit_Items> {
                                   width: MediaQuery.of(context).size.width * 0.40,
                                   height: MediaQuery.of(context).size.height * 0.05,
                                   decoration: BoxDecoration(
-                                      color: th.kwhite,
-                                      borderRadius: BorderRadius.circular(6)
-                                  ),
+                                      color: th.kWhite,
+                                      borderRadius: BorderRadius.circular(6)                             ),
                                   child: TextFormField(
                                     textAlign: TextAlign.center,
                                     controller: priceController,
@@ -126,7 +124,7 @@ class _Edit_ItemsState extends State<Edit_Items> {
                           height: MediaQuery.of(context).size.height * 0.06,
                           width: MediaQuery.of(context).size.width * 0.60,
                           decoration: BoxDecoration(
-                              color: th.kyellow,
+                              color: th.kYellow,
                               borderRadius: BorderRadius.circular(6)
                           ),
                           child: Row(
@@ -149,7 +147,7 @@ class _Edit_ItemsState extends State<Edit_Items> {
                                 width: MediaQuery.of(context).size.width * 0.40,
                                 height: MediaQuery.of(context).size.height * 0.05,
                                 decoration: BoxDecoration(
-                                    color: th.kwhite,
+                                    color: th.kWhite,
                                     borderRadius: BorderRadius.circular(6)
                                 ),
                                 child: TextFormField(

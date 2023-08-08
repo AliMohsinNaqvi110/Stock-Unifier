@@ -41,7 +41,7 @@ class _SignUpState extends State<SignUp> {
                     child: Text(
                       "CREATE ACCOUNT",
                       style: TextStyle(
-                          color: th.kbluish,
+                          color: th.kDarkBlue,
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1),
@@ -82,14 +82,14 @@ class _SignUpState extends State<SignUp> {
                                   onChanged: (val) {
                                     setState(() => _userName = val);
                                   },
-                                  cursorColor: th.kbluish,
+                                  cursorColor: th.kDarkBlue,
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        BorderSide(color: th.klemon)),
+                                        BorderSide(color: th.kLemon)),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                         borderSide:
@@ -97,7 +97,7 @@ class _SignUpState extends State<SignUp> {
                                     hintText: 'User Name',
                                     prefixIcon: Icon(
                                       Icons.account_circle_outlined,
-                                      color: th.kbluish,
+                                      color: th.kDarkBlue,
                                     ),
                                   ),
                                 ),
@@ -113,7 +113,7 @@ class _SignUpState extends State<SignUp> {
                                   onChanged: (val) {
                                     setState(() => _email = val);
                                   },
-                                  cursorColor: th.kbluish,
+                                  cursorColor: th.kDarkBlue,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
@@ -121,7 +121,7 @@ class _SignUpState extends State<SignUp> {
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        BorderSide(color: th.klemon)),
+                                        BorderSide(color: th.kLemon)),
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                         borderSide:
@@ -129,7 +129,7 @@ class _SignUpState extends State<SignUp> {
                                     hintText: 'Email Address',
                                     prefixIcon: Icon(
                                       Icons.email_outlined,
-                                      color: th.kbluish,
+                                      color: th.kDarkBlue,
                                     ),
                                   ),
                                 ),
@@ -138,7 +138,7 @@ class _SignUpState extends State<SignUp> {
                                   onChanged: (val) {
                                     setState(() => _password = val);
                                   },
-                              cursorColor: th.kbluish,
+                              cursorColor: th.kDarkBlue,
                                   obscureText: _obscureText,
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
@@ -146,7 +146,7 @@ class _SignUpState extends State<SignUp> {
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        BorderSide(color: th.klemon)),
+                                        BorderSide(color: th.kLemon)),
                                     border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
                                         borderSide:
@@ -154,7 +154,7 @@ class _SignUpState extends State<SignUp> {
                                     hintText: 'Enter Your Password',
                                     prefixIcon: Icon(
                                       Icons.vpn_key_rounded,
-                                      color: th.kbluish,
+                                      color: th.kDarkBlue,
                                     ),
                                     suffixIcon: InkWell(
                                       onTap: () {
@@ -166,7 +166,7 @@ class _SignUpState extends State<SignUp> {
                                         _obscureText
                                             ? Icons.visibility_outlined
                                             : Icons.visibility_off_outlined,
-                                        color: th.kbluish,
+                                        color: th.kDarkBlue,
                                       ),
                                     ),
                                   ),
@@ -178,7 +178,7 @@ class _SignUpState extends State<SignUp> {
                                       focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(10),
                                           borderSide:
-                                          BorderSide(color: th.klemon)),
+                                          BorderSide(color: th.kLemon)),
                                       border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(12),
                                           borderSide:
@@ -186,7 +186,7 @@ class _SignUpState extends State<SignUp> {
                                       hintText: 'Distributor/Vendor',
                                       prefixIcon: Icon(
                                         Icons.supervised_user_circle,
-                                        color: th.kbluish,
+                                        color: th.kDarkBlue,
                                       ),
                                     ),
                                     items: _userRoles.map((String role) {
@@ -218,7 +218,7 @@ class _SignUpState extends State<SignUp> {
                                             "Register",
                                             style: TextStyle(
                                                 fontSize: 16,
-                                                color: th.kwhite,
+                                                color: th.kWhite,
                                                 fontWeight: FontWeight.bold),
                                           ))),
                                 ),
@@ -226,21 +226,21 @@ class _SignUpState extends State<SignUp> {
                                   Expanded(
                                     child: Divider(
                                       thickness: 1,
-                                      color: th.kbluish,
+                                      color: th.kDarkBlue,
                                     ),
                                   ),
                                   const Text("  or  "),
                                   Expanded(
                                       child: Divider(
                                         thickness: 1,
-                                        color: th.kbluish,
+                                        color: th.kDarkBlue,
                                       )),
                                 ]),
                                 Container(
                                     width: double.infinity,
                                     height: 50,
                                     decoration: BoxDecoration(
-                                        color: th.klemon,
+                                        color: th.kLemon,
                                         borderRadius: BorderRadius.circular(10)),
                                     child: TextButton(
                                         onPressed: widget.toggleView,
@@ -248,7 +248,7 @@ class _SignUpState extends State<SignUp> {
                                           "Sign In",
                                           style: TextStyle(
                                               fontSize: 16,
-                                              color: th.kblack,
+                                              color: th.kBlack,
                                               fontWeight: FontWeight.bold),
                                         ))),
                               ],

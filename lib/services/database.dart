@@ -17,6 +17,17 @@ class DatabaseService {
     });
   }
 
+  Future createVendor(String distributorUid, String vendorName, String email, int balance,  int dues) async {
+    return await userCollection.doc(uid).collection("vendors").add({
+      "name" : vendorName,
+      "email" : email,
+      "balance" : balance,
+      "dues" : dues,
+      "distributor_uid" : distributorUid,
+    });
+  }
+
+  // Todo this might cause trouble in the future, so we will remove creating empty doc
   Future createInventory(String category, String itemName, int price, int quantity) async {
     return await FirebaseFirestore.instance.collection("users").doc(uid).collection("inventory").add({
       "Category" : category,

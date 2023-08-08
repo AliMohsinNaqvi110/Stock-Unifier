@@ -16,7 +16,7 @@ class _CartState extends State<Cart> {
       appBar: AppBar(
         title: Text("Cart"),
         centerTitle: true,
-        backgroundColor: th.kbluish,
+        backgroundColor: th.kDarkBlue,
       ),
       body: Center(
         child: Text("Cart"),

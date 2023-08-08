@@ -5,8 +5,8 @@ import 'package:inventory_management/models/items.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/item_tile.dart';
-class SelectedCategory extends StatefulWidget {
 
+class SelectedCategory extends StatefulWidget {
   const SelectedCategory(this._selectedCategory, {Key? key}) : super(key: key);
   final String _selectedCategory;
 
@@ -22,25 +22,25 @@ class _SelectedCategoryState extends State<SelectedCategory> {
     final _items = Provider.of<Items>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: th.kbluish,
-        title: const Text("Selected Category"),
-        centerTitle: true,
-        actions: [
-          InkWell(
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Icon(
-                  Icons.edit
+          backgroundColor: th.kDarkBlue,
+          title: Text("Selected Category"),
+          centerTitle: true,
+          actions: [
+            InkWell(
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(Icons.edit),
               ),
-            ),
-            onTap:  () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Edit_Items(widget._selectedCategory)),
-              );
-            },
-          )]
-      ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Edit_Items(widget._selectedCategory)),
+                );
+              },
+            )
+          ]),
       body: Stack(
         children: [
           ItemTile(widget._selectedCategory),
@@ -49,17 +49,13 @@ class _SelectedCategoryState extends State<SelectedCategory> {
             child: Consumer(
               builder: (BuildContext context, value, Widget? child) {
                 return Container(
-                  decoration: BoxDecoration(
-                      color: th.kbluish,
-                      boxShadow: [
-                        BoxShadow(
-                          offset: ( Offset.fromDirection(1.0) ),
-                          blurRadius: 10,
-                          color: th.klight_grey,
-                          spreadRadius: 10,
-                        )
-                      ]
-                  ),
+                  decoration: BoxDecoration(color: th.kDarkBlue, boxShadow: [
+                    BoxShadow(
+                        offset: (Offset.fromDirection(1.0)),
+                        blurRadius: 10,
+                        color: th.kLightGrey,
+                        spreadRadius: 10)
+                  ]),
                   height: MediaQuery.of(context).size.height * 0.10,
                   width: MediaQuery.of(context).size.width,
                   child: Row(
@@ -76,25 +72,21 @@ class _SelectedCategoryState extends State<SelectedCategory> {
                                   text: "Rs: ",
                                   style: const TextStyle(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold
-                                  ),
+                                      fontWeight: FontWeight.bold),
                                   children: <TextSpan>[
                                     TextSpan(
                                         text: _items.price.toString(),
                                         style: TextStyle(
-                                            color: th.kyellow,
+                                            color: th.kYellow,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 20
-                                        )
-                                    )
-                                  ]
-                              ),
+                                            fontSize: 20))
+                                  ]),
                             ),
-                            const Text("Items Selected: 358 pcs",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14
-                              ),),
+                            const Text(
+                              "Items Selected: 358 pcs",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
                           ],
                         ),
                       ),
@@ -104,10 +96,14 @@ class _SelectedCategoryState extends State<SelectedCategory> {
                           height: 50,
                           width: 120,
                           decoration: BoxDecoration(
-                            color: th.klemon,
+                            color: th.kLemon,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Center(child: Text("Add to cart", style: TextStyle(fontWeight: FontWeight.bold),)),
+                          child: const Center(
+                              child: Text(
+                            "Add to cart",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          )),
                         ),
                       )
                     ],

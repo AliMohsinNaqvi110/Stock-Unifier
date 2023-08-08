@@ -23,9 +23,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: th.klight_grey,
+      backgroundColor: th.kLightGrey,
       appBar: AppBar(
-        backgroundColor: th.kbluish,
+        backgroundColor: th.kDarkBlue,
         title: const Text(
           "Home"
         ),
@@ -60,7 +60,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       child:
                       Container(
                         decoration: BoxDecoration(
-                          color: th.kwhite,
+                          color: th.kWhite,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: const [
                             BoxShadow(
@@ -126,7 +126,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                            color: th.kwhite,
+                            color: th.kWhite,
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: const [
                               BoxShadow(
@@ -192,7 +192,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                            color: th.kwhite,
+                            color: th.kWhite,
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: const [
                               BoxShadow(
@@ -258,7 +258,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                            color: th.kwhite,
+                            color: th.kWhite,
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: const [
                               BoxShadow(
@@ -324,7 +324,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                            color: th.kwhite,
+                            color: th.kWhite,
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: const [
                               BoxShadow(
@@ -390,7 +390,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                            color: th.kwhite,
+                            color: th.kWhite,
                             borderRadius: BorderRadius.circular(20),
                             boxShadow: const [
                               BoxShadow(

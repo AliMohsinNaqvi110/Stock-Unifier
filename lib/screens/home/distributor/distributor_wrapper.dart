@@ -5,6 +5,7 @@ import 'package:inventory_management/Screens/home/vendor/cart.dart';
 import 'package:inventory_management/Screens/home/distributor/sales_history.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/screens/home/categories_screen.dart';
+import 'package:inventory_management/screens/home/distributor/add_vendor.dart';
 import 'package:inventory_management/screens/home/distributor/dashboard.dart';
 
 class DistributorWrapper extends StatefulWidget {
@@ -28,13 +29,14 @@ class _DistributorWrapperState extends State<DistributorWrapper> {
         children: const [
           //first screen will be Dashboard screen
           Dashboard(),
-          CategoriesScreen(), // this will later be called InventoryManegeScreen
           AddItems(),
+          AddVendor(),
+          CategoriesScreen(), // this will later be called InventoryManegeScreen
           /*no need for cart screen, instead we will use view inventory,
           there we can reuse categories screen, with slight differences*/
-          Cart(),
+/*          Cart(),
           // VendorManagementScreen
-          salesHistory(),
+          salesHistory(),*/
         ],
         onPageChanged: (page) {
           setState(() {
@@ -57,7 +59,7 @@ class _DistributorWrapperState extends State<DistributorWrapper> {
             // color: Colors.transparent,
 
             gap: 10,
-            tabBackgroundColor: th.kyellow,
+            tabBackgroundColor: th.kYellow,
             iconSize: 24,
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
             tabs: const [
@@ -70,8 +72,8 @@ class _DistributorWrapperState extends State<DistributorWrapper> {
                 text: 'Add Items',
               ),
               GButton(
-                icon: Icons.shopping_cart_outlined,
-                text: 'Cart',
+                icon: Icons.person_add_alt_1_outlined,
+                text: 'Vendors',
               ),
               GButton(
                 icon: Icons.access_time,

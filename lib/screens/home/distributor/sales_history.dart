@@ -56,7 +56,7 @@ class _salesHistoryState extends State<salesHistory> {
                   padding: const EdgeInsets.all(12),
                   child: Icon(
                     Icons.shopping_cart_outlined,
-                    color: th.kwhite,
+                    color: th.kWhite,
                   ),
                 )
               ],
@@ -70,7 +70,7 @@ class _salesHistoryState extends State<salesHistory> {
               //   ),
               // ),
               iconTheme: IconThemeData(color: Colors.black),
-              backgroundColor: th.kbluish,
+              backgroundColor: th.kDarkBlue,
               centerTitle: true),
           body: ListView.builder(
             itemCount: groceries.length,
@@ -138,7 +138,7 @@ class _salesHistoryState extends State<salesHistory> {
               height: 20,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: th.kwhite,
+                color: th.kWhite,
               ),
             ),
           )
