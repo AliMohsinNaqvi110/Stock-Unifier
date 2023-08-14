@@ -34,17 +34,14 @@ class DatabaseService {
   }
 
   Future createVendor(
-      {required String distributorUid,
+      {
       required String vendorName,
-      required String email,
       required int balance,
       required int dues}) async {
     return await userCollection.doc(uid).collection("vendors").add({
       "name": vendorName,
-      "email": email,
       "balance": balance,
       "dues": dues,
-      "distributor_uid": distributorUid,
     });
   }
 

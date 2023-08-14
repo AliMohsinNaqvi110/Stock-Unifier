@@ -15,8 +15,6 @@ class AuthService {
     return _auth.authStateChanges();
   }
 
-
-
   // //Sign in Anonymously
   // Future signInAnon() async {
   //  try {
@@ -51,29 +49,29 @@ class AuthService {
     }
   }
 
-  //Create Vendor
-  Future registerVendor(String vendorName, String email, String password,
-      String distributorUid, int balance, int dues) async {
-    try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      //create a new vendor with the distributor's uid
-      await DatabaseService(distributorUid).createVendor(
-          distributorUid: distributorUid,
-          vendorName: vendorName,
-          email: email,
-          balance: balance,
-          dues: dues);
-      await DatabaseService(result.user!.uid).addUserData(
-          userName: vendorName,
-          email: email,
-          password: password,
-          userRole: "Vendor",
-          distributorUid: distributorUid);
-    } catch (e) {
-      return null;
-    }
-  }
+  // //Create Vendor
+  // Future registerVendor(String vendorName, String email, String password,
+  //     String distributorUid, int balance, int dues) async {
+  //   try {
+  //     UserCredential result = await _auth.createUserWithEmailAndPassword(
+  //         email: email, password: password);
+  //     //create a new vendor with the distributor's uid
+  //     await DatabaseService(distributorUid).createVendor(
+  //         distributorUid: distributorUid,
+  //         vendorName: vendorName,
+  //         email: email,
+  //         balance: balance,
+  //         dues: dues);
+  //     await DatabaseService(result.user!.uid).addUserData(
+  //         userName: vendorName,
+  //         email: email,
+  //         password: password,
+  //         userRole: "Vendor",
+  //         distributorUid: distributorUid);
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
 
   //sign in
   Future signInWithEmailAndPassword(String email, String password) async {

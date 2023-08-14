@@ -1,9 +1,11 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/constants/text_decoration.dart';
 import 'package:inventory_management/services/auth.dart';
+import 'package:inventory_management/services/database.dart';
 import 'package:provider/provider.dart';
 
 class AddVendor extends StatefulWidget {
@@ -16,18 +18,18 @@ class AddVendor extends StatefulWidget {
 class _AddVendorState extends State<AddVendor> {
   Apptheme th = Apptheme();
   final AuthService _auth = AuthService();
+  late dynamic _db;
   final _formKey = GlobalKey<FormState>();
-
   // Text Controllers
   TextEditingController vendorNameTextController = TextEditingController();
-  TextEditingController vendorEmailTextController = TextEditingController();
-  TextEditingController vendorPasswordTextController = TextEditingController();
   TextEditingController vendorBalanceTextController = TextEditingController();
   TextEditingController vendorDuesTextController = TextEditingController();
+  TextEditingController vendorMobileNumberTextController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _db = DatabaseService(Provider.of<User>(context, listen: false).uid);
     vendorBalanceTextController.text = "0";
     vendorDuesTextController.text = "0";
   }
@@ -36,16 +38,14 @@ class _AddVendorState extends State<AddVendor> {
   void dispose() {
     super.dispose();
     vendorNameTextController.dispose();
-    vendorEmailTextController.dispose();
-    vendorPasswordTextController.dispose();
     vendorBalanceTextController.dispose();
     vendorDuesTextController.dispose();
+    vendorMobileNumberTextController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: th.kDarkBlue,
@@ -98,50 +98,19 @@ class _AddVendorState extends State<AddVendor> {
                         const Padding(
                           padding: EdgeInsets.only(left: 4.0, bottom: 8.0),
                           child: Text(
-                            "Email",
+                            "Mobile Number",
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w600),
                           ),
                         ),
                         TextFormField(
-                            controller: vendorEmailTextController,
-                            validator: (String? val) {
-                              if (val == null || !val.contains("@")) {
-                                return "please enter a valid email";
-                              } else {
-                                return null;
-                              }
-                            },
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            controller: vendorMobileNumberTextController,
                             decoration: textInputDecoration.copyWith(
-                                hintText: "Vendor Email")),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12.0, horizontal: 20.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.only(left: 4.0, bottom: 8.0),
-                          child: Text(
-                            "Password",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        TextFormField(
-                            controller: vendorPasswordTextController,
-                            validator: (String? val) {
-                              if (val == null || val.trim().isEmpty) {
-                                return "Vendor password can't be empty";
-                              } else {
-                                return null;
-                              }
-                            },
-                            decoration: textInputDecoration.copyWith(
-                                hintText: "Vendor Password")),
+                                hintText: "Vendor Mobile Number")),
                       ],
                     ),
                   ),
@@ -202,13 +171,20 @@ class _AddVendorState extends State<AddVendor> {
                     child: InkWell(
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
-                          _auth.registerVendor(
-                              vendorNameTextController.text,
-                              vendorEmailTextController.text,
-                              vendorPasswordTextController.text,
-                              user.uid,
-                              int.parse(vendorBalanceTextController.text),
-                              int.parse(vendorDuesTextController.text));
+                          _db.createVendor(
+                            vendorName: vendorNameTextController.text,
+                            balance: int.parse(vendorBalanceTextController.text),
+                            dues: int.parse(vendorDuesTextController.text)
+                          );
+                          CoolAlert.show(
+                            onConfirmBtnTap: () {
+                              Navigator.pop(context);
+                            },
+                            context: context,
+                            type: CoolAlertType.success,
+                            title: "Success",
+                            text: "Send this id to this vendor!",
+                          );
                         }
                       },
                       child: Container(
