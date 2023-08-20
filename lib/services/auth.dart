@@ -42,7 +42,8 @@ class AuthService {
           password: password,
           userRole: userRole,
           distributorUid: null);
-      await DatabaseService(user.uid).createInventory("", "", 0, 0);
+      // we create empty inventory to display in dashboard
+      await DatabaseService(user.uid).createInventory();
       return _userFromFirebaseUser(user);
     } catch (e) {
       return Exception(e.toString());

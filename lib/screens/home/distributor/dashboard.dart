@@ -1,7 +1,12 @@
+import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory_management/models/dashboard_stats_model.dart';
 import 'package:inventory_management/services/auth.dart';
 import 'package:inventory_management/widgets/dashboard_card.dart';
 import 'package:inventory_management/widgets/vendor_tile.dart';
+import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
 
 class Dashboard extends StatefulWidget {
@@ -17,6 +22,8 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    final dashboardData = Provider.of<DashboardStats>(context,listen: false);
+    final user = Provider.of<User>(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -63,7 +70,6 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   )),
 
-
               // bottom circle
               Positioned(
                 right: -120,
@@ -106,42 +112,63 @@ class _DashboardState extends State<Dashboard> {
                           Text(
                             "Ali Mohsin",
                             style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 1.5),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 1.5),
                           )
                         ],
                       ),
                     ),
                   ),
                   // no. of Sales Container
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: th.kDarkBlue,
-                          borderRadius: BorderRadius.circular(18)),
-                      height: MediaQuery.of(context).size.height * 0.16,
-                      width: MediaQuery.of(context).size.width * 0.75,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "24,260",
-                            style: TextStyle(
-                                color: th.kWhite,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("users")
+                        .doc(user.uid)
+                        .collection("inventory")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.none ||
+                          snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasData) {
+                        dynamic data = snapshot.data!.docs;
+                        log(data.toString());
+                        //dashboardData.getInvData(data["_delegate"]["_data"]["data"]);
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: th.kDarkBlue,
+                                borderRadius: BorderRadius.circular(18)),
+                            height: MediaQuery.of(context).size.height * 0.16,
+                            width: MediaQuery.of(context).size.width * 0.75,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  dashboardData.inventoryCost.toString(),
+                                  style: TextStyle(
+                                      color: th.kWhite,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "Sales This Month",
+                                  style: TextStyle(
+                                      color: th.kWhite,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 24),
+                                )
+                              ],
+                            ),
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "Sales This Month",
-                            style: TextStyle(
-                                color: th.kWhite,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 24),
-                          )
-                        ],
-                      ),
-                    ),
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    },
                   ),
                   Padding(
                       padding: const EdgeInsets.symmetric(
@@ -176,8 +203,11 @@ class _DashboardState extends State<Dashboard> {
                       )),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: Text("Vendors",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 22),),
+                    child: Text(
+                      "Vendors",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
+                    ),
                   ),
                   Center(
                       child: Container(
@@ -190,7 +220,7 @@ class _DashboardState extends State<Dashboard> {
                             color: th.kDarkBlue,
                           ),
                           child: ListView.builder(
-                            shrinkWrap: true,
+                              shrinkWrap: true,
                               itemCount: 3,
                               itemBuilder: (context, index) => Column(
                                     children: [
@@ -208,7 +238,7 @@ class _DashboardState extends State<Dashboard> {
                                       )
                                     ],
                                   ))
-                        /*Column(
+                          /*Column(
                             children: [
                               const Padding(
                                 padding: EdgeInsets.only(top: 16.0),
@@ -224,8 +254,7 @@ class _DashboardState extends State<Dashboard> {
                               )
                             ],
                           ))),*/
-                      )
-                  )
+                          ))
                 ],
               ),
             ],

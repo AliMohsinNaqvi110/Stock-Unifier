@@ -8,6 +8,8 @@ class DatabaseService {
   //Collection Reference
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection("users");
+  final CollectionReference salesCollection =
+      FirebaseFirestore.instance.collection("sales");
 
   Future addUserData(
       {required String userName,
@@ -34,8 +36,7 @@ class DatabaseService {
   }
 
   Future createVendor(
-      {
-      required String vendorName,
+      {required String vendorName,
       required int balance,
       required int dues}) async {
     return await userCollection.doc(uid).collection("vendors").add({
@@ -49,17 +50,19 @@ class DatabaseService {
     we create empty inventory on user creation to display inventory
      details to user on being redirected to dashboard screen
   * */
-  Future createInventory(
-      String category, String itemName, int price, int quantity) async {
-    return await FirebaseFirestore.instance
-        .collection("users")
+  Future createInventory() async {
+    return userCollection
         .doc(uid)
         .collection("inventory")
-        .add({
-      "Category": category,
-      "Item_name": itemName,
-      "price": price,
-      "quantity": quantity
+        .add({"Category": "", "Item_name": "", "price": 0, "quantity": 1});
+  }
+
+  Future createSales() async {
+    return await salesCollection.add({
+      "total_order_cost": 0,
+      "vendor": "",
+      "number_of_items": 0,
+      "created_at": "",
     });
   }
 
