@@ -2,8 +2,9 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory_management/models/dashboard_stats_model.dart';
+import 'package:inventory_management/models/dasshboard_stats.dart';
 import 'package:inventory_management/services/auth.dart';
+import 'package:inventory_management/services/database.dart';
 import 'package:inventory_management/widgets/dashboard_card.dart';
 import 'package:inventory_management/widgets/vendor_tile.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,6 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final dashboardData = Provider.of<DashboardStats>(context,listen: false);
     final user = Provider.of<User>(context);
     return Scaffold(
       body: SafeArea(
@@ -121,86 +121,85 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ),
                   // no. of Sales Container
-                  StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection("users")
-                        .doc(user.uid)
-                        .collection("inventory")
-                        .snapshots(),
+                  StreamBuilder<DashboardStats>(
+                    stream: DatabaseService(user.uid).stats,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.none ||
                           snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasData) {
-                        dynamic data = snapshot.data!.docs;
-                        log(data.toString());
-                        //dashboardData.getInvData(data["_delegate"]["_data"]["data"]);
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: th.kDarkBlue,
-                                borderRadius: BorderRadius.circular(18)),
-                            height: MediaQuery.of(context).size.height * 0.16,
-                            width: MediaQuery.of(context).size.width * 0.75,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  dashboardData.inventoryCost.toString(),
-                                  style: TextStyle(
-                                      color: th.kWhite,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30),
+                        dynamic data = snapshot.data;
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: th.kDarkBlue,
+                                    borderRadius: BorderRadius.circular(18)),
+                                height: MediaQuery.of(context).size.height * 0.16,
+                                width: MediaQuery.of(context).size.width * 0.75,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      data.salesThisMonth.toString(),
+                                      style: TextStyle(
+                                          color: th.kWhite,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 30),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "Sales This Month",
+                                      style: TextStyle(
+                                          color: th.kWhite,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 24),
+                                    )
+                                  ],
                                 ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "Sales This Month",
-                                  style: TextStyle(
-                                      color: th.kWhite,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 24),
-                                )
-                              ],
+                              ),
                             ),
-                          ),
+                            Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 20.0),
+                                child: GridView(
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisSpacing: 20,
+                                      mainAxisSpacing: 16,
+                                      crossAxisCount: 2,
+                                      mainAxisExtent: 120),
+                                  children: [
+                                    // Profit Earned
+                                    DashboardCard(
+                                        value: data.profitEarned.toString(),
+                                        color: th.kDashboardLime,
+                                        text: 'Profit Earned'),
+                                    DashboardCard(
+                                        value: data.profitEarned.toString(),
+                                        color: th.kDashboardMustard,
+                                        text: 'Pending payments'),
+                                    DashboardCard(
+                                      value: data.itemsInInventory.toString(),
+                                      color: th.kDashboardCyan,
+                                      text: 'Items in Inventory',
+                                    ),
+                                    DashboardCard(
+                                        value: data.totalInventoryCost.toString(),
+                                        color: th.kDashboardPurple,
+                                        text: 'Total Inventory Cost'),
+                                  ],
+                                )),
+                          ],
                         );
                       } else {
                         return const Center(child: CircularProgressIndicator());
                       }
                     },
                   ),
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 20.0),
-                      child: GridView(
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisSpacing: 20,
-                                mainAxisSpacing: 16,
-                                crossAxisCount: 2,
-                                mainAxisExtent: 120),
-                        children: [
-                          DashboardCard(
-                            value: "50,280",
-                            color: th.kDashboardCyan,
-                            text: 'Items in Inventory',
-                          ),
-                          DashboardCard(
-                              value: "500,298",
-                              color: th.kDashboardLime,
-                              text: 'Profit Earned'),
-                          DashboardCard(
-                              value: "1,200,650",
-                              color: th.kDashboardPurple,
-                              text: 'Total Inventory Cost'),
-                          DashboardCard(
-                              value: "200,725",
-                              color: th.kDashboardMustard,
-                              text: 'Pending payments'),
-                        ],
-                      )),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
@@ -238,22 +237,6 @@ class _DashboardState extends State<Dashboard> {
                                       )
                                     ],
                                   ))
-                          /*Column(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(top: 16.0),
-                                child: VendorTile(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
-                                child: Divider(
-                                  thickness: 0.8,
-                                  color: th.kWhite,
-                                ),
-                              )
-                            ],
-                          ))),*/
                           ))
                 ],
               ),

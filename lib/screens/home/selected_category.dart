@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/Screens/home/distributor/edit_items.dart';
 import 'package:inventory_management/constants/colors.dart';
-import 'package:inventory_management/models/items.dart';
+import 'package:inventory_management/models/items_model.dart';
 import 'package:provider/provider.dart';
 
 import '../../widgets/item_tile.dart';

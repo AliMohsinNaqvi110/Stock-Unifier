@@ -1,4 +1,7 @@
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:inventory_management/models/dasshboard_stats.dart';
+import 'package:inventory_management/models/items_model.dart';
 
 class DatabaseService {
   DatabaseService(this.uid);
@@ -8,8 +11,6 @@ class DatabaseService {
   //Collection Reference
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection("users");
-  final CollectionReference salesCollection =
-      FirebaseFirestore.instance.collection("sales");
 
   Future addUserData(
       {required String userName,
@@ -51,18 +52,14 @@ class DatabaseService {
      details to user on being redirected to dashboard screen
   * */
   Future createInventory() async {
-    return userCollection
-        .doc(uid)
-        .collection("inventory")
-        .add({"Category": "", "Item_name": "", "price": 0, "quantity": 1});
-  }
-
-  Future createSales() async {
-    return await salesCollection.add({
-      "total_order_cost": 0,
-      "vendor": "",
-      "number_of_items": 0,
-      "created_at": "",
+    return userCollection.doc(uid).collection("inventory").add({
+      "total_cost": 0,
+      "item_count": 0,
+      "profit_earned": 0,
+      "monthly_sales": 0,
+      "pending_payments": 0,
+      "items": [],
+      "sales": []
     });
   }
 
@@ -76,22 +73,53 @@ class DatabaseService {
         "Quantity": quantity
       });
     } catch (e) {
-      print(e.toString());
+      log(e.toString());
     }
   }
 
-//get Items stream
+  // get the items list from inventory collection
+  List<Items> _itemsListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Items(
+          category: doc["category"],
+          name: doc["name"],
+          price: doc["price"],
+          quantity: doc["quantity"],
+          totalPrice: doc["total_price"]);
+    }).toList();
+  }
 
-// Future getItems() async {
-//   try{
-//     return await FirebaseFirestore.instance.collection("users").doc(uid).collection("inventory").get().then((querySnapshot) {
-//       Items items = Items.fromJson(querySnapshot);
-//     });
-//   }
-//   catch (e) {
-//
-//   }
-//
-// }
+  /*
+     This will not work for vendor, since the inventory will not be available for that user
+   */
+  //get items stream
+  Stream<dynamic> get items {
+    final items = userCollection
+        .doc(uid)
+        .collection("inventory")
+        .snapshots()
+        .map((event) => event.docs.isNotEmpty
+            ? {_itemsListFromSnapshot(event.docs[0].data()['items'])}
+            : []);
+    return items;
+  }
 
+// get the items list from inventory collection
+  DashboardStats _statsFromSnapshot(Map<String, dynamic> snapshot) {
+    return DashboardStats(
+        salesThisMonth: snapshot["monthly_sales"],
+        profitEarned: snapshot["profit_earned"],
+        pendingPayments: snapshot["pending_payments"],
+        itemsInInventory: snapshot["item_count"],
+        totalInventoryCost: snapshot["total_cost"]);
+  }
+
+  //get items stream
+  Stream<DashboardStats> get stats async* {
+    final snapshot =
+        await userCollection.doc(uid).collection("inventory").get();
+    final data = snapshot.docs[0].data(); // Assuming you have only one document
+
+    yield _statsFromSnapshot(data);
+  }
 }
