@@ -103,15 +103,15 @@ class _DashboardState extends State<Dashboard> {
                       padding: const EdgeInsets.only(top: 40.0, left: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             "WELCOME BACK!",
                             style: TextStyle(
                                 fontSize: 22, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            "Ali Mohsin",
-                            style: TextStyle(
+                            user.displayName ?? "User",
+                            style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 1.5),

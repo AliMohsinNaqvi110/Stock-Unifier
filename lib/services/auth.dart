@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:inventory_management/models/TheUser.dart';
 import 'package:inventory_management/services/database.dart';
@@ -45,8 +47,30 @@ class AuthService {
       // we create empty inventory to display in dashboard
       await DatabaseService(user.uid).createInventory();
       return _userFromFirebaseUser(user);
+    } on FirebaseAuthException catch (e) {
+      var message = '';
+      switch (e.code) {
+        case 'email-already-in-use':
+          message = "This email is already registered with another account";
+          break;
+        case "invalid-email":
+          message = "You have entered an invalid email";
+          break;
+        case "operation-not-allowed":
+          message =
+          "There seems to be a problem signing up, please try again at a different time";
+          break;
+        case "weak-password":
+          message = "This password is too weak";
+          break;
+      }
+      return message;
     } catch (e) {
-      return Exception(e.toString());
+      log('''
+    caught exception\n
+    $e
+  ''');
+      rethrow;
     }
   }
 
@@ -81,8 +105,29 @@ class AuthService {
           email: email, password: password);
       User? user = authResult.user;
       return _userFromFirebaseUser(user!);
+    } on FirebaseAuthException catch (e) {
+      var message = '';
+      switch (e.code) {
+        case 'invalid-email':
+          message = "You have entered an invalid email";
+          break;
+        case "user-disabled":
+          message = "It appears your account has been disabled";
+          break;
+        case "user-not-found":
+          message = "You don't have an account yet, sign-up first";
+          break;
+        case "wrong-password":
+          message = "You have entered incorrect password";
+          break;
+      }
+      return message;
     } catch (e) {
-      return null;
+      log('''
+    caught exception\n
+    $e
+  ''');
+      rethrow;
     }
   }
 

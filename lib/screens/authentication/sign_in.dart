@@ -1,3 +1,4 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_management/Screens/authentication/forgetpass.dart';
 import 'package:inventory_management/constants/colors.dart';
@@ -6,8 +7,7 @@ import 'package:inventory_management/services/auth.dart';
 
 class Login extends StatefulWidget {
   final void Function() toggleView;
-  // ignore: use_key_in_widget_constructors
-  const Login(this.toggleView);
+  const Login(this.toggleView, {Key? key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
@@ -21,8 +21,7 @@ class _LoginState extends State<Login> {
   bool _showPassword = false;
   String _email = "";
   String _password = "";
-  String _error = "";
-
+  dynamic _error;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,7 @@ class _LoginState extends State<Login> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
                     child: Text(
                       "Log In To Your Acount",
                       style: TextStyle(
@@ -54,7 +53,7 @@ class _LoginState extends State<Login> {
                     width: 240,
                     height: 220,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Form(
@@ -86,17 +85,17 @@ class _LoginState extends State<Login> {
                                     setState(() => _email = val);
                                   },
                                   cursorColor: th.kDarkBlue,
-                                  decoration: new InputDecoration(
+                                  decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: th.kLemon)),
-                                    border: new OutlineInputBorder(
+                                        BorderSide(color: th.kLemon)),
+                                    border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                         borderSide:
-                                        new BorderSide(color: Colors.white)),
+                                        const BorderSide(color: Colors.white)),
                                     hintText: 'Email Address',
                                     prefixIcon: Icon(
                                       Icons.email_outlined,
@@ -111,17 +110,17 @@ class _LoginState extends State<Login> {
                                   },
                                   cursorColor: th.kDarkBlue,
                                   obscureText: _showPassword,
-                                  decoration: new InputDecoration(
+                                  decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
                                     focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         borderSide:
-                                        new BorderSide(color: th.kLemon)),
-                                    border: new OutlineInputBorder(
+                                        BorderSide(color: th.kLemon)),
+                                    border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12.0),
                                         borderSide:
-                                        new BorderSide(color: Colors.white)),
+                                        const BorderSide(color: Colors.white)),
                                     hintText: 'Enter Your Password',
                                     prefixIcon: Icon(
                                       Icons.vpn_key_rounded,
@@ -144,16 +143,16 @@ class _LoginState extends State<Login> {
                                 ),
                                 Row(
                                   children: [
-                                    Spacer(),
+                                    const Spacer(),
                                     Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 6.0),
+                                      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 6.0),
                                       child: InkWell(
                                         onTap: () {
                                           Navigator.push(
                                               context, MaterialPageRoute(
                                                   builder: (context) => const forgetpass()));
                                         },
-                                        child: Text("Forgot Password",
+                                        child: const Text("Forgot Password",
                                           style: TextStyle(
                                             fontWeight: FontWeight.w400
                                           ),
@@ -169,10 +168,18 @@ class _LoginState extends State<Login> {
                                         color: const Color(0xFF3f3d56),
                                         borderRadius: BorderRadius.circular(10)),
                                     child: TextButton(
-                                        onPressed: () {
+                                        onPressed: () async {
                                           if(_formKey.currentState!.validate()) {
-                                            dynamic result = _auth.signInWithEmailAndPassword(_email, _password);
-                                            setState(() => _error = "Enter a valid email or password");
+                                            dynamic result = await _auth.signInWithEmailAndPassword(_email, _password);
+                                            if(result.runtimeType == String) {
+                                              setState(() => _error = result);
+                                              if(!mounted) {return;}
+                                              AnimatedSnackBar.material(
+                                                _error,
+                                                type: AnimatedSnackBarType.error,
+                                                mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+                                              ).show(context);
+                                            }
                                           }
                                         },
                                         child: Text(

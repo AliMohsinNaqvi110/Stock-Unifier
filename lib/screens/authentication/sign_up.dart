@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/services/auth.dart';
@@ -208,6 +209,16 @@ class _SignUpState extends State<SignUp> {
                                           onPressed: () {
                                             if(_formKey.currentState!.validate()) {
                                               dynamic result = _auth.register(_userName, _email, _password, _userRole);
+                                              log(result.toString());
+                                              if(result.runtimeType == String) {
+                                                setState(() => _error = result);
+                                                if(!mounted) {return;}
+                                                AnimatedSnackBar.material(
+                                                  _error,
+                                                  type: AnimatedSnackBarType.error,
+                                                  mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+                                                ).show(context);
+                                              }
                                             }
                                             else {
                                               setState(() => _error = "Enter a valid email or password");
