@@ -28,25 +28,19 @@ class _HomeState extends State<Home> {
               snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          // All other connection states other than the above
           else {
             if (user == null && !snapshot.hasData) {
               return const Authenticate();
             }
-            // notepad data goes here
             else {
-              var _items = snapshot.data;
-              if ((_items as dynamic)["Role"] == "Distributor"
-                  /*&& (_items as dynamic)["Authenticated"] == "Approved"*/
+              var items = snapshot.data;
+              if ((items as dynamic)["role"] == "Distributor"
                   ) {
                 // Display UI for Distributor
                 return const DistributorWrapper();
-                //return const AdminHome();
-              } else if ((_items as dynamic)["Role"] == "Vendor"
-                  /*&& (_items as dynamic)["Authenticated"] == "Approved"*/
+              } else if ((items as dynamic)["role"] == "Vendor"
                   ) {
-                // Display UI for user
-                // TODO Here we will show a different widget tree for the user of type Vendor
+                // Display UI for user Vendor
                 return const VendorWrapper();
               }
               // in case of error, if nothing returns

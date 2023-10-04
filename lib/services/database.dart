@@ -67,7 +67,7 @@ class DatabaseService {
   Future addToInventory(
       String category, String name, int price, int quantity) async {
     try {
-      return await userCollection.doc(uid).collection("inventory").add({
+      return await userCollection.doc(uid).collection("inventory").doc(uid).set({
         "category": category,
         "item_name": name,
         "price": price,
