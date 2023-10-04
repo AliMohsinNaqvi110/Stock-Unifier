@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_management/Screens/authentication/sign_in.dart';
-import 'package:inventory_management/Screens/authentication/sign_up.dart';
+import 'package:inventory_management/screens/authentication/sign_in.dart';
+import 'package:inventory_management/screens/authentication/sign_up.dart';
 
 class Authenticate extends StatefulWidget {
   const Authenticate({Key? key}) : super(key: key);

@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_management/models/dasshboard_stats.dart';
@@ -165,6 +163,7 @@ class _DashboardState extends State<Dashboard> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20.0, vertical: 20.0),
                                 child: GridView(
+                                  physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(

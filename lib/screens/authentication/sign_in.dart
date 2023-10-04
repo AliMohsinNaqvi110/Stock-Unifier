@@ -1,8 +1,9 @@
 import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory_management/Screens/authentication/forgetpass.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/services/auth.dart';
+
+import 'forgetpass.dart';
 
 
 class Login extends StatefulWidget {

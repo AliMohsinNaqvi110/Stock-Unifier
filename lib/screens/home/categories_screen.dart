@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inventory_management/Screens/home/selected_category.dart';
 import 'package:inventory_management/constants/colors.dart';
+import 'package:inventory_management/screens/home/selected_category.dart';
 import 'package:inventory_management/services/auth.dart';
 
 

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory_management/Screens/authentication/authenticate.dart';
+import 'package:inventory_management/screens/authentication/authenticate.dart';
 import 'package:inventory_management/screens/home/distributor/distributor_wrapper.dart';
 import 'package:inventory_management/screens/home/vendor/vendor_wrapper.dart';
 import 'package:provider/provider.dart';

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:inventory_management/Screens/home/distributor/add_items.dart';
-import 'package:inventory_management/Screens/home/vendor/cart.dart';
-import 'package:inventory_management/Screens/home/distributor/sales_history.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/screens/home/categories_screen.dart';
+import 'package:inventory_management/screens/home/distributor/add_items.dart';
 import 'package:inventory_management/screens/home/distributor/add_vendor.dart';
 import 'package:inventory_management/screens/home/distributor/dashboard.dart';
 

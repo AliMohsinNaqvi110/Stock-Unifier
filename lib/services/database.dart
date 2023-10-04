@@ -20,22 +20,23 @@ class DatabaseService {
       required String? distributorUid}) async {
     if (distributorUid == null) {
       return await userCollection.doc(uid).set({
-        "UserName": userName,
-        "Email": email,
-        "Password": password,
-        "Role": userRole
+        "user_name": userName,
+        "email": email,
+        "password": password,
+        "role": userRole
       });
     } else {
       return await userCollection.doc(uid).set({
-        "UserName": userName,
-        "Email": email,
-        "Password": password,
-        "Role": userRole,
-        "Distributor_Uid": distributorUid
+        "user_name": userName,
+        "email": email,
+        "password": password,
+        "role": userRole,
+        "distributor_uid": distributorUid
       });
     }
   }
 
+  // the below function creates a document in vendors sub-collection
   Future createVendor(
       {required String vendorName,
       required int balance,
@@ -67,10 +68,10 @@ class DatabaseService {
       String category, String name, int price, int quantity) async {
     try {
       return await userCollection.doc(uid).collection("inventory").add({
-        "Category": category,
-        "Item_Name": name,
-        "Price": price,
-        "Quantity": quantity
+        "category": category,
+        "item_name": name,
+        "price": price,
+        "quantity": quantity
       });
     } catch (e) {
       log(e.toString());
@@ -89,20 +90,56 @@ class DatabaseService {
     }).toList();
   }
 
-  /*
-     This will not work for vendor, since the inventory will not be available for that user
-   */
-  //get items stream
-  Stream<dynamic> get items {
-    final items = userCollection
+  // the below can only be corrected if I use some sort of uuid or any other predefined id to the inventory which I can then access
+  Future<Stream<dynamic>> get items {
+    return userCollection
         .doc(uid)
-        .collection("inventory")
-        .snapshots()
-        .map((event) => event.docs.isNotEmpty
-            ? {_itemsListFromSnapshot(event.docs[0].data()['items'])}
-            : []);
-    return items;
+        .get()
+        .then((userDoc) {
+      if (userDoc.exists) {
+        String role = (userDoc.data() as dynamic)['role'];
+        if (role == 'Distributor') {
+          // User is a Distributor, fetch items from their own inventory
+          return userCollection
+              .doc(uid)
+              .collection("inventory")
+              .doc(uid)
+              .collection("items")
+              .snapshots()
+              .map((event) => _itemsListFromSnapshot(event));
+        } else if (role == 'Vendor') {
+          // User is a Vendor, fetch Distributor's UID from the Vendor's document
+          String distributorUID = (userDoc.data() as dynamic)['distributor_uid'];
+          // Fetch items from the distributor's inventory using distributorUID
+          return userCollection
+              .doc(distributorUID)
+              .collection("inventory")
+              .doc(uid)
+              .collection("items")
+              .snapshots()
+              .map((event) => _itemsListFromSnapshot(event));
+        } else {
+          // Handle other roles if necessary
+          return const Stream.empty();
+        }
+      } else {
+        // Handle the case where the user document does not exist
+        return const Stream.empty();
+      }
+    });
   }
+
+  //get items stream
+  // Stream<dynamic> get items {
+  //   final items = userCollection
+  //       .doc(uid)
+  //       .collection("inventory")
+  //       .snapshots()
+  //       .map((event) => event.docs.isNotEmpty
+  //           ? {_itemsListFromSnapshot(event.docs[0].data()['items'])}
+  //           : []);
+  //   return items;
+  // }
 
 // get the items list from inventory collection
   DashboardStats _statsFromSnapshot(Map<String, dynamic> snapshot) {
