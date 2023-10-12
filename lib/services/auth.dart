@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:inventory_management/models/TheUser.dart';
 import 'package:inventory_management/services/database.dart';
@@ -16,19 +15,6 @@ class AuthService {
   Stream<User?> get user {
     return _auth.authStateChanges();
   }
-
-  // //Sign in Anonymously
-  // Future signInAnon() async {
-  //  try {
-  //    dynamic authResult = await _auth.signInAnonymously();
-  //    User user = authResult.user;
-  //    return _userFromFirebaseUser(user);
-  //  }
-  //  catch(e) {
-  //    return null;
-  //  }
-  // }
-
   //register
   Future register(
       String userName, String email, String password, String userRole) async {

@@ -13,12 +13,4 @@ class Items extends ChangeNotifier {
       required this.price,
       required this.quantity,
       required this.totalPrice});
-
-/*fromJson(Map<String, dynamic> snapshot) {
-    category = snapshot["Category"];
-    name = snapshot["Name"];
-    price = snapshot["Price"];
-    quantity = snapshot["Quantity"];
-    totalPrice = snapshot["Total_Price"];
-  }*/
 }

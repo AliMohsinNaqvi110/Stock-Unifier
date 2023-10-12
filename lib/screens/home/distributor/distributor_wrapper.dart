@@ -5,6 +5,7 @@ import 'package:inventory_management/screens/home/categories_screen.dart';
 import 'package:inventory_management/screens/home/distributor/add_items.dart';
 import 'package:inventory_management/screens/home/distributor/add_vendor.dart';
 import 'package:inventory_management/screens/home/distributor/dashboard.dart';
+import 'package:inventory_management/screens/home/distributor/Orders_Screen/orders_screen.dart';
 
 class DistributorWrapper extends StatefulWidget {
   const DistributorWrapper({Key? key}) : super(key: key);
@@ -29,12 +30,7 @@ class _DistributorWrapperState extends State<DistributorWrapper> {
           Dashboard(),
           AddItems(),
           AddVendor(),
-          CategoriesScreen(), // this will later be called InventoryManegeScreen
-          /*no need for cart screen, instead we will use view inventory,
-          there we can reuse categories screen, with slight differences*/
-/*          Cart(),
-          // VendorManagementScreen
-          salesHistory(),*/
+          OrdersScreen(),
         ],
         onPageChanged: (page) {
           setState(() {

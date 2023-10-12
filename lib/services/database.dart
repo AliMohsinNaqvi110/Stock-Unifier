@@ -36,7 +36,6 @@ class DatabaseService {
     }
   }
 
-  // the below function creates a document in vendors sub-collection
   Future createVendor(
       {required String vendorName,
       required int balance,
@@ -48,19 +47,13 @@ class DatabaseService {
     });
   }
 
-  /*
-    we create empty inventory on user creation to display inventory
-     details to user on being redirected to dashboard screen
-  * */
   Future createInventory() async {
-    return userCollection.doc(uid).collection("inventory").add({
+    return userCollection.doc(uid).collection("inventory").doc(uid).set({
       "total_cost": 0,
       "item_count": 0,
       "profit_earned": 0,
       "monthly_sales": 0,
       "pending_payments": 0,
-      "items": [],
-      "sales": []
     });
   }
 
@@ -78,7 +71,6 @@ class DatabaseService {
     }
   }
 
-  // get the items list from inventory collection
   List<Items> _itemsListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Items(
@@ -90,7 +82,6 @@ class DatabaseService {
     }).toList();
   }
 
-  // the below can only be corrected if I use some sort of uuid or any other predefined id to the inventory which I can then access
   Future<Stream<dynamic>> get items {
     return userCollection
         .doc(uid)
@@ -114,7 +105,7 @@ class DatabaseService {
           return userCollection
               .doc(distributorUID)
               .collection("inventory")
-              .doc(uid)
+              .doc(distributorUID)
               .collection("items")
               .snapshots()
               .map((event) => _itemsListFromSnapshot(event));
@@ -129,19 +120,7 @@ class DatabaseService {
     });
   }
 
-  //get items stream
-  // Stream<dynamic> get items {
-  //   final items = userCollection
-  //       .doc(uid)
-  //       .collection("inventory")
-  //       .snapshots()
-  //       .map((event) => event.docs.isNotEmpty
-  //           ? {_itemsListFromSnapshot(event.docs[0].data()['items'])}
-  //           : []);
-  //   return items;
-  // }
-
-// get the items list from inventory collection
+// get the stats from inventory collection
   DashboardStats _statsFromSnapshot(Map<String, dynamic> snapshot) {
     return DashboardStats(
         salesThisMonth: snapshot["monthly_sales"],
@@ -151,7 +130,7 @@ class DatabaseService {
         totalInventoryCost: snapshot["total_cost"]);
   }
 
-  //get items stream
+  //get stats stream
   Stream<DashboardStats> get stats async* {
     final snapshot =
         await userCollection.doc(uid).collection("inventory").get();

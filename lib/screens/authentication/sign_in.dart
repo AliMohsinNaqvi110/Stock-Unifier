@@ -19,7 +19,7 @@ class _LoginState extends State<Login> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   Apptheme th = Apptheme();
-  bool _showPassword = false;
+  bool _hidePassword = true;
   String _email = "";
   String _password = "";
   dynamic _error;
@@ -110,7 +110,7 @@ class _LoginState extends State<Login> {
                                     setState(() => _password = val);
                                   },
                                   cursorColor: th.kDarkBlue,
-                                  obscureText: _showPassword,
+                                  obscureText: _hidePassword,
                                   decoration: InputDecoration(
                                     fillColor: Colors.white,
                                     filled: true,
@@ -130,13 +130,13 @@ class _LoginState extends State<Login> {
                                     suffixIcon: InkWell(
                                       onTap: () {
                                         setState(() {
-                                          _showPassword = !_showPassword;
+                                          _hidePassword = !_hidePassword;
                                         });
                                       },
                                       child: Icon(
-                                        _showPassword
-                                            ? Icons.visibility_off_outlined
-                                            : Icons.visibility_outlined,
+                                        _hidePassword
+                                            ? Icons.visibility_outlined
+                                            : Icons.visibility_off_outlined,
                                         color: th.kDarkBlue,
                                       ),
                                     ),
