@@ -30,10 +30,17 @@ class _OrdersScreenState extends State<OrdersScreen> {
             ],
           ),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             // Content for New Orders tab
-            Center(child: NewOrderTile()),
+            ListView.builder(
+                itemCount: 12,
+                itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: const NewOrderTile(),
+              );
+            }),
             // Content for Accepted Orders tab
             Center(child: Text('Accepted Orders Content')),
             // Content for Completed Orders tab

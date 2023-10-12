@@ -20,6 +20,7 @@ class _NewOrderTileState extends State<NewOrderTile> {
       child: const Padding(
         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 6.0),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CircleAvatar(
               radius: 28,
