@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/constants/colors.dart';
+import 'package:inventory_management/screens/home/distributor/Orders_Screen/widgets/NewOrderTile.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         body: const TabBarView(
           children: [
             // Content for New Orders tab
-            Center(child: Text('New Orders Content')),
+            Center(child: NewOrderTile()),
             // Content for Accepted Orders tab
             Center(child: Text('Accepted Orders Content')),
             // Content for Completed Orders tab
