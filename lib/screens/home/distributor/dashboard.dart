@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory_management/models/dasshboard_stats.dart';
+import 'package:inventory_management/models/Vendor.dart';
+import 'package:inventory_management/models/dashboard_stats.dart';
 import 'package:inventory_management/services/auth.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:inventory_management/widgets/dashboard_card.dart';
@@ -135,7 +136,8 @@ class _DashboardState extends State<Dashboard> {
                                 decoration: BoxDecoration(
                                     color: th.kDarkBlue,
                                     borderRadius: BorderRadius.circular(18)),
-                                height: MediaQuery.of(context).size.height * 0.16,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.16,
                                 width: MediaQuery.of(context).size.width * 0.75,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -163,14 +165,14 @@ class _DashboardState extends State<Dashboard> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20.0, vertical: 20.0),
                                 child: GridView(
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisSpacing: 20,
-                                      mainAxisSpacing: 16,
-                                      crossAxisCount: 2,
-                                      mainAxisExtent: 120),
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisSpacing: 20,
+                                          mainAxisSpacing: 16,
+                                          crossAxisCount: 2,
+                                          mainAxisExtent: 120),
                                   children: [
                                     // Profit Earned
                                     DashboardCard(
@@ -187,7 +189,8 @@ class _DashboardState extends State<Dashboard> {
                                       text: 'Items in Inventory',
                                     ),
                                     DashboardCard(
-                                        value: data.totalInventoryCost.toString(),
+                                        value:
+                                            data.totalInventoryCost.toString(),
                                         color: th.kDashboardPurple,
                                         text: 'Total Inventory Cost'),
                                   ],
@@ -199,44 +202,100 @@ class _DashboardState extends State<Dashboard> {
                       }
                     },
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "Vendors",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
-                    ),
-                  ),
-                  Center(
-                      child: Container(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20)),
-                            shape: BoxShape.rectangle,
-                            color: th.kDarkBlue,
-                          ),
-                          child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: 3,
-                              itemBuilder: (context, index) => Column(
-                                    children: [
-                                      const Padding(
-                                        padding: EdgeInsets.only(top: 16.0),
-                                        child: VendorTile(),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
-                                        child: Divider(
-                                          thickness: 0.8,
-                                          color: th.kWhite,
-                                        ),
-                                      )
-                                    ],
-                                  ))
-                          ))
+                  StreamBuilder<Vendor>(
+                      stream: DatabaseService(user.uid).vendors,
+                      builder: (context, snapshot) {
+                        dynamic data = snapshot.data;
+                        if (snapshot.connectionState ==
+                                ConnectionState.waiting ||
+                            snapshot.connectionState == ConnectionState.none) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                        if (snapshot.hasData) {
+                          return Center(
+                              child: Column(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Vendors",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 22),
+                                ),
+                              ),
+                              Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20)),
+                                    shape: BoxShape.rectangle,
+                                    color: th.kDarkBlue,
+                                  ),
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: 3,
+                                      itemBuilder: (context, index) => Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 16.0),
+                                                child: VendorTile(
+                                                  name: data.name,
+                                                  balance:
+                                                      data.balance.toString(),
+                                                  dues: data.dues.toString(),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 16.0),
+                                                child: Divider(
+                                                  thickness: 0.8,
+                                                  color: th.kWhite,
+                                                ),
+                                              )
+                                            ],
+                                          ))),
+                            ],
+                          ));
+                        } else {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: th.kDarkBlue,
+                                  borderRadius: BorderRadius.circular(18)),
+                              height: MediaQuery.of(context).size.height * 0.12,
+                              width: MediaQuery.of(context).size.width * 0.75,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "No vendors found",
+                                    style: TextStyle(
+                                        color: th.kWhite,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    "Click here to create a new vendor account",
+                                    style: TextStyle(
+                                        color: th.kWhite,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                      })
                 ],
               ),
             ],

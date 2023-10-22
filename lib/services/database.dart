@@ -1,14 +1,14 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:inventory_management/models/dasshboard_stats.dart';
+import 'package:inventory_management/models/Vendor.dart';
+import 'package:inventory_management/models/dashboard_stats.dart';
 import 'package:inventory_management/models/items_model.dart';
 
 class DatabaseService {
+
   DatabaseService(this.uid);
 
   final String uid;
-
-  //Collection Reference
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection("users");
 
@@ -60,7 +60,11 @@ class DatabaseService {
   Future addToInventory(
       String category, String name, int price, int quantity) async {
     try {
-      return await userCollection.doc(uid).collection("inventory").doc(uid).set({
+      return await userCollection
+          .doc(uid)
+          .collection("inventory")
+          .doc(uid)
+          .set({
         "category": category,
         "item_name": name,
         "price": price,
@@ -83,10 +87,7 @@ class DatabaseService {
   }
 
   Future<Stream<dynamic>> get items {
-    return userCollection
-        .doc(uid)
-        .get()
-        .then((userDoc) {
+    return userCollection.doc(uid).get().then((userDoc) {
       if (userDoc.exists) {
         String role = (userDoc.data() as dynamic)['role'];
         if (role == 'Distributor') {
@@ -100,8 +101,8 @@ class DatabaseService {
               .map((event) => _itemsListFromSnapshot(event));
         } else if (role == 'Vendor') {
           // User is a Vendor, fetch Distributor's UID from the Vendor's document
-          String distributorUID = (userDoc.data() as dynamic)['distributor_uid'];
-          // Fetch items from the distributor's inventory using distributorUID
+          String distributorUID =
+              (userDoc.data() as dynamic)['distributor_uid'];
           return userCollection
               .doc(distributorUID)
               .collection("inventory")
@@ -110,11 +111,9 @@ class DatabaseService {
               .snapshots()
               .map((event) => _itemsListFromSnapshot(event));
         } else {
-          // Handle other roles if necessary
           return const Stream.empty();
         }
       } else {
-        // Handle the case where the user document does not exist
         return const Stream.empty();
       }
     });
@@ -134,8 +133,21 @@ class DatabaseService {
   Stream<DashboardStats> get stats async* {
     final snapshot =
         await userCollection.doc(uid).collection("inventory").get();
-    final data = snapshot.docs[0].data(); // Assuming you have only one document
+    final data = snapshot.docs[0].data();
 
     yield _statsFromSnapshot(data);
+  }
+
+  // get the vendors from vendors sub-collection
+  Vendor _vendorList(Map<String, dynamic> snapshot) {
+    return Vendor(snapshot["name"], snapshot["balance"], snapshot["dues"]);
+  }
+
+  //get stats stream
+  Stream<Vendor> get vendors async* {
+    final snapshot = await userCollection.doc(uid).collection("vendors").get();
+
+    dynamic data = snapshot.docs;
+    yield _vendorList(data);
   }
 }
