@@ -4,7 +4,8 @@ import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/screens/home/distributor/add_items.dart';
 import 'package:inventory_management/screens/home/distributor/add_vendor.dart';
 import 'package:inventory_management/screens/home/distributor/dashboard.dart';
-import 'package:inventory_management/screens/home/distributor/Orders_Screen/orders_screen.dart';
+import 'package:inventory_management/screens/home/distributor/manage_inventory.dart';
+import 'package:inventory_management/screens/home/distributor/orders_screen.dart';
 
 class DistributorWrapper extends StatefulWidget {
   const DistributorWrapper({Key? key}) : super(key: key);
@@ -27,7 +28,8 @@ class _DistributorWrapperState extends State<DistributorWrapper> {
         children: const [
           //first screen will be Dashboard screen
           Dashboard(),
-          AddItems(),
+          ManageInventory(),
+          // AddItems(),
           AddVendor(),
           OrdersScreen(),
         ],
@@ -69,8 +71,8 @@ class _DistributorWrapperState extends State<DistributorWrapper> {
                 text: 'Vendors',
               ),
               GButton(
-                icon: Icons.access_time,
-                text: 'History',
+                icon: Icons.list_alt_outlined,
+                text: 'Orders',
               )
             ],
             selectedIndex: _selectedIndex,

@@ -1,11 +1,13 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inventory_management/models/sale.dart';
 import 'package:inventory_management/models/vendor.dart';
 import 'package:inventory_management/models/dashboard_stats.dart';
 import 'package:inventory_management/models/items_model.dart';
+import 'package:uuid/uuid.dart';
 
 class DatabaseService {
+  var uuid = Uuid();
+
   DatabaseService(this.uid);
 
   final String uid;
@@ -57,22 +59,100 @@ class DatabaseService {
     });
   }
 
-  Future addToInventory(
-      String category, String name, int price, int quantity) async {
+  Future<int> getCategoryItemCount(String category) async {
+    QuerySnapshot querySnapshot = await userCollection
+        .doc(uid)
+        .collection("inventory")
+        .doc(uid)
+        .collection("items")
+        .where("category", isEqualTo: category)
+        .get();
+    return querySnapshot.docs.length;
+  }
+
+  Future<bool> addOrUpdateItem(Map<String, dynamic> itemData,
+      [String? itemId]) async {
+    var itemReference = userCollection
+        .doc(uid)
+        .collection("inventory")
+        .doc(uid)
+        .collection("items");
+
     try {
-      return await userCollection
+      if (itemId != null) {
+        await itemReference.doc(itemId).update(itemData);
+      } else {
+        await itemReference.doc(uuid.v4()).set(itemData);
+      }
+      await updateInventoryStats();
+      return true;
+    } catch (e) {
+      print("Error occurred: $e");
+      return false;
+    }
+  }
+
+  void markItemAsSold(String itemId, int quantity) {
+    userCollection
+        .doc(uid)
+        .collection("inventory")
+        .doc(uid)
+        .collection("items")
+        .doc(itemId)
+        .get()
+        .then((doc) {
+      int currentQuantity = doc["quantity"];
+      if (currentQuantity > quantity) {
+        userCollection
+            .doc(uid)
+            .collection("inventory")
+            .doc(uid)
+            .collection("items")
+            .doc(itemId)
+            .update({"quantity": currentQuantity - quantity}).then((_) {
+          updateInventoryStats();
+        });
+      } else {
+        userCollection
+            .doc(uid)
+            .collection("inventory")
+            .doc(uid)
+            .collection("items")
+            .doc(itemId)
+            .delete()
+            .then((_) {
+          updateInventoryStats();
+        });
+      }
+    });
+  }
+
+  Future<bool> updateInventoryStats() async {
+    try {
+      var querySnapshot = await userCollection
           .doc(uid)
           .collection("inventory")
           .doc(uid)
           .collection("items")
-          .add({
-        "category": category,
-        "item_name": name,
-        "price": price,
-        "quantity": quantity
+          .get();
+
+      int totalCount = querySnapshot.docs.length;
+      double totalCost = 0;
+
+      for (var doc in querySnapshot.docs) {
+        totalCost += doc["price"] * doc["quantity"];
+      }
+
+      await userCollection.doc(uid).collection("inventory").doc(uid).update({
+        "item_count": totalCount,
+        "total_cost": totalCost,
       });
-    } catch (e) {
-      log(e.toString());
+
+      print("Inventory count and cost updated successfully!");
+      return true; // Operation was successful
+    } catch (error) {
+      print("Error updating inventory count and cost: $error");
+      return false; // Operation failed
     }
   }
 
@@ -132,12 +212,11 @@ class DatabaseService {
       return querySnapshot.docs.map((doc) {
         // Parse the document data to your Sale model class
         return Sale(
-          id: doc["id"],
-          itemCount: doc["item_count"],
-          totalCost: doc["total_cost"],
-          soldDate: doc["sold_date"],
-          vendorName: doc["vendor"]
-        );
+            id: doc["id"],
+            itemCount: doc["item_count"],
+            totalCost: doc["total_cost"],
+            soldDate: doc["sold_date"],
+            vendorName: doc["vendor"]);
       }).toList();
     });
   }
@@ -149,7 +228,7 @@ class DatabaseService {
         profitEarned: snapshot["profit_earned"],
         pendingPayments: snapshot["pending_payments"],
         itemsInInventory: snapshot["item_count"],
-        totalInventoryCost: snapshot["total_cost"]);
+        totalInventoryCost: snapshot["total_cost"].toInt());
   }
 
   //get stats stream

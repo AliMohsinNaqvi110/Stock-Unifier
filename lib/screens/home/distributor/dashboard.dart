@@ -60,16 +60,23 @@ class _DashboardState extends State<Dashboard> {
                   right: 16,
                   child: InkWell(
                     onTap: () {
-                      _auth.signOut();
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Container();
+                        },
+                      );
                     },
                     child: CircleAvatar(
-                      backgroundColor: Colors.grey[400],
+                      backgroundColor: Colors.grey[300],
                       radius: 28,
                       backgroundImage: const NetworkImage(
-                          "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"),
+                          "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+                      ),
                     ),
                   )),
 
+              // "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
               // bottom circle
               Positioned(
                 right: -120,
@@ -128,7 +135,7 @@ class _DashboardState extends State<Dashboard> {
                           snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasData) {
-                        dynamic data = snapshot.data;
+                        DashboardStats data = snapshot.data!;
                         return Column(
                           children: [
                             Padding(

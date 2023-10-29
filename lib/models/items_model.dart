@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-class Items extends ChangeNotifier {
+class Items {
   String? category;
   String? name;
   int? price;

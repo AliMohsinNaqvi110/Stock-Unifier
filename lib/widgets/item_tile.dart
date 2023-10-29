@@ -5,18 +5,12 @@ import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/widgets/quantity_controller.dart';
 import 'package:provider/provider.dart';
 
-class ItemTile extends StatefulWidget {
-  String _selectedCategory;
+class ItemTile extends StatelessWidget {
+  final String _selectedCategory;
 
   ItemTile(this._selectedCategory, {Key? key}) : super(key: key);
 
-  @override
-  _ItemTileState createState() => _ItemTileState();
-}
-
-class _ItemTileState extends State<ItemTile> {
   bool isEven = false;
-  Map<String, dynamic> _selectedItems = {};
 
   Apptheme th = Apptheme();
 
@@ -28,7 +22,9 @@ class _ItemTileState extends State<ItemTile> {
             .collection("users")
             .doc(user.uid)
             .collection("inventory")
-            .where("Category", isEqualTo: widget._selectedCategory)
+            .doc(user.uid)
+            .collection("items")
+            .where("category", isEqualTo: _selectedCategory)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -43,7 +39,7 @@ class _ItemTileState extends State<ItemTile> {
                   } else {
                     isEven = false;
                   }
-                  DocumentSnapshot _items = snapshot.data!.docs[index];
+                  DocumentSnapshot items = snapshot.data!.docs[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 8.0, vertical: 0),
@@ -52,22 +48,18 @@ class _ItemTileState extends State<ItemTile> {
                         tileColor: isEven
                             ? Colors.white
                             : Colors.grey.withOpacity(0.4),
-                        title: Text(_items["Item_Name"]),
-                        subtitle: Text("Available: " +
-                            _items["Quantity"].toString() +
-                            " Pieces"),
+                        title: Text(items["item_name"]),
+                        subtitle: Text("Available: ${items["quantity"]} Pieces"),
                         leading: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text("Rs " + _items["Price"].toString()),
+                          child: Text("Rs ${items["price"]}"),
                         ),
                         trailing: const QuantityController()),
                   );
                 });
-          }
-          else {
+          } else {
             return const Center(
-              child:
-              Text("There aren't any items in this category yet"),
+              child: Text("There aren't any items in this category yet"),
             );
           }
         });

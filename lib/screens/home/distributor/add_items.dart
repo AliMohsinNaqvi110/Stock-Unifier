@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inventory_management/constants/colors.dart';
-import 'package:inventory_management/services/auth.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +14,6 @@ class AddItems extends StatefulWidget {
 }
 
 class _AddItemsState extends State<AddItems> {
-  final AuthService _auth = AuthService();
   Apptheme th = Apptheme();
   String _selectedCategory = "";
   String _itemName = "";
@@ -53,14 +51,6 @@ class _AddItemsState extends State<AddItems> {
         backgroundColor: th.kDarkBlue,
         title: const Text("Add Items"),
         centerTitle: true,
-        actions: [
-          InkWell(
-            onTap: () {
-              _auth.signOut();
-            },
-            child: const Icon(Icons.exit_to_app),
-          )
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -270,8 +260,12 @@ class _AddItemsState extends State<AddItems> {
                   InkWell(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        await DatabaseService(user.uid).addToInventory(
-                            _selectedCategory, _itemName, _price, _quantity);
+                        await DatabaseService(user.uid).addOrUpdateItem({
+                          "category": _selectedCategory,
+                          "item_name": _itemName,
+                          "price": _price,
+                          "quantity": _quantity
+                        });
                         categoryController.clear();
                         itemNameController.clear();
                         quantityController.clear();

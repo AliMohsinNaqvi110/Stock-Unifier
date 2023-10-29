@@ -45,6 +45,7 @@ dependencies:
   fl_chart: ^0.62.0
   cool_alert: ^1.1.0
   animated_snack_bar: ^0.3.1
+  uuid: ^4.1.0
 
 flutter_native_splash:
   color: "##ffb433"

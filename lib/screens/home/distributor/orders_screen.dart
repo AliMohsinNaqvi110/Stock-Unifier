@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/constants/colors.dart';
-import 'package:inventory_management/screens/home/distributor/Orders_Screen/widgets/NewOrderTile.dart';
+import 'package:inventory_management/widgets/NewOrderTile.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({Key? key}) : super(key: key);

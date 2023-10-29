@@ -3,7 +3,6 @@ import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/screens/home/selected_category.dart';
 import 'package:inventory_management/services/auth.dart';
 
-
 // This Screen is displayed for Vendor, for Distributor we first show dashboard
 class CategoriesScreen extends StatefulWidget {
   const CategoriesScreen({Key? key}) : super(key: key);
@@ -13,11 +12,15 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-
   Apptheme th = Apptheme();
   final AuthService _auth = AuthService();
   final List<String> _selectedCategory = [
-    "Groceries", "Confectionary", "Snacks", "Beverages", "Medicine", "Cosmetics"
+    "Groceries",
+    "Confectionary",
+    "Snacks",
+    "Beverages",
+    "Medicine",
+    "Cosmetics"
   ];
 
   @override
@@ -25,28 +28,23 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return Scaffold(
       backgroundColor: th.kLightGrey,
       appBar: AppBar(
-        backgroundColor: th.kDarkBlue,
-        title: const Text(
-          "Home"
-        ),
+          backgroundColor: th.kDarkBlue,
+          title: const Text("Home"),
           actions: [
             InkWell(
-              child: const Icon(
-                  Icons.exit_to_app
-              ),
-              onTap:  () {
+              child: const Icon(Icons.exit_to_app),
+              onTap: () {
                 _auth.signOut();
               },
-            )]
-      ),
+            )
+          ]),
       body: Center(
         child: SingleChildScrollView(
           child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 60.0),
-                child:
-                Stack(
+                child: Stack(
                   clipBehavior: Clip.none,
                   //overflow: Overflow.visible,
                   children: [
@@ -54,36 +52,37 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SelectedCategory(_selectedCategory[0])),
+                          MaterialPageRoute(
+                              builder: (context) => SelectedCategory(
+                                  selectedCategory: _selectedCategory[0])),
                         );
                       },
-                      child:
-                      Container(
+                      child: Container(
                         decoration: BoxDecoration(
-                          color: th.kWhite,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 3.0,
-                              spreadRadius: 2.0,
-                              offset: Offset(0, 6)
-                            )
-                          ]
-                        ),
+                            color: th.kWhite,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Colors.grey,
+                                  blurRadius: 3.0,
+                                  spreadRadius: 2.0,
+                                  offset: Offset(0, 6))
+                            ]),
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.92,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
                               Text(
                                 "Groceries",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20.0,
-                              ),),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
@@ -91,7 +90,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 14.0,
-                                  ),),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -105,7 +105,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         fit: BoxFit.contain,
                         height: 100,
                         width: 220,
-                        image: AssetImage("assets/groceries.png",),
+                        image: AssetImage(
+                          "assets/groceries.png",
+                        ),
                       ),
                     ),
                   ],
@@ -121,7 +123,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SelectedCategory(_selectedCategory[1])),
+                          MaterialPageRoute(
+                              builder: (context) => SelectedCategory(
+                                  selectedCategory: _selectedCategory[1])),
                         );
                       },
                       child: Container(
@@ -133,14 +137,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   color: Colors.grey,
                                   blurRadius: 3.0,
                                   spreadRadius: 2.0,
-                                  offset: Offset(0, 6)
-                              )
-                            ]
-                        ),
+                                  offset: Offset(0, 6))
+                            ]),
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.90,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
@@ -149,7 +152,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0,
-                                ),),
+                                ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
@@ -157,7 +161,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 14.0,
-                                  ),),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -171,7 +176,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         fit: BoxFit.contain,
                         height: 100,
                         width: 220,
-                        image: AssetImage("assets/confectionaries.png",),
+                        image: AssetImage(
+                          "assets/confectionaries.png",
+                        ),
                       ),
                     ),
                   ],
@@ -187,7 +194,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SelectedCategory(_selectedCategory[2])),
+                          MaterialPageRoute(
+                              builder: (context) => SelectedCategory(
+                                  selectedCategory: _selectedCategory[2])),
                         );
                       },
                       child: Container(
@@ -199,14 +208,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   color: Colors.grey,
                                   blurRadius: 3.0,
                                   spreadRadius: 2.0,
-                                  offset: Offset(0, 6)
-                              )
-                            ]
-                        ),
+                                  offset: Offset(0, 6))
+                            ]),
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.90,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
@@ -215,7 +223,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0,
-                                ),),
+                                ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
@@ -223,7 +232,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 14.0,
-                                  ),),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -237,7 +247,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         fit: BoxFit.contain,
                         height: 100,
                         width: 220,
-                        image: AssetImage("assets/snacks.png",),
+                        image: AssetImage(
+                          "assets/snacks.png",
+                        ),
                       ),
                     ),
                   ],
@@ -253,7 +265,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SelectedCategory(_selectedCategory[3])),
+                          MaterialPageRoute(
+                              builder: (context) => SelectedCategory(
+                                  selectedCategory: _selectedCategory[3])),
                         );
                       },
                       child: Container(
@@ -265,14 +279,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   color: Colors.grey,
                                   blurRadius: 3.0,
                                   spreadRadius: 2.0,
-                                  offset: Offset(0, 6)
-                              )
-                            ]
-                        ),
+                                  offset: Offset(0, 6))
+                            ]),
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.90,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
@@ -281,7 +294,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0,
-                                ),),
+                                ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
@@ -289,7 +303,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 14.0,
-                                  ),),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -303,7 +318,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         fit: BoxFit.contain,
                         height: 100,
                         width: 220,
-                        image: AssetImage("assets/beverages.png",),
+                        image: AssetImage(
+                          "assets/beverages.png",
+                        ),
                       ),
                     ),
                   ],
@@ -319,7 +336,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SelectedCategory(_selectedCategory[4])),
+                          MaterialPageRoute(
+                              builder: (context) => SelectedCategory(
+                                  selectedCategory: _selectedCategory[4])),
                         );
                       },
                       child: Container(
@@ -331,14 +350,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   color: Colors.grey,
                                   blurRadius: 3.0,
                                   spreadRadius: 2.0,
-                                  offset: Offset(0, 6)
-                              )
-                            ]
-                        ),
+                                  offset: Offset(0, 6))
+                            ]),
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.90,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
@@ -347,7 +365,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0,
-                                ),),
+                                ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
@@ -355,7 +374,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 14.0,
-                                  ),),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -369,7 +389,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         fit: BoxFit.contain,
                         height: 100,
                         width: 220,
-                        image: AssetImage("assets/medicine.png",),
+                        image: AssetImage(
+                          "assets/medicine.png",
+                        ),
                       ),
                     ),
                   ],
@@ -385,7 +407,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SelectedCategory(_selectedCategory[5])),
+                          MaterialPageRoute(
+                              builder: (context) => SelectedCategory(
+                                  selectedCategory: _selectedCategory[5])),
                         );
                       },
                       child: Container(
@@ -397,14 +421,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   color: Colors.grey,
                                   blurRadius: 3.0,
                                   spreadRadius: 2.0,
-                                  offset: Offset(0, 6)
-                              )
-                            ]
-                        ),
+                                  offset: Offset(0, 6))
+                            ]),
                         height: MediaQuery.of(context).size.height * 0.12,
                         width: MediaQuery.of(context).size.width * 0.90,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30.0, vertical: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
@@ -413,7 +436,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20.0,
-                                ),),
+                                ),
+                              ),
                               Padding(
                                 padding: EdgeInsets.only(top: 12.0),
                                 child: Text(
@@ -421,7 +445,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   style: TextStyle(
                                     fontWeight: FontWeight.w300,
                                     fontSize: 14.0,
-                                  ),),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
@@ -435,7 +460,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         fit: BoxFit.contain,
                         height: 100,
                         width: 220,
-                        image: AssetImage("assets/cosmetics.png",),
+                        image: AssetImage(
+                          "assets/cosmetics.png",
+                        ),
                       ),
                     ),
                   ],
