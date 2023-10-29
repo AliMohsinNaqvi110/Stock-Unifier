@@ -1,11 +1,11 @@
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:inventory_management/models/Vendor.dart';
+import 'package:inventory_management/models/sale.dart';
+import 'package:inventory_management/models/vendor.dart';
 import 'package:inventory_management/models/dashboard_stats.dart';
 import 'package:inventory_management/models/items_model.dart';
 
 class DatabaseService {
-
   DatabaseService(this.uid);
 
   final String uid;
@@ -64,7 +64,8 @@ class DatabaseService {
           .doc(uid)
           .collection("inventory")
           .doc(uid)
-          .set({
+          .collection("items")
+          .add({
         "category": category,
         "item_name": name,
         "price": price,
@@ -119,6 +120,28 @@ class DatabaseService {
     });
   }
 
+  // Create a stream for the sales sub-collection
+  Stream<List<Sale>> get salesStream {
+    return userCollection
+        .doc(uid)
+        .collection("inventory")
+        .doc(uid)
+        .collection("sales")
+        .snapshots()
+        .map((querySnapshot) {
+      return querySnapshot.docs.map((doc) {
+        // Parse the document data to your Sale model class
+        return Sale(
+          id: doc["id"],
+          itemCount: doc["item_count"],
+          totalCost: doc["total_cost"],
+          soldDate: doc["sold_date"],
+          vendorName: doc["vendor"]
+        );
+      }).toList();
+    });
+  }
+
 // get the stats from inventory collection
   DashboardStats _statsFromSnapshot(Map<String, dynamic> snapshot) {
     return DashboardStats(
@@ -138,16 +161,16 @@ class DatabaseService {
     yield _statsFromSnapshot(data);
   }
 
-  // get the vendors from vendors sub-collection
-  Vendor _vendorList(Map<String, dynamic> snapshot) {
-    return Vendor(snapshot["name"], snapshot["balance"], snapshot["dues"]);
-  }
-
-  //get stats stream
-  Stream<Vendor> get vendors async* {
+  Stream<List<Vendor>> get vendors async* {
     final snapshot = await userCollection.doc(uid).collection("vendors").get();
 
-    dynamic data = snapshot.docs;
-    yield _vendorList(data);
+    final vendorsList = snapshot.docs
+        .map((doc) => Vendor(
+              name: doc["name"],
+              balance: doc["balance"],
+              dues: doc["dues"],
+            ))
+        .toList();
+    yield vendorsList;
   }
 }

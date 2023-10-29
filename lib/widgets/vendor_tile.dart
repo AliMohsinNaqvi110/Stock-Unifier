@@ -18,9 +18,9 @@ class _VendorTileState extends State<VendorTile> {
           border: Border(
               bottom: BorderSide(color: Colors.grey.shade800, width: 1))),
       child: ListTile(
-        title: const Text(
-          "John Doe",
-          style: TextStyle(
+        title: Text(
+          widget.name,
+          style: const TextStyle(
               color: Colors.white,
               fontSize: 16,
               fontWeight: FontWeight.w600,
@@ -34,16 +34,16 @@ class _VendorTileState extends State<VendorTile> {
         ),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: const [
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             Text(
-              "Balance : 25,890",
-              style: TextStyle(color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.w300),
+              "Balance : ${widget.balance}",
+              style: const TextStyle(color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.w300),
             ),
-            SizedBox(height: 4,),
+            const SizedBox(height: 4,),
             Text(
-              "Dues : 15,570",
-              style: TextStyle(color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.w300),
+              "Dues : ${widget.dues}",
+              style: const TextStyle(color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.w300),
             )
           ],
         ),

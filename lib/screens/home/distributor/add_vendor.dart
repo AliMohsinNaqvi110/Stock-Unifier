@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/constants/text_decoration.dart';
-import 'package:inventory_management/services/auth.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -17,14 +16,15 @@ class AddVendor extends StatefulWidget {
 
 class _AddVendorState extends State<AddVendor> {
   Apptheme th = Apptheme();
-  final AuthService _auth = AuthService();
   late dynamic _db;
   final _formKey = GlobalKey<FormState>();
+
   // Text Controllers
   TextEditingController vendorNameTextController = TextEditingController();
   TextEditingController vendorBalanceTextController = TextEditingController();
   TextEditingController vendorDuesTextController = TextEditingController();
-  TextEditingController vendorMobileNumberTextController = TextEditingController();
+  TextEditingController vendorMobileNumberTextController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -172,19 +172,43 @@ class _AddVendorState extends State<AddVendor> {
                       onTap: () {
                         if (_formKey.currentState!.validate()) {
                           _db.createVendor(
-                            vendorName: vendorNameTextController.text,
-                            balance: int.parse(vendorBalanceTextController.text),
-                            dues: int.parse(vendorDuesTextController.text)
-                          );
+                              vendorName: vendorNameTextController.text,
+                              balance:
+                                  int.parse(vendorBalanceTextController.text),
+                              dues: int.parse(vendorDuesTextController.text));
                           CoolAlert.show(
-                            onConfirmBtnTap: () {
-                              Navigator.pop(context);
-                            },
-                            context: context,
-                            type: CoolAlertType.success,
-                            title: "Success",
-                            text: "Send this id to this vendor!",
-                          );
+                              onConfirmBtnTap: () {
+                                Navigator.pop(context);
+                              },
+                              context: context,
+                              type: CoolAlertType.success,
+                              title: "Success",
+                              text: "Send this id to this vendor!",
+                              widget: Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(user.uid.toString(),
+                                        style: const TextStyle(fontSize: 12)),
+                                    const SizedBox(width: 10),
+                                    InkWell(
+                                        onTap: () async {
+                                          await Clipboard.setData(ClipboardData(
+                                              text: user.uid.toString()));
+                                          if (!mounted) {
+                                            return;
+                                          }
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                                  content: Text(
+                                                      "Copied Successfully")));
+                                        },
+                                        child: const Icon(Icons.copy))
+                                  ],
+                                ),
+                              ));
                         }
                       },
                       child: Container(

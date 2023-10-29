@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -14,7 +15,6 @@ class AddItems extends StatefulWidget {
 }
 
 class _AddItemsState extends State<AddItems> {
-
   final AuthService _auth = AuthService();
   Apptheme th = Apptheme();
   String _selectedCategory = "";
@@ -28,7 +28,12 @@ class _AddItemsState extends State<AddItems> {
   final priceController = TextEditingController();
 
   var categories = [
-    "Groceries", "Confectionary", "Snacks", "Beverages", "Medicine", "Cosmetics"
+    "Groceries",
+    "Confectionary",
+    "Snacks",
+    "Beverages",
+    "Medicine",
+    "Cosmetics"
   ];
 
   @override
@@ -50,12 +55,10 @@ class _AddItemsState extends State<AddItems> {
         centerTitle: true,
         actions: [
           InkWell(
-            onTap:  () {
+            onTap: () {
               _auth.signOut();
             },
-            child: Icon(
-                Icons.exit_to_app
-            ),
+            child: const Icon(Icons.exit_to_app),
           )
         ],
       ),
@@ -74,19 +77,15 @@ class _AddItemsState extends State<AddItems> {
                     padding: const EdgeInsets.only(top: 10, bottom: 25.0),
                     child: DropdownButtonFormField(
                       decoration: const InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.amber
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.amber),
                           ),
-                        ),
                           hintText: "Select a category",
-                          border: OutlineInputBorder()
-                      ),
+                          border: OutlineInputBorder()),
                       validator: (String? val) {
-                        if(val == null || val.trim().length == 0) {
+                        if (val == null || val.trim().isEmpty) {
                           return "Please select a category first";
-                        }
-                        else {
+                        } else {
                           return null;
                         }
                       },
@@ -97,8 +96,8 @@ class _AddItemsState extends State<AddItems> {
                       },
                       items: categories.map((category) {
                         return DropdownMenuItem(
-                          child: new Text(category),
                           value: category,
+                          child: Text(category),
                         );
                       }).toList(),
                     ),
@@ -108,20 +107,18 @@ class _AddItemsState extends State<AddItems> {
                     child: TextFormField(
                       controller: itemNameController,
                       validator: (String? val) {
-                        if(val == null || val.trim().length == 0) {
+                        if (val == null || val.trim().isEmpty) {
                           return "Please enter a valid item name";
-                        }
-                        else {
+                        } else {
                           return null;
                         }
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Enter Item name",
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.amber,
-                          )
-                        ),
+                            borderSide: BorderSide(
+                          color: Colors.amber,
+                        )),
                         border: OutlineInputBorder(),
                       ),
                       onChanged: (val) {
@@ -136,46 +133,47 @@ class _AddItemsState extends State<AddItems> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Price: "),
+                        const Text("Price: "),
                         Container(
                           height: MediaQuery.of(context).size.height * 0.06,
                           width: MediaQuery.of(context).size.width * 0.60,
                           decoration: BoxDecoration(
-                            color: th.kYellow,
-                            borderRadius: BorderRadius.circular(6)
-                          ),
+                              color: th.kYellow,
+                              borderRadius: BorderRadius.circular(6)),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               InkWell(
-                                  child: Icon(Icons.remove),
+                                child: const Icon(Icons.remove),
                                 onTap: () {
-                                    if(_price == 0) {
-                                      return null;
-                                    }
-                                    else {
-                                      setState(() {
-                                        _price--;
-                                      });
-                                    }
+                                  if (_price == 0) {
+                                    return;
+                                  } else {
+                                    setState(() {
+                                      _price--;
+                                    });
+                                  }
                                 },
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.40,
-                                height: MediaQuery.of(context).size.height * 0.05,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.05,
                                 decoration: BoxDecoration(
                                     color: th.kWhite,
-                                    borderRadius: BorderRadius.circular(6)
-                                ),
+                                    borderRadius: BorderRadius.circular(6)),
                                 child: TextFormField(
                                   textAlign: TextAlign.center,
                                   controller: priceController,
                                   keyboardType: TextInputType.number,
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly
+                                  ],
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(top: 8.0),
+                                    contentPadding:
+                                        const EdgeInsets.only(top: 8.0),
                                     hintText: _price.toString(),
-                                    border: OutlineInputBorder(),
+                                    border: const OutlineInputBorder(),
                                   ),
                                   onChanged: (val) {
                                     setState(() {
@@ -185,13 +183,12 @@ class _AddItemsState extends State<AddItems> {
                                 ),
                               ),
                               InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    _price++;
-                                  });
-                                },
-                                  child: Icon(Icons.add)
-                              ),
+                                  onTap: () {
+                                    setState(() {
+                                      _price++;
+                                    });
+                                  },
+                                  child: const Icon(Icons.add)),
                             ],
                           ),
                         )
@@ -201,60 +198,62 @@ class _AddItemsState extends State<AddItems> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Quantity: "),
+                      const Text("Quantity: "),
                       Container(
                         height: MediaQuery.of(context).size.height * 0.06,
                         width: MediaQuery.of(context).size.width * 0.60,
                         decoration: BoxDecoration(
                             color: th.kYellow,
-                            borderRadius: BorderRadius.circular(6)
-                        ),
+                            borderRadius: BorderRadius.circular(6)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             InkWell(
-                                child: Icon(Icons.remove),
-                            onTap: () {
-                                  if(_quantity == 0) {
-                                   return null;
-                                  }
-                                  else {
-                                    setState(() {
-                                      _quantity--;
-                                    });
-                                  }
-                            },),
+                              child: const Icon(Icons.remove),
+                              onTap: () {
+                                if (_quantity == 0) {
+                                  return;
+                                } else {
+                                  setState(() {
+                                    _quantity--;
+                                  });
+                                }
+                              },
+                            ),
                             Container(
                               width: MediaQuery.of(context).size.width * 0.40,
                               height: MediaQuery.of(context).size.height * 0.05,
                               decoration: BoxDecoration(
-                                color: th.kWhite,
-                                borderRadius: BorderRadius.circular(6)
-                              ),
+                                  color: th.kWhite,
+                                  borderRadius: BorderRadius.circular(6)),
                               child: TextFormField(
                                 controller: quantityController,
                                 textAlign: TextAlign.center,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.only(top: 12),
-                                    hintText: _quantity.toString(),
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  onChanged: (val) {
-                                    setState(() {
-                                      _quantity = int.parse(val);
-                                    });
-                                  },
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      const EdgeInsets.only(top: 12),
+                                  hintText: _quantity.toString(),
+                                  border: const OutlineInputBorder(),
+                                ),
+                                onChanged: (val) {
+                                  setState(() {
+                                    _quantity = int.parse(val);
+                                  });
+                                },
                               ),
                             ),
                             InkWell(
-                                child: Icon(Icons.add),
-                            onTap: () {
-                                  setState(() {
-                                    _quantity++;
-                                  });
-                            },),
+                              child: const Icon(Icons.add),
+                              onTap: () {
+                                setState(() {
+                                  _quantity++;
+                                });
+                              },
+                            ),
                           ],
                         ),
                       )
@@ -264,19 +263,24 @@ class _AddItemsState extends State<AddItems> {
                     padding: const EdgeInsets.symmetric(vertical: 35),
                     child: Image(
                       height: MediaQuery.of(context).size.height * 0.20,
-                      image: AssetImage("assets/add_to_inventory_illustration.png"),
+                      image: const AssetImage(
+                          "assets/add_to_inventory_illustration.png"),
                     ),
                   ),
                   InkWell(
                     onTap: () async {
-                      if(_formKey.currentState!.validate()) {
-                        await DatabaseService(user.uid).addToInventory(_selectedCategory, _itemName, _price, _quantity);
-                          categoryController.clear();
-                          itemNameController.clear();
-                          quantityController.clear();
-                          priceController.clear();
-                      }
-                      else {
+                      if (_formKey.currentState!.validate()) {
+                        await DatabaseService(user.uid).addToInventory(
+                            _selectedCategory, _itemName, _price, _quantity);
+                        categoryController.clear();
+                        itemNameController.clear();
+                        quantityController.clear();
+                        priceController.clear();
+                        CoolAlert.show(
+                            context: context,
+                            type: CoolAlertType.success,
+                            text: "Item Added Successfully");
+                      } else {
                         return;
                       }
                     },
@@ -284,17 +288,13 @@ class _AddItemsState extends State<AddItems> {
                       height: 45,
                       width: MediaQuery.of(context).size.width * 0.25,
                       decoration: BoxDecoration(
-                        color: th.kDarkBlue,
-                        borderRadius: BorderRadius.circular(6)
-                      ),
-                      child: Center(
+                          color: th.kDarkBlue,
+                          borderRadius: BorderRadius.circular(6)),
+                      child: const Center(
                           child: Text(
-                              "Save",
-                            style: TextStyle(
-                             fontSize: 14,
-                              color: Colors.white
-                            ),
-                          )),
+                        "Save",
+                        style: TextStyle(fontSize: 14, color: Colors.white),
+                      )),
                     ),
                   ),
                 ],

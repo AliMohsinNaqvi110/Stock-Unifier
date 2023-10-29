@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory_management/models/Vendor.dart';
+import 'package:inventory_management/models/vendor.dart';
 import 'package:inventory_management/models/dashboard_stats.dart';
+import 'package:inventory_management/screens/home/distributor/add_vendor.dart';
 import 'package:inventory_management/services/auth.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:inventory_management/widgets/dashboard_card.dart';
@@ -202,17 +203,17 @@ class _DashboardState extends State<Dashboard> {
                       }
                     },
                   ),
-                  StreamBuilder<Vendor>(
+                  StreamBuilder<List<Vendor>>(
                       stream: DatabaseService(user.uid).vendors,
                       builder: (context, snapshot) {
-                        dynamic data = snapshot.data;
                         if (snapshot.connectionState ==
                                 ConnectionState.waiting ||
                             snapshot.connectionState == ConnectionState.none) {
                           return const Center(
                               child: CircularProgressIndicator());
                         }
-                        if (snapshot.hasData) {
+                        if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                          dynamic data = snapshot.data;
                           return Center(
                               child: Column(
                             children: [
@@ -237,17 +238,16 @@ class _DashboardState extends State<Dashboard> {
                                   ),
                                   child: ListView.builder(
                                       shrinkWrap: true,
-                                      itemCount: 3,
+                                      itemCount: data.length,
                                       itemBuilder: (context, index) => Column(
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                     top: 16.0),
                                                 child: VendorTile(
-                                                  name: data.name,
-                                                  balance:
-                                                      data.balance.toString(),
-                                                  dues: data.dues.toString(),
+                                                  name: data[index].name,
+                                                  balance: data[index].balance.toString(),
+                                                  dues: data[index].dues.toString(),
                                                 ),
                                               ),
                                               Padding(
@@ -266,31 +266,41 @@ class _DashboardState extends State<Dashboard> {
                         } else {
                           return Padding(
                             padding: const EdgeInsets.only(top: 20.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: th.kDarkBlue,
-                                  borderRadius: BorderRadius.circular(18)),
-                              height: MediaQuery.of(context).size.height * 0.12,
-                              width: MediaQuery.of(context).size.width * 0.75,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "No vendors found",
-                                    style: TextStyle(
-                                        color: th.kWhite,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    "Click here to create a new vendor account",
-                                    style: TextStyle(
-                                        color: th.kWhite,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  )
-                                ],
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return const AddVendor();
+                                }));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: th.kDarkBlue,
+                                    borderRadius: BorderRadius.circular(18)),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                width: MediaQuery.of(context).size.width * 0.75,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "No vendors found",
+                                      style: TextStyle(
+                                          color: th.kWhite,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "Click here to create a new vendor account",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: th.kWhite,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           );

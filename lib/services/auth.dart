@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:inventory_management/models/TheUser.dart';
+import 'package:inventory_management/models/user.dart';
 import 'package:inventory_management/services/database.dart';
 
 class AuthService {
