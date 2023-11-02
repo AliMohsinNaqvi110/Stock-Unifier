@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:inventory_management/constants/colors.dart';
-import 'package:inventory_management/screens/home/categories_screen.dart';
+import 'package:inventory_management/screens/home/vendor/item_listing_screen.dart';
 import 'package:inventory_management/screens/home/distributor/add_items.dart';
 import 'package:inventory_management/screens/home/distributor/sales_history.dart';
 import 'package:inventory_management/screens/home/vendor/cart.dart';
+import 'package:inventory_management/screens/home/vendor/vendor_home.dart';
 
 class VendorWrapper extends StatefulWidget {
   const VendorWrapper({Key? key}) : super(key: key);
@@ -25,10 +26,10 @@ class _VendorWrapperState extends State<VendorWrapper> {
       body: PageView(
         controller: controller,
           children: const [
-            CategoriesScreen(),
-            AddItems(),
+            VendorHome(),
+            ItemListing(),
             Cart(),
-            salesHistory(),
+            SalesHistory(),
           ],
           onPageChanged: (page) {
           setState(() {
@@ -44,7 +45,6 @@ class _VendorWrapperState extends State<VendorWrapper> {
           borderRadius: BorderRadius.circular(100),
         ),
         child: GNav(
-              // tabActiveBorder: Border.all(color: th.klemon, width: 1), // tab button border
               curve: Curves.easeInCirc,
               tabBorderRadius: 100,
               backgroundColor: Colors.transparent,
@@ -60,8 +60,8 @@ class _VendorWrapperState extends State<VendorWrapper> {
                 text: 'Home',
               ),
               GButton(
-                icon: Icons.add,
-                text: 'Add Items',
+                icon: Icons.shopping_basket_outlined,
+                text: 'All Items',
               ),
               GButton(
                 icon: Icons.shopping_cart_outlined,

@@ -17,20 +17,20 @@ class AuthService {
   }
   //register
   Future register(
-      String userName, String email, String password, String userRole) async {
+      String userName, String email, String password, String userRole, String? distributorUid) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
       user!.updateDisplayName(userName);
       //create a new user with the uid
-      await DatabaseService(user.uid).addUserData(
-          userName: userName,
-          email: email,
-          password: password,
-          userRole: userRole,
-          distributorUid: null);
-      // we create empty inventory to display in dashboard
+        await DatabaseService(user.uid).addUserData(
+            userName: userName,
+            email: email,
+            password: password,
+            userRole: userRole,
+            distributorUid: distributorUid);
+      // create empty inventory to display in dashboard
       await DatabaseService(user.uid).createInventory();
       return _userFromFirebaseUser(user);
     } on FirebaseAuthException catch (e) {

@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/screens/home/selected_category.dart';
-import 'package:inventory_management/services/auth.dart';
 
-// This Screen is displayed for Vendor, for Distributor we first show dashboard
-class CategoriesScreen extends StatefulWidget {
-  const CategoriesScreen({Key? key}) : super(key: key);
+class ItemListing extends StatefulWidget {
+  const ItemListing({Key? key}) : super(key: key);
 
   @override
-  _CategoriesScreenState createState() => _CategoriesScreenState();
+  _ItemListingState createState() => _ItemListingState();
 }
 
-class _CategoriesScreenState extends State<CategoriesScreen> {
+class _ItemListingState extends State<ItemListing> {
   Apptheme th = Apptheme();
-  final AuthService _auth = AuthService();
   final List<String> _selectedCategory = [
     "Groceries",
     "Confectionary",
@@ -29,15 +26,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       backgroundColor: th.kLightGrey,
       appBar: AppBar(
           backgroundColor: th.kDarkBlue,
-          title: const Text("Home"),
-          actions: [
-            InkWell(
-              child: const Icon(Icons.exit_to_app),
-              onTap: () {
-                _auth.signOut();
-              },
-            )
-          ]),
+          title: const Text("All Items"),
+       ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(

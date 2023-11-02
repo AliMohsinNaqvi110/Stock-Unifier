@@ -2,17 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/support_files/list.dart';
 
-class salesHistory extends StatefulWidget {
-  const salesHistory();
+class SalesHistory extends StatefulWidget {
+  const SalesHistory({Key? key}) : super(key: key);
 
 
   @override
-  _salesHistoryState createState() => _salesHistoryState();
+  _SalesHistoryState createState() => _SalesHistoryState();
 }
 
-class _salesHistoryState extends State<salesHistory> {
-  // ItemBrain ls = ItemBrain();
-  // ItemBrain itm = ItemBrain();
+class _SalesHistoryState extends State<SalesHistory> {
   List<Item> groceries = [
     Item(1, 'National Salt', 120, "assets/salt.jpeg", '12 dec 2021'),
     Item(2, 'Slice Juice', 30, "assets/slice.png", '12 dec 2021'),
@@ -42,12 +40,9 @@ class _salesHistoryState extends State<salesHistory> {
   @override
 
     Widget build(BuildContext context) {
-
-      List<dynamic> cart = [];
-
       return Scaffold(
           appBar: AppBar(
-              title: Text(
+              title: const Text(
               "history",
 
               ),
@@ -69,7 +64,7 @@ class _salesHistoryState extends State<salesHistory> {
               //     ),
               //   ),
               // ),
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: const IconThemeData(color: Colors.black),
               backgroundColor: th.kDarkBlue,
               centerTitle: true),
           body: ListView.builder(
@@ -131,7 +126,7 @@ class _salesHistoryState extends State<salesHistory> {
                 child: Text(
                   'Rs. ' + groceries[index].itemprice.toString(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
               width: 80,
@@ -148,7 +143,7 @@ class _salesHistoryState extends State<salesHistory> {
           padding: const EdgeInsets.fromLTRB(10, 22, 10, 22),
           child: Text(
             groceries[index].itemname,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
           ),
         ),
         subtitle: Text(groceries[index].date),
