@@ -118,6 +118,7 @@ class _AddItemsState extends State<AddItems> {
                       },
                     ),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15.0),
                     child: Row(

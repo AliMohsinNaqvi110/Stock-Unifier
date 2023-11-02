@@ -92,7 +92,8 @@ class _ManageInventoryState extends State<ManageInventory> {
                   ),
                 ),
                 FutureBuilder<int>(
-                  future: DatabaseService(user.uid).getCategoryItemCount("Groceries"),
+                  future: DatabaseService(user.uid)
+                      .getCategoryItemCount("Groceries"),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator();
@@ -109,7 +110,8 @@ class _ManageInventoryState extends State<ManageInventory> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SelectedCategory(
-                                          selectedCategory: _selectedCategory[0])),
+                                          selectedCategory:
+                                              _selectedCategory[0])),
                                 );
                               },
                               child: Container(
@@ -123,13 +125,15 @@ class _ManageInventoryState extends State<ManageInventory> {
                                           spreadRadius: 2.0,
                                           offset: Offset(0, 6))
                                     ]),
-                                height: MediaQuery.of(context).size.height * 0.12,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
                                 width: MediaQuery.of(context).size.width * 0.92,
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 30.0, vertical: 20),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       const Text(
                                         "Groceries",
@@ -139,7 +143,8 @@ class _ManageInventoryState extends State<ManageInventory> {
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 12.0),
+                                        padding:
+                                            const EdgeInsets.only(top: 12.0),
                                         child: Text(
                                           "Items Available: $itemCount",
                                           style: const TextStyle(
@@ -173,361 +178,445 @@ class _ManageInventoryState extends State<ManageInventory> {
                     }
                   },
                 ),
-
-                Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    //overflow: Overflow.visible,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SelectedCategory(
-                                    selectedCategory: _selectedCategory[1])),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: th.kWhite,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 3.0,
-                                    spreadRadius: 2.0,
-                                    offset: Offset(0, 6))
-                              ]),
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          width: MediaQuery.of(context).size.width * 0.90,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30.0, vertical: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "Confectionary",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
+                FutureBuilder<int>(
+                  future: DatabaseService(user.uid)
+                      .getCategoryItemCount("Confectionary"),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasData) {
+                      int itemCount = snapshot.data!;
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 50.0),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          //overflow: Overflow.visible,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectedCategory(
+                                          selectedCategory:
+                                              _selectedCategory[1])),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: th.kWhite,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 3.0,
+                                          spreadRadius: 2.0,
+                                          offset: Offset(0, 6))
+                                    ]),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                width: MediaQuery.of(context).size.width * 0.90,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30.0, vertical: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Confectionary",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 12.0),
+                                        child: Text(
+                                          "Items Available: $itemCount",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 12.0),
-                                  child: Text(
-                                    "Items Available: 50",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            const Positioned(
+                              bottom: 30,
+                              right: -10,
+                              child: Image(
+                                fit: BoxFit.contain,
+                                height: 100,
+                                width: 220,
+                                image: AssetImage(
+                                  "assets/confectionaries.png",
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const Positioned(
-                        bottom: 30,
-                        right: -10,
-                        child: Image(
-                          fit: BoxFit.contain,
-                          height: 100,
-                          width: 220,
-                          image: AssetImage(
-                            "assets/confectionaries.png",
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                      );
+                    } else {
+                      return const Text("Error loading data");
+                    }
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    //overflow: Overflow.visible,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SelectedCategory(
-                                    selectedCategory: _selectedCategory[2])),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: th.kWhite,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 3.0,
-                                    spreadRadius: 2.0,
-                                    offset: Offset(0, 6))
-                              ]),
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          width: MediaQuery.of(context).size.width * 0.90,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30.0, vertical: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "Snacks",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
+                FutureBuilder<int>(
+                  future:
+                      DatabaseService(user.uid).getCategoryItemCount("Snacks"),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasData) {
+                      int itemCount = snapshot.data!;
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 50.0),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          //overflow: Overflow.visible,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectedCategory(
+                                          selectedCategory:
+                                              _selectedCategory[2])),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: th.kWhite,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 3.0,
+                                          spreadRadius: 2.0,
+                                          offset: Offset(0, 6))
+                                    ]),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                width: MediaQuery.of(context).size.width * 0.90,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30.0, vertical: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Snacks",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 12.0),
+                                        child: Text(
+                                          "Items Available: $itemCount",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 12.0),
-                                  child: Text(
-                                    "Items Available: 50",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            const Positioned(
+                              bottom: 30,
+                              right: -10,
+                              child: Image(
+                                fit: BoxFit.contain,
+                                height: 100,
+                                width: 220,
+                                image: AssetImage(
+                                  "assets/snacks.png",
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const Positioned(
-                        bottom: 30,
-                        right: -10,
-                        child: Image(
-                          fit: BoxFit.contain,
-                          height: 100,
-                          width: 220,
-                          image: AssetImage(
-                            "assets/snacks.png",
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                      );
+                    } else {
+                      return const Text("Error loading data");
+                    }
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    //overflow: Overflow.visible,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SelectedCategory(
-                                    selectedCategory: _selectedCategory[3])),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: th.kWhite,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 3.0,
-                                    spreadRadius: 2.0,
-                                    offset: Offset(0, 6))
-                              ]),
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          width: MediaQuery.of(context).size.width * 0.90,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30.0, vertical: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "Beverages",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
+                FutureBuilder<int>(
+                  future: DatabaseService(user.uid)
+                      .getCategoryItemCount("Beverages"),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasData) {
+                      int itemCount = snapshot.data!;
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 50.0),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          //overflow: Overflow.visible,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectedCategory(
+                                          selectedCategory:
+                                              _selectedCategory[3])),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: th.kWhite,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 3.0,
+                                          spreadRadius: 2.0,
+                                          offset: Offset(0, 6))
+                                    ]),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                width: MediaQuery.of(context).size.width * 0.90,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30.0, vertical: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Beverages",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 12.0),
+                                        child: Text(
+                                          "Items Available: $itemCount",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 12.0),
-                                  child: Text(
-                                    "Items Available: 50",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            const Positioned(
+                              bottom: 30,
+                              right: -10,
+                              child: Image(
+                                fit: BoxFit.contain,
+                                height: 100,
+                                width: 220,
+                                image: AssetImage(
+                                  "assets/beverages.png",
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const Positioned(
-                        bottom: 30,
-                        right: -10,
-                        child: Image(
-                          fit: BoxFit.contain,
-                          height: 100,
-                          width: 220,
-                          image: AssetImage(
-                            "assets/beverages.png",
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                      );
+                    } else {
+                      return const Text("Error loading data");
+                    }
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    //overflow: Overflow.visible,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SelectedCategory(
-                                    selectedCategory: _selectedCategory[4])),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: th.kWhite,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 3.0,
-                                    spreadRadius: 2.0,
-                                    offset: Offset(0, 6))
-                              ]),
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          width: MediaQuery.of(context).size.width * 0.90,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30.0, vertical: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "Medicine",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
+                FutureBuilder<int>(
+                  future: DatabaseService(user.uid)
+                      .getCategoryItemCount("Medicine"),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasData) {
+                      int itemCount = snapshot.data!;
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 50.0),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          //overflow: Overflow.visible,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectedCategory(
+                                          selectedCategory:
+                                              _selectedCategory[4])),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: th.kWhite,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 3.0,
+                                          spreadRadius: 2.0,
+                                          offset: Offset(0, 6))
+                                    ]),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                width: MediaQuery.of(context).size.width * 0.90,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30.0, vertical: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Medicine",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 12.0),
+                                        child: Text(
+                                          "Items Available: $itemCount",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 12.0),
-                                  child: Text(
-                                    "Items Available: 50",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            const Positioned(
+                              bottom: 30,
+                              right: -10,
+                              child: Image(
+                                fit: BoxFit.contain,
+                                height: 100,
+                                width: 220,
+                                image: AssetImage(
+                                  "assets/medicine.png",
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const Positioned(
-                        bottom: 30,
-                        right: -10,
-                        child: Image(
-                          fit: BoxFit.contain,
-                          height: 100,
-                          width: 220,
-                          image: AssetImage(
-                            "assets/medicine.png",
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                      );
+                    } else {
+                      return const Text("Error loading data");
+                    }
+                  },
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 50.0),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    //overflow: Overflow.visible,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SelectedCategory(
-                                    selectedCategory: _selectedCategory[5])),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: th.kWhite,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: const [
-                                BoxShadow(
-                                    color: Colors.grey,
-                                    blurRadius: 3.0,
-                                    spreadRadius: 2.0,
-                                    offset: Offset(0, 6))
-                              ]),
-                          height: MediaQuery.of(context).size.height * 0.12,
-                          width: MediaQuery.of(context).size.width * 0.90,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 30.0, vertical: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
-                                Text(
-                                  "Cosmetics",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0,
+                FutureBuilder<int>(
+                  future: DatabaseService(user.uid)
+                      .getCategoryItemCount("Cosmetics"),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    } else if (snapshot.hasData) {
+                      int itemCount = snapshot.data!;
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 50.0),
+                        child: Stack(
+                          clipBehavior: Clip.none,
+                          //overflow: Overflow.visible,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectedCategory(
+                                          selectedCategory:
+                                              _selectedCategory[5])),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: th.kWhite,
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                          color: Colors.grey,
+                                          blurRadius: 3.0,
+                                          spreadRadius: 2.0,
+                                          offset: Offset(0, 6))
+                                    ]),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                width: MediaQuery.of(context).size.width * 0.90,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30.0, vertical: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Cosmetics",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20.0,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 12.0),
+                                        child: Text(
+                                          "Items Available: $itemCount",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(top: 12.0),
-                                  child: Text(
-                                    "Items Available: 50",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w300,
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
+                            const Positioned(
+                              bottom: 30,
+                              right: -10,
+                              child: Image(
+                                fit: BoxFit.contain,
+                                height: 100,
+                                width: 220,
+                                image: AssetImage(
+                                  "assets/cosmetics.png",
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      const Positioned(
-                        bottom: 30,
-                        right: -10,
-                        child: Image(
-                          fit: BoxFit.contain,
-                          height: 100,
-                          width: 220,
-                          image: AssetImage(
-                            "assets/cosmetics.png",
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                      );
+                    } else {
+                      return const Text("Error loading data");
+                    }
+                  },
                 ),
                 Container(
                   height: 80,

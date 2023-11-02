@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:inventory_management/constants/colors.dart';
-import 'package:inventory_management/screens/home/distributor/add_items.dart';
 import 'package:inventory_management/screens/home/distributor/add_vendor.dart';
 import 'package:inventory_management/screens/home/distributor/dashboard.dart';
 import 'package:inventory_management/screens/home/distributor/manage_inventory.dart';
@@ -63,8 +62,8 @@ class _DistributorWrapperState extends State<DistributorWrapper> {
                 text: 'Home',
               ),
               GButton(
-                icon: Icons.add,
-                text: 'Add Items',
+                icon: Icons.business_center,
+                text: 'Inventory',
               ),
               GButton(
                 icon: Icons.person_add_alt_1_outlined,

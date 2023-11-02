@@ -58,22 +58,42 @@ class _DashboardState extends State<Dashboard> {
               Positioned(
                   top: 20,
                   right: 16,
-                  child: InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container();
-                        },
-                      );
-                    },
-                    child: CircleAvatar(
-                      backgroundColor: Colors.grey[300],
-                      radius: 28,
-                      backgroundImage: const NetworkImage(
-                          "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+                  child: PopupMenuButton<int>(
+                    itemBuilder: (context) => [
+                      // popupmenu item 1
+                      PopupMenuItem(
+                        value: 1,
+                        child: Row(
+                          children: const [
+                            Icon(Icons.help),
+                            SizedBox(
+                              // sized box with width 10
+                              width: 10,
+                            ),
+                            Text("Help")
+                          ],
+                        ),
                       ),
-                    ),
+                      // popupmenu item 2
+                      PopupMenuItem(
+                        onTap: () {
+                          _auth.signOut();
+                        },
+                        value: 2,
+                        child: Row(
+                          children: const [
+                            Icon(Icons.logout_outlined),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text("About")
+                          ],
+                        ),
+                      ),
+                    ],
+                    offset: const Offset(0, 50),
+                    color: Colors.grey[200],
+                    elevation: 2,
                   )),
 
               // "https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
@@ -253,8 +273,12 @@ class _DashboardState extends State<Dashboard> {
                                                     top: 16.0),
                                                 child: VendorTile(
                                                   name: data[index].name,
-                                                  balance: data[index].balance.toString(),
-                                                  dues: data[index].dues.toString(),
+                                                  balance: data[index]
+                                                      .balance
+                                                      .toString(),
+                                                  dues: data[index]
+                                                      .dues
+                                                      .toString(),
                                                 ),
                                               ),
                                               Padding(

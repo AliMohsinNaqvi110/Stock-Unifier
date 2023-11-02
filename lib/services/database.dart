@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inventory_management/models/sale.dart';
 import 'package:inventory_management/models/vendor.dart';
@@ -6,7 +7,7 @@ import 'package:inventory_management/models/items_model.dart';
 import 'package:uuid/uuid.dart';
 
 class DatabaseService {
-  var uuid = Uuid();
+  var uuid = const Uuid();
 
   DatabaseService(this.uid);
 
@@ -67,8 +68,17 @@ class DatabaseService {
         .collection("items")
         .where("category", isEqualTo: category)
         .get();
-    return querySnapshot.docs.length;
+
+    int totalCount = 0; // Initialize total count to 0
+
+    for (var doc in querySnapshot.docs) {
+      int quantity = doc["quantity"];
+      totalCount += quantity; // Add quantity to total count
+    }
+
+    return totalCount;
   }
+
 
   Future<bool> addOrUpdateItem(Map<String, dynamic> itemData,
       [String? itemId]) async {
@@ -87,7 +97,7 @@ class DatabaseService {
       await updateInventoryStats();
       return true;
     } catch (e) {
-      print("Error occurred: $e");
+      log("Error occurred: $e");
       return false;
     }
   }
@@ -136,11 +146,13 @@ class DatabaseService {
           .collection("items")
           .get();
 
-      int totalCount = querySnapshot.docs.length;
+      int totalCount = 0;
       double totalCost = 0;
 
       for (var doc in querySnapshot.docs) {
-        totalCost += doc["price"] * doc["quantity"];
+        int quantity = doc["quantity"];
+        totalCount += quantity;
+        totalCost += doc["price"] * quantity;
       }
 
       await userCollection.doc(uid).collection("inventory").doc(uid).update({
@@ -148,10 +160,10 @@ class DatabaseService {
         "total_cost": totalCost,
       });
 
-      print("Inventory count and cost updated successfully!");
+      log("Inventory count and cost updated successfully!");
       return true; // Operation was successful
     } catch (error) {
-      print("Error updating inventory count and cost: $error");
+      log("Error updating inventory count and cost: $error");
       return false; // Operation failed
     }
   }
