@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/constants/text_decoration.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class AddVendor extends StatefulWidget {
   const AddVendor({Key? key}) : super(key: key);
@@ -18,20 +21,20 @@ class _AddVendorState extends State<AddVendor> {
   Apptheme th = Apptheme();
   late dynamic _db;
   final _formKey = GlobalKey<FormState>();
+  Uuid uuid = const Uuid();
 
   // Text Controllers
   TextEditingController vendorNameTextController = TextEditingController();
+  TextEditingController vendorUidTextController = TextEditingController();
   TextEditingController vendorBalanceTextController = TextEditingController();
   TextEditingController vendorDuesTextController = TextEditingController();
-  TextEditingController vendorMobileNumberTextController =
-      TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _db = DatabaseService(Provider.of<User>(context, listen: false).uid);
-    vendorBalanceTextController.text = "0";
-    vendorDuesTextController.text = "0";
+    vendorUidTextController.text = uuid.v4();
+    log(vendorUidTextController.text);
   }
 
   @override
@@ -40,7 +43,7 @@ class _AddVendorState extends State<AddVendor> {
     vendorNameTextController.dispose();
     vendorBalanceTextController.dispose();
     vendorDuesTextController.dispose();
-    vendorMobileNumberTextController.dispose();
+    vendorUidTextController.dispose();
   }
 
   @override
@@ -98,22 +101,33 @@ class _AddVendorState extends State<AddVendor> {
                         const Padding(
                           padding: EdgeInsets.only(left: 4.0, bottom: 8.0),
                           child: Text(
-                            "Mobile Number",
+                            "Vendor ID",
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w600),
                           ),
                         ),
                         TextFormField(
-                            keyboardType: TextInputType.number,
-                            inputFormatters: [
-                              FilteringTextInputFormatter.digitsOnly
-                            ],
-                            controller: vendorMobileNumberTextController,
-                            decoration: textInputDecoration.copyWith(
-                                hintText: "Vendor Mobile Number")),
+                          readOnly: true,
+                          controller: vendorUidTextController,
+                          decoration: textInputDecoration.copyWith(
+                              suffixIcon: InkWell(
+                                  onTap: () async {
+                                    await Clipboard.setData(ClipboardData(
+                                        text: vendorUidTextController.text));
+                                    if (!mounted) {
+                                      return;
+                                    }
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                        content: Text(
+                                            "Copied Successfully")));
+                                  },
+                                  child: const Icon(Icons.copy))),
+                        ),
                       ],
                     ),
                   ),
+
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 12.0, horizontal: 20.0),
@@ -175,7 +189,10 @@ class _AddVendorState extends State<AddVendor> {
                               vendorName: vendorNameTextController.text,
                               balance:
                                   int.parse(vendorBalanceTextController.text),
-                              dues: int.parse(vendorDuesTextController.text));
+                              dues: int.parse(vendorDuesTextController.text),
+                              vendorId: vendorUidTextController.text
+                              //   TODO Add Vendor ID
+                              );
                           CoolAlert.show(
                               onConfirmBtnTap: () {
                                 Navigator.pop(context);
@@ -186,26 +203,62 @@ class _AddVendorState extends State<AddVendor> {
                               text: "Send this id to this vendor!",
                               widget: Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                child: Column(
                                   children: [
-                                    Text(user.uid.toString(),
-                                        style: const TextStyle(fontSize: 12)),
-                                    const SizedBox(width: 10),
-                                    InkWell(
-                                        onTap: () async {
-                                          await Clipboard.setData(ClipboardData(
-                                              text: user.uid.toString()));
-                                          if (!mounted) {
-                                            return;
-                                          }
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
+                                    const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text("Copy and send these values to the vendor",
+                                          style: TextStyle(fontSize: 12)),
+                                    ),
+                                    const SizedBox(height: 12.0),
+                                    const Text("Your UID"),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text(user.uid.toString(),
+                                            style: const TextStyle(fontSize: 12)),
+                                        const SizedBox(width: 10),
+                                        InkWell(
+                                            onTap: () async {
+                                              await Clipboard.setData(ClipboardData(
+                                                  text: user.uid.toString()));
+                                              if (!mounted) {
+                                                return;
+                                              }
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          "Copied Successfully")));
+                                            },
+                                            child: const Icon(Icons.copy))
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12.0),
+                                    const Text("Vendor's UID"),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Text(vendorUidTextController.text,
+                                            style: const TextStyle(fontSize: 12)),
+                                        const SizedBox(width: 10),
+                                        InkWell(
+                                            onTap: () async {
+                                              await Clipboard.setData(ClipboardData(
+                                                  text: vendorUidTextController.text));
+                                              if (!mounted) {
+                                                return;
+                                              }
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
                                                   content: Text(
                                                       "Copied Successfully")));
-                                        },
-                                        child: const Icon(Icons.copy))
+                                            },
+                                            child: const Icon(Icons.copy))
+                                      ],
+                                    ),
+
                                   ],
                                 ),
                               ));

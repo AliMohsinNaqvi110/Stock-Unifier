@@ -42,8 +42,13 @@ class DatabaseService {
   Future createVendor(
       {required String vendorName,
       required int balance,
-      required int dues}) async {
-    return await userCollection.doc(uid).collection("vendors").add({
+      required int dues,
+      required String vendorId}) async {
+    return await userCollection
+        .doc(uid)
+        .collection("vendors")
+        .doc(vendorId)
+        .set({
       "name": vendorName,
       "balance": balance,
       "dues": dues,
@@ -78,7 +83,6 @@ class DatabaseService {
 
     return totalCount;
   }
-
 
   Future<bool> addOrUpdateItem(Map<String, dynamic> itemData,
       [String? itemId]) async {
