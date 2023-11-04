@@ -17,7 +17,7 @@ class AuthService {
   }
   //register
   Future register(
-      String userName, String email, String password, String userRole, String? distributorUid) async {
+      String userName, String email, String password, String userRole, String? vendorId) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
@@ -29,7 +29,8 @@ class AuthService {
             email: email,
             password: password,
             userRole: userRole,
-            distributorUid: distributorUid);
+            vendorId: vendorId
+        );
       // create empty inventory to display in dashboard
       await DatabaseService(user.uid).createInventory();
       return _userFromFirebaseUser(user);

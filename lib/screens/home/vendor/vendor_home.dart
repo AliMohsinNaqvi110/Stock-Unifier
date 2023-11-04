@@ -1,7 +1,10 @@
+import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_management/services/auth.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants/colors.dart';
 
 class VendorHome extends StatefulWidget {
@@ -13,14 +16,33 @@ class VendorHome extends StatefulWidget {
 
 class _VendorHomeState extends State<VendorHome> {
   Apptheme th = Apptheme();
+  String vendorId = "565e6c5d-9323-44d1-a838-527d0ed02da5"; // default value to prevent errors
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVendorIdFromSharedPreferences();
+  }
+
+  // Function to retrieve vendor_id from SharedPreferences
+  Future<void> _loadVendorIdFromSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedVendorId = prefs.getString('vendor_id');
+
+    if (savedVendorId != null) {
+      setState(() {
+        vendorId = savedVendorId;
+      });
+    } else {
+      log('Vendor ID not found in SharedPreferences.');
+    }
+  }
 
   final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
-
     final user = Provider.of<User>(context);
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -139,81 +161,115 @@ class _VendorHomeState extends State<VendorHome> {
                                   fontWeight: FontWeight.w500,
                                   letterSpacing: 1.5),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 20.0),
-                              child: Center(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: th.kDarkBlue,
-                                      borderRadius: BorderRadius.circular(18)),
-                                  height: MediaQuery.of(context).size.height * 0.16,
-                                  width: MediaQuery.of(context).size.width * 0.75,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Your Account: ",
-                                        style: TextStyle(
-                                            color: th.kWhite,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 30),
+                            StreamBuilder<DocumentSnapshot>(
+                              stream: FirebaseFirestore.instance
+                                      .collection("vendors")
+                                      .doc(vendorId)
+                                      .snapshots(),
+                              builder: (context, snapshot) {
+                                if(snapshot.connectionState ==
+                                        ConnectionState.waiting ||
+                                    snapshot.connectionState ==
+                                        ConnectionState.none) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+                                if (snapshot.hasData) {
+                                  dynamic data = snapshot.data;
+                                  log(data);
+                                  return Padding(
+                                    padding: const EdgeInsets.only(top: 20.0),
+                                    child: Center(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: th.kDarkBlue,
+                                            borderRadius:
+                                                BorderRadius.circular(18)),
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.16,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Your Account: ",
+                                              style: TextStyle(
+                                                  color: th.kWhite,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 30),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Balance: ",
+                                                      style: TextStyle(
+                                                          color: th.kWhite,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 24),
+                                                    ),
+                                                    Text(
+                                                      "Dues: ",
+                                                      style: TextStyle(
+                                                          color: th.kWhite,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 24),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(width: 8.0),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      "Rs. 20,000",
+                                                      style: TextStyle(
+                                                          color: th.kWhite,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 24),
+                                                    ),
+                                                    Text(
+                                                      "Rs. 0",
+                                                      style: TextStyle(
+                                                          color: th.kWhite,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 24),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      const SizedBox(height: 10),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Balance: ",
-                                                style: TextStyle(
-                                                    color: th.kWhite,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 24),
-                                              ),
-                                              Text(
-                                                "Dues: ",
-                                                style: TextStyle(
-                                                    color: th.kWhite,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 24),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(width: 8.0),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Rs. 20,000",
-                                                style: TextStyle(
-                                                    color: th.kWhite,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 24),
-                                              ),
-                                              Text(
-                                                "Rs. 0",
-                                                style: TextStyle(
-                                                    color: th.kWhite,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 24),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                                    ),
+                                  );
+                                } else {
+                                  return const Center(
+                                      child: Text(
+                                          "Something went wrong fetching account details"));
+                                }
+                              },
                             ),
-
                           ],
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),

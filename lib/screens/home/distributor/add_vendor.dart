@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/constants/text_decoration.dart';
+import 'package:inventory_management/screens/home/distributor/distributor_wrapper.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -117,10 +118,10 @@ class _AddVendorState extends State<AddVendor> {
                                     if (!mounted) {
                                       return;
                                     }
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(const SnackBar(
-                                        content: Text(
-                                            "Copied Successfully")));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content:
+                                                Text("Copied Successfully")));
                                   },
                                   child: const Icon(Icons.copy))),
                         ),
@@ -190,12 +191,15 @@ class _AddVendorState extends State<AddVendor> {
                               balance:
                                   int.parse(vendorBalanceTextController.text),
                               dues: int.parse(vendorDuesTextController.text),
-                              vendorId: vendorUidTextController.text
-                              //   TODO Add Vendor ID
-                              );
+                              vendorId: vendorUidTextController.text,
+                              distributorUid: user.uid);
                           CoolAlert.show(
                               onConfirmBtnTap: () {
-                                Navigator.pop(context);
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DistributorWrapper()));
                               },
                               context: context,
                               type: CoolAlertType.success,
@@ -203,62 +207,27 @@ class _AddVendorState extends State<AddVendor> {
                               text: "Send this id to this vendor!",
                               widget: Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
-                                child: Column(
-                                  children: [
-                                    const Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Text("Copy and send these values to the vendor",
-                                          style: TextStyle(fontSize: 12)),
-                                    ),
-                                    const SizedBox(height: 12.0),
-                                    const Text("Your UID"),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text(user.uid.toString(),
-                                            style: const TextStyle(fontSize: 12)),
-                                        const SizedBox(width: 10),
-                                        InkWell(
-                                            onTap: () async {
-                                              await Clipboard.setData(ClipboardData(
-                                                  text: user.uid.toString()));
-                                              if (!mounted) {
-                                                return;
-                                              }
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                      content: Text(
-                                                          "Copied Successfully")));
-                                            },
-                                            child: const Icon(Icons.copy))
-                                      ],
-                                    ),
-                                    const SizedBox(height: 12.0),
-                                    const Text("Vendor's UID"),
-                                    Row(
-                                      mainAxisAlignment:
+                                child: Row(
+                                  mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Text(vendorUidTextController.text,
-                                            style: const TextStyle(fontSize: 12)),
-                                        const SizedBox(width: 10),
-                                        InkWell(
-                                            onTap: () async {
-                                              await Clipboard.setData(ClipboardData(
-                                                  text: vendorUidTextController.text));
-                                              if (!mounted) {
-                                                return;
-                                              }
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
+                                  children: [
+                                    Text(vendorUidTextController.text,
+                                        style: const TextStyle(fontSize: 12)),
+                                    const SizedBox(width: 10),
+                                    InkWell(
+                                        onTap: () async {
+                                          await Clipboard.setData(ClipboardData(
+                                              text: vendorUidTextController
+                                                  .text));
+                                          if (!mounted) {
+                                            return;
+                                          }
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
                                                   content: Text(
                                                       "Copied Successfully")));
-                                            },
-                                            child: const Icon(Icons.copy))
-                                      ],
-                                    ),
-
+                                        },
+                                        child: const Icon(Icons.copy))
                                   ],
                                 ),
                               ));

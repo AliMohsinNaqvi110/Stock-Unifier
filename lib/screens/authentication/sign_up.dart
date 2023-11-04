@@ -20,7 +20,7 @@ class _SignUpState extends State<SignUp> {
   String _email = "";
   String _password = "";
   String _error = "";
-  String? _distrbutorUid;
+  String? _vendorId;
   String _userRole = "Distributor";
   final List<String> _userRoles = ["Distributor", "Vendor"];
 
@@ -205,13 +205,13 @@ class _SignUpState extends State<SignUp> {
                                   validator: (String? val) {
                                     if (_userRole == "Vendor" && (val == null ||
                                         val.trim().isEmpty)) {
-                                      return "Please enter a valid Distributor UID";
+                                      return "Please enter a valid Vendor ID";
                                     } else {
                                       return null;
                                     }
                                   },
                                   onChanged: (val) {
-                                    setState(() => _distrbutorUid = val);
+                                    setState(() => _vendorId = val);
                                   },
                                   cursorColor: th.kDarkBlue,
                                   obscureText: false,
@@ -228,7 +228,7 @@ class _SignUpState extends State<SignUp> {
                                             BorderRadius.circular(12),
                                         borderSide: const BorderSide(
                                             color: Colors.white)),
-                                    hintText: 'Enter the distributors ID shared by your distributor',
+                                    hintText: 'Enter the ID shared with you by your distributor',
                                     prefixIcon: Icon(
                                       Icons.person_sharp,
                                       color: th.kDarkBlue,
@@ -254,7 +254,7 @@ class _SignUpState extends State<SignUp> {
                                                 _email,
                                                 _password,
                                                 _userRole,
-                                                _distrbutorUid);
+                                                _vendorId);
                                             log(result.toString());
                                             if (result.runtimeType ==
                                                 String) {

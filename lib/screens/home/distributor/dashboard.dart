@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:inventory_management/models/vendor.dart';
 import 'package:inventory_management/models/dashboard_stats.dart';
 import 'package:inventory_management/screens/home/distributor/add_vendor.dart';
@@ -298,44 +296,7 @@ class _DashboardState extends State<Dashboard> {
                                                   )
                                                 ],
                                               )),
-                                      Column(
-                                        children: [
-                                          Text(
-                                            "Send your UID below to your vendors",
-                                            style: TextStyle(color: th.kWhite),
-                                          ),
-                                          const SizedBox(
-                                            height: 8.0,
-                                          ),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Text(user.uid.toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 12)),
-                                              const SizedBox(width: 10),
-                                              InkWell(
-                                                  onTap: () async {
-                                                    await Clipboard.setData(
-                                                        ClipboardData(
-                                                            text: user.uid
-                                                                .toString()));
-                                                    if (!mounted) {
-                                                      return;
-                                                    }
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(
-                                                            const SnackBar(
-                                                                content: Text(
-                                                                    "Copied Successfully")));
-                                                  },
-                                                  child: const Icon(Icons.copy))
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                     
                                     ],
                                   )),
                             ],
