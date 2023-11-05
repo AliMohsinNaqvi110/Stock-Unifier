@@ -156,7 +156,8 @@ class _DashboardState extends State<Dashboard> {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasData) {
                         DashboardStats data = snapshot.data!;
-                        return Column(
+                        return
+                          Column(
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(top: 20.0),

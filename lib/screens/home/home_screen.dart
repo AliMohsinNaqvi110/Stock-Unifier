@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_management/screens/authentication/authenticate.dart';
 import 'package:inventory_management/screens/home/distributor/distributor_wrapper.dart';
-import 'package:inventory_management/screens/home/vendor/vendor_wrapper.dart';
+import 'package:inventory_management/screens/home/vendor/vendor_home.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:inventory_management/support_files/shared_preferences.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
                     .catchError((error) => log('Error: $error'));
                 DatabaseService(user!.uid).updateDistributorUid(vendorId: vendorId);
                 // Display UI for user Vendor
-                return VendorWrapper(vendorId: vendorId);
+                return const VendorHome();
               }
               // in case of error, if nothing returns
               else {

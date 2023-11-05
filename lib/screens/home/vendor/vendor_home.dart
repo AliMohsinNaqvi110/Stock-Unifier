@@ -17,7 +17,9 @@ class VendorHome extends StatefulWidget {
 
 class _VendorHomeState extends State<VendorHome> {
   Apptheme th = Apptheme();
-  String vendorId = "d3ba3e6d-502a-47fe-bfda-9cdd9a82c97e"; // default value to prevent errors
+  String vendorId =
+      "d3ba3e6d-502a-47fe-bfda-9cdd9a82c97e"; // default value to prevent errors
+  bool pendingPayments = false;
 
   @override
   void initState() {
@@ -162,23 +164,31 @@ class _VendorHomeState extends State<VendorHome> {
                                   fontWeight: FontWeight.w500,
                                   letterSpacing: 1.5),
                             ),
-                            FutureBuilder(
-                              future: DatabaseService(user.uid).getVendorData(vendorId),
-                              builder: (context, snapshot) {
-                                if(snapshot.connectionState ==
-                                        ConnectionState.waiting ||
-                                    snapshot.connectionState ==
-                                        ConnectionState.none) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                }
-                                if (snapshot.hasData) {
-                                  dynamic data = snapshot.data;
-                                  setPreference("distributor_uid", data.distributorUid)
-                                  .then((value) => log("Distributor Uid added to shared preference"));
-                                  return Padding(
-                                    padding: const EdgeInsets.only(top: 20.0),
-                                    child: Center(
+                            Center(
+                              child: FutureBuilder(
+                                future: DatabaseService(user.uid)
+                                    .getVendorData(vendorId),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.waiting ||
+                                      snapshot.connectionState ==
+                                          ConnectionState.none) {
+                                    return const Center(
+                                        child: CircularProgressIndicator());
+                                  }
+                                  if (snapshot.hasData) {
+                                    dynamic data = snapshot.data;
+                                    if (data.dues > 0) {
+                                      setState(() {
+                                        pendingPayments = true;
+                                      });
+                                    }
+                                    setPreference("distributor_uid",
+                                            data.distributorUid)
+                                        .then((value) => log(
+                                            "Distributor Uid added to shared preference"));
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 20.0),
                                       child: Container(
                                         decoration: BoxDecoration(
                                             color: th.kDarkBlue,
@@ -187,9 +197,8 @@ class _VendorHomeState extends State<VendorHome> {
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.16,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.75,
+                                        width: MediaQuery.of(context).size.width *
+                                            0.75,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -256,14 +265,129 @@ class _VendorHomeState extends State<VendorHome> {
                                           ],
                                         ),
                                       ),
+                                    );
+                                  } else {
+                                    return const Center(
+                                        child: Text(
+                                            "Something went wrong fetching account details"));
+                                  }
+                                },
+                              ),
+                            ),
+                            // Pending Payments container
+                            Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                //overflow: Overflow.visible,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: th.kDashboardLime,
+                                      borderRadius: BorderRadius.circular(20),
                                     ),
-                                  );
-                                } else {
-                                  return const Center(
-                                      child: Text(
-                                          "Something went wrong fetching account details"));
-                                }
-                              },
+                                    height:
+                                        MediaQuery.of(context).size.height * 0.12,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.90,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 30.0, vertical: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: const [
+                                          Text(
+                                            "You're all clear!",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.0,
+                                            ),
+                                          ),
+                                          SizedBox(height: 12),
+                                          Text(
+                                            "0 Pending Payments",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const Positioned(
+                                    bottom: 30,
+                                    right: -10,
+                                    child: Image(
+                                      fit: BoxFit.contain,
+                                      height: 100,
+                                      width: 220,
+                                      image: AssetImage(
+                                        "assets/dues_clear_illustration.png",
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // New Order container
+                            Padding(
+                              padding: const EdgeInsets.only(top: 50.0),
+                              child: Stack(
+                                clipBehavior: Clip.none,
+                                //overflow: Overflow.visible,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: th.kLemon,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    height:
+                                    MediaQuery.of(context).size.height * 0.12,
+                                    width:
+                                    MediaQuery.of(context).size.width * 0.90,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 30.0, vertical: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: const [
+                                          Text(
+                                            "Order new items!",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20.0,
+                                            ),
+                                          ),
+                                          SizedBox(height: 12),
+                                          Text(
+                                            "Browse the inventory",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 16.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const Positioned(
+                                    bottom: 30,
+                                    right: -10,
+                                    child: Image(
+                                      fit: BoxFit.contain,
+                                      height: 100,
+                                      width: 220,
+                                      image: AssetImage(
+                                        "assets/shopping.png",
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
