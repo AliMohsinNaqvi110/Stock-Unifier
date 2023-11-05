@@ -47,6 +47,10 @@ class DatabaseService {
       {required Map<String, dynamic> orderData,
       required String distributorUid}) async {
     try {
+      await userCollection
+          .doc(distributorUid)
+          .collection("orders")
+          .add(orderData);
       return true;
     } catch (error) {
       log('Error creating order: $error');

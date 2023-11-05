@@ -92,6 +92,7 @@ class _CheckoutState extends State<Checkout> {
             onTap: () async {
               Map<String, dynamic> orderData = selectedItems.toMap();
               orderData["order_id"] = generateRandomItemId();
+              orderData["date"] = DateTime.now();
               bool result = await DatabaseService(user.uid).createOrder(
                   orderData: orderData, distributorUid: distributorUid);
               if (result) {
