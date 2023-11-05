@@ -1,8 +1,9 @@
 import 'dart:developer';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_management/services/auth.dart';
+import 'package:inventory_management/services/database.dart';
+import 'package:inventory_management/support_files/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants/colors.dart';
@@ -16,7 +17,7 @@ class VendorHome extends StatefulWidget {
 
 class _VendorHomeState extends State<VendorHome> {
   Apptheme th = Apptheme();
-  String vendorId = "565e6c5d-9323-44d1-a838-527d0ed02da5"; // default value to prevent errors
+  String vendorId = "d3ba3e6d-502a-47fe-bfda-9cdd9a82c97e"; // default value to prevent errors
 
   @override
   void initState() {
@@ -161,11 +162,8 @@ class _VendorHomeState extends State<VendorHome> {
                                   fontWeight: FontWeight.w500,
                                   letterSpacing: 1.5),
                             ),
-                            StreamBuilder<DocumentSnapshot>(
-                              stream: FirebaseFirestore.instance
-                                      .collection("vendors")
-                                      .doc(vendorId)
-                                      .snapshots(),
+                            FutureBuilder(
+                              future: DatabaseService(user.uid).getVendorData(vendorId),
                               builder: (context, snapshot) {
                                 if(snapshot.connectionState ==
                                         ConnectionState.waiting ||
@@ -176,7 +174,8 @@ class _VendorHomeState extends State<VendorHome> {
                                 }
                                 if (snapshot.hasData) {
                                   dynamic data = snapshot.data;
-                                  log(data);
+                                  setPreference("distributor_uid", data.distributorUid)
+                                  .then((value) => log("Distributor Uid added to shared preference"));
                                   return Padding(
                                     padding: const EdgeInsets.only(top: 20.0),
                                     child: Center(
@@ -235,7 +234,7 @@ class _VendorHomeState extends State<VendorHome> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      "Rs. 20,000",
+                                                      "Rs. ${data.balance}",
                                                       style: TextStyle(
                                                           color: th.kWhite,
                                                           fontWeight:
@@ -243,7 +242,7 @@ class _VendorHomeState extends State<VendorHome> {
                                                           fontSize: 24),
                                                     ),
                                                     Text(
-                                                      "Rs. 0",
+                                                      "Rs. ${data.dues}",
                                                       style: TextStyle(
                                                           color: th.kWhite,
                                                           fontWeight:

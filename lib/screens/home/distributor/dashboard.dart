@@ -23,7 +23,7 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<User?>(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -86,7 +86,7 @@ class _DashboardState extends State<Dashboard> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("About")
+                            Text("Log out")
                           ],
                         ),
                       ),
@@ -137,7 +137,7 @@ class _DashboardState extends State<Dashboard> {
                                 fontSize: 22, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            user.displayName ?? "User",
+                            user?.displayName ?? "User",
                             style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,
@@ -149,7 +149,7 @@ class _DashboardState extends State<Dashboard> {
                   ),
                   // no. of Sales Container
                   StreamBuilder<DashboardStats>(
-                    stream: DatabaseService(user.uid).stats,
+                    stream: DatabaseService(user!.uid).stats,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.none ||
                           snapshot.connectionState == ConnectionState.waiting) {

@@ -23,6 +23,10 @@ class AuthService {
           email: email, password: password);
       User? user = result.user;
       user!.updateDisplayName(userName);
+      if(userRole == "Distributor") {
+        // create empty inventory to display in dashboard
+        await DatabaseService(user.uid).createInventory();
+      }
       //create a new user with the uid
         await DatabaseService(user.uid).addUserData(
             userName: userName,
@@ -31,8 +35,6 @@ class AuthService {
             userRole: userRole,
             vendorId: vendorId
         );
-      // create empty inventory to display in dashboard
-      await DatabaseService(user.uid).createInventory();
       return _userFromFirebaseUser(user);
     } on FirebaseAuthException catch (e) {
       var message = '';

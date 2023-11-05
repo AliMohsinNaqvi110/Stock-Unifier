@@ -15,15 +15,14 @@ class DatabaseService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection("users");
   final CollectionReference vendorCollection =
-  FirebaseFirestore.instance.collection("vendors");
+      FirebaseFirestore.instance.collection("vendors");
 
   Future addUserData(
       {required String userName,
       required String email,
       required String password,
       required String userRole,
-        required String? vendorId
-      }) async {
+      required String? vendorId}) async {
     if (vendorId == null) {
       return await userCollection.doc(uid).set({
         "user_name": userName,
@@ -32,7 +31,7 @@ class DatabaseService {
         "role": userRole
       });
     } else {
-      return await userCollection.doc(vendorId).set({
+      return await userCollection.doc(uid).set({
         "user_name": userName,
         "email": email,
         "password": password,
@@ -42,10 +41,11 @@ class DatabaseService {
     }
   }
 
-  Future<String?> retrieveDistributorUid({required String vendorId}) async {
+  Future updateDistributorUid({required String vendorId}) async {
     DocumentSnapshot snapshot = await vendorCollection.doc(vendorId).get();
     if (snapshot.exists) {
-      return (snapshot.data() as dynamic)['distributor_uid'];
+      String distributorUid = (snapshot.data() as dynamic)['distributor_uid'];
+      userCollection.doc(uid).update({"distributor_uid": distributorUid});
     } else {
       return null;
     }
@@ -57,14 +57,12 @@ class DatabaseService {
       required int dues,
       required String vendorId,
       required String distributorUid}) async {
-    return await vendorCollection
-        .doc(vendorId)
-        .set({
+    return await vendorCollection.doc(vendorId).set({
       "name": vendorName,
       "id": vendorId,
       "balance": balance,
       "dues": dues,
-      "distributor_uid" : distributorUid
+      "distributor_uid": distributorUid
     });
   }
 
@@ -269,15 +267,36 @@ class DatabaseService {
     yield _statsFromSnapshot(data);
   }
 
+  Future<Vendor> getVendorData(String vendorId) async {
+    DocumentSnapshot<Map<String, dynamic>> vendorSnapshot =
+        await FirebaseFirestore.instance
+            .collection('vendors')
+            .doc(vendorId)
+            .get();
+
+    if (vendorSnapshot.exists) {
+      Map<String, dynamic> data = vendorSnapshot.data()!;
+      Vendor vendor = Vendor(
+          name: data['name'] ?? '',
+          balance: (data['balance'] ?? 0),
+          dues: (data['dues'] ?? 0),
+          distributorUid: data['distributor_uid'] ?? '');
+      return vendor;
+    } else {
+      // Handle the case when the vendor document does not exist
+      throw Exception('Vendor not found');
+    }
+  }
+
   Stream<List<Vendor>> get vendors async* {
     final snapshot = await vendorCollection.get();
 
     final vendorsList = snapshot.docs
         .map((doc) => Vendor(
-              name: doc["name"],
-              balance: doc["balance"],
-              dues: doc["dues"],
-            ))
+            name: doc["name"],
+            balance: doc["balance"],
+            dues: doc["dues"],
+            distributorUid: doc['distributor_uid'] ?? ''))
         .toList();
     yield vendorsList;
   }

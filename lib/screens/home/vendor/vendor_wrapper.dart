@@ -7,7 +7,8 @@ import 'package:inventory_management/screens/home/vendor/cart.dart';
 import 'package:inventory_management/screens/home/vendor/vendor_home.dart';
 
 class VendorWrapper extends StatefulWidget {
-  const VendorWrapper({Key? key}) : super(key: key);
+  final String vendorId;
+  const VendorWrapper({Key? key, required this.vendorId}) : super(key: key);
 
   @override
   State<VendorWrapper> createState() => _VendorWrapperState();
