@@ -30,24 +30,22 @@ class _HomeState extends State<Home> {
           if (snapshot.connectionState == ConnectionState.none ||
               snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          }
-          else {
+          } else {
             if (user == null && !snapshot.hasData) {
               return const Authenticate();
-            }
-            else {
+            } else {
               var items = snapshot.data;
-              if ((items as dynamic)["role"] == "Distributor"
-                  ) {
+              if ((items as dynamic)["role"] == "Distributor") {
                 // Display UI for Distributor
                 return const DistributorWrapper();
-              } else if ((items as dynamic)["role"] == "Vendor"
-                  ) {
+              } else if ((items as dynamic)["role"] == "Vendor") {
                 String vendorId = (items as dynamic)["vendor_id"] ?? "";
                 setPreference("vendor_id", vendorId)
                     .then((_) => log('Vendor Id set successfully'))
                     .catchError((error) => log('Error: $error'));
-                DatabaseService(user!.uid).updateDistributorUid(vendorId: vendorId);
+                DatabaseService(user!.uid)
+                    .updateDistributorUid(vendorId: vendorId)
+                    .then((value) => "Distributor UID set in preferences");
                 // Display UI for user Vendor
                 return const VendorHome();
               }

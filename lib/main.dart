@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:inventory_management/models/selected_items_model.dart';
 import 'package:inventory_management/services/auth.dart';
 import 'package:inventory_management/wrapper.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
           initialData: null,
           value: AuthService().user,
         ),
+          ChangeNotifierProvider(create: (context) => SelectedItems()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

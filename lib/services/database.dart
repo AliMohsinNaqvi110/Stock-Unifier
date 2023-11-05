@@ -1,9 +1,11 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:inventory_management/models/sale.dart';
 import 'package:inventory_management/models/vendor.dart';
 import 'package:inventory_management/models/dashboard_stats.dart';
 import 'package:inventory_management/models/items_model.dart';
+import 'package:inventory_management/support_files/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class DatabaseService {
@@ -41,11 +43,24 @@ class DatabaseService {
     }
   }
 
-  Future updateDistributorUid({required String vendorId}) async {
+  Future<bool> createOrder(
+      {required Map<String, dynamic> orderData,
+      required String distributorUid}) async {
+    try {
+      return true;
+    } catch (error) {
+      log('Error creating order: $error');
+      return false;
+    }
+  }
+
+  Future<String?> updateDistributorUid({required String vendorId}) async {
     DocumentSnapshot snapshot = await vendorCollection.doc(vendorId).get();
     if (snapshot.exists) {
       String distributorUid = (snapshot.data() as dynamic)['distributor_uid'];
       userCollection.doc(uid).update({"distributor_uid": distributorUid});
+      setPreference("distributor_uid", distributorUid);
+      return distributorUid;
     } else {
       return null;
     }
@@ -186,11 +201,12 @@ class DatabaseService {
   List<Items> _itemsListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Items(
-          category: doc["category"],
-          name: doc["name"],
-          price: doc["price"],
-          quantity: doc["quantity"],
-          totalPrice: doc["total_price"]);
+        category: doc["category"],
+        name: doc["name"],
+        price: doc["price"],
+        quantity: doc["quantity"],
+        itemId: doc["item_id"],
+      );
     }).toList();
   }
 

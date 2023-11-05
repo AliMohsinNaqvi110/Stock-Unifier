@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:inventory_management/constants/colors.dart';
+import 'package:inventory_management/constants/functions.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:provider/provider.dart';
 
@@ -265,7 +266,8 @@ class _AddItemsState extends State<AddItems> {
                           "category": _selectedCategory,
                           "item_name": _itemName,
                           "price": _price,
-                          "quantity": _quantity
+                          "quantity": _quantity,
+                          "item_id": generateRandomItemId()
                         });
                         categoryController.clear();
                         itemNameController.clear();

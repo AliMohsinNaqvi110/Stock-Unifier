@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory_management/screens/home/vendor/browse_inventory.dart';
 import 'package:inventory_management/services/auth.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:inventory_management/support_files/shared_preferences.dart';
@@ -107,7 +108,7 @@ class _VendorHomeState extends State<VendorHome> {
                             SizedBox(
                               width: 10,
                             ),
-                            Text("About")
+                            Text("Log out")
                           ],
                         ),
                       ),
@@ -197,8 +198,9 @@ class _VendorHomeState extends State<VendorHome> {
                                         height:
                                             MediaQuery.of(context).size.height *
                                                 0.16,
-                                        width: MediaQuery.of(context).size.width *
-                                            0.75,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.75,
                                         child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -286,10 +288,10 @@ class _VendorHomeState extends State<VendorHome> {
                                       color: th.kDashboardLime,
                                       borderRadius: BorderRadius.circular(20),
                                     ),
-                                    height:
-                                        MediaQuery.of(context).size.height * 0.12,
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.90,
+                                    height: MediaQuery.of(context).size.height *
+                                        0.12,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.90,
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 30.0, vertical: 20),
@@ -331,62 +333,71 @@ class _VendorHomeState extends State<VendorHome> {
                                 ],
                               ),
                             ),
-
                             // New Order container
-                            Padding(
-                              padding: const EdgeInsets.only(top: 50.0),
-                              child: Stack(
-                                clipBehavior: Clip.none,
-                                //overflow: Overflow.visible,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: th.kLemon,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    height:
-                                    MediaQuery.of(context).size.height * 0.12,
-                                    width:
-                                    MediaQuery.of(context).size.width * 0.90,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 30.0, vertical: 20),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        children: const [
-                                          Text(
-                                            "Order new items!",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 20.0,
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const BrowseInventory()));
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 50.0),
+                                child: Stack(
+                                  clipBehavior: Clip.none,
+                                  //overflow: Overflow.visible,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: th.kLemon,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.12,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.90,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30.0, vertical: 20),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: const [
+                                            Text(
+                                              "Order new items!",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20.0,
+                                              ),
                                             ),
-                                          ),
-                                          SizedBox(height: 12),
-                                          Text(
-                                            "Browse the inventory",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 16.0,
+                                            SizedBox(height: 12),
+                                            Text(
+                                              "Browse the inventory",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 16.0,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const Positioned(
-                                    bottom: 30,
-                                    right: -10,
-                                    child: Image(
-                                      fit: BoxFit.contain,
-                                      height: 100,
-                                      width: 220,
-                                      image: AssetImage(
-                                        "assets/shopping.png",
+                                    const Positioned(
+                                      bottom: 30,
+                                      right: -10,
+                                      child: Image(
+                                        fit: BoxFit.contain,
+                                        height: 100,
+                                        width: 220,
+                                        image: AssetImage(
+                                          "assets/shopping.png",
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
                           ],
