@@ -137,7 +137,7 @@ class _DashboardState extends State<Dashboard> {
                                 fontSize: 22, fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            user?.displayName ?? "User",
+                            user?.displayName ?? "",
                             style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w500,

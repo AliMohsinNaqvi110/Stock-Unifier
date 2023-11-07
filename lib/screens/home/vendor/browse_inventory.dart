@@ -6,7 +6,7 @@ import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/models/items_model.dart';
 import 'package:inventory_management/models/selected_items_model.dart';
 import 'package:inventory_management/screens/home/vendor/checkout.dart';
-import 'package:inventory_management/widgets/item_tile.dart';
+import 'package:inventory_management/widgets/quantity_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +20,8 @@ class BrowseInventory extends StatefulWidget {
 class _BrowseInventoryState extends State<BrowseInventory> {
   Apptheme th = Apptheme();
   String distributorUid = "6mmaMLbY6iS2eiOAWbmJkduDBgH3";
+  bool isEven = false;
+
 
   @override
   void initState() {
@@ -83,31 +85,42 @@ class _BrowseInventoryState extends State<BrowseInventory> {
                             break;
                           }
                         }
-                        return GestureDetector(
-                          onTap: () {
-                            if (isSelected) {
-                              selectedItems
-                                  .removeSelectedItem(items[index].itemId);
-                            } else {
-                              selectedItems.addSelectedItem(Items(
-                                  category: items[index].category,
-                                  name: items[index].name,
-                                  price: items[index].price,
-                                  quantity: 1,
-                                  itemId: items[index].itemId));
-                            }
-                          },
-                          child: ItemTile(
-                            itemName: items[index].name,
-                            quantity: items[index].quantity,
-                            price: items[index].price,
-                            selected: isSelected,
-                            itemId: items[index].itemId,
-                            category: items[index].category,
-                          ),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
+                          child: ListTile(
+                              contentPadding: const EdgeInsets.all(8),
+                              tileColor: isEven ? Colors.white : Colors.grey.shade200,
+                              title: Text(items[index].name),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Rs ${items[index].price.toString()}"),
+                                  ),
+                                  Text("Available: ${items[index].price.toString()} Pieces"),
+                                ],
+                              ),
+                              leading: Checkbox(value: isSelected, onChanged: (bool? value) {
+                                if (isSelected) {
+                                  selectedItems
+                                      .removeSelectedItem(items[index].itemId);
+                                } else {
+                                  selectedItems.addSelectedItem(Items(
+                                      category: items[index].category,
+                                      name: items[index].name,
+                                      price: items[index].price,
+                                      quantity: 1,
+                                      itemId: items[index].itemId));
+                                }
+                              },),
+                              trailing: isSelected
+                                  ? QuantityController(itemId: items[index].itemId)
+                                  : const SizedBox()),
                         );
                       });
                 } else {
+
                   return const Text("Something went wrong");
                 }
               }),

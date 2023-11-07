@@ -31,7 +31,8 @@ class _ItemTileState extends State<ItemTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return
+      Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
       child: ListTile(
           contentPadding: const EdgeInsets.all(8),
