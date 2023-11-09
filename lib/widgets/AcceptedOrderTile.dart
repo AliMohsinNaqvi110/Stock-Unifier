@@ -6,25 +6,27 @@ import 'package:inventory_management/models/orders.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:provider/provider.dart';
 
-class NewOrderTile extends StatefulWidget {
+class AcceptedOrderTile extends StatefulWidget {
   final Orders order;
 
-  const NewOrderTile({Key? key, required this.order}) : super(key: key);
+  const AcceptedOrderTile({Key? key, required this.order}) : super(key: key);
 
   @override
-  State<NewOrderTile> createState() => _NewOrderTileState();
+  State<AcceptedOrderTile> createState() => _AcceptedOrderTileState();
 }
 
-class _NewOrderTileState extends State<NewOrderTile> {
+class _AcceptedOrderTileState extends State<AcceptedOrderTile> {
   Apptheme th = Apptheme();
-  bool reject = false;
+  bool showTextFields = false;
   final _formKey = GlobalKey<FormState>();
-
-  TextEditingController reasonTextController = TextEditingController();
+  TextEditingController amountReceivedTextController = TextEditingController();
+  TextEditingController duesTextController = TextEditingController();
+  TextEditingController balanceTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
+
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -107,59 +109,34 @@ class _NewOrderTileState extends State<NewOrderTile> {
                 )
               ],
             ),
-            Visibility(
-              visible: !reject,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        bool result = await DatabaseService(user.uid)
-                            .updateOrderStatus(widget.order.orderId, "accepted");
-                        if (result) {
-                          if (!mounted) {
-                            return;
-                          }
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Order Accepted")));
-                        }
-                      },
-                      child: Container(
+            InkWell(
+              onTap: () {
+                setState(() {
+                  showTextFields = true;
+                });
+              },
+              child: Visibility(
+                visible: !showTextFields,
+                child:
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
                         height: 45,
-                        width: MediaQuery.of(context).size.width * 0.25,
                         decoration: BoxDecoration(
                             color: th.kDarkBlue,
                             borderRadius: BorderRadius.circular(6)),
                         child: const Center(
                             child: Text(
-                          "Accept",
+                          "Mark As Completed",
                           style: TextStyle(fontSize: 14, color: Colors.white),
                         )),
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          reject = true;
-                        });
-                      },
-                      child: Container(
-                        height: 45,
-                        width: MediaQuery.of(context).size.width * 0.25,
-                        decoration: BoxDecoration(
-                            color: Colors.red[400],
-                            borderRadius: BorderRadius.circular(6)),
-                        child: const Center(
-                            child: Text(
-                          "Reject",
-                          style: TextStyle(fontSize: 14, color: Colors.white),
-                        )),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -177,17 +154,52 @@ class _NewOrderTileState extends State<NewOrderTile> {
                 ],
               ),
             ),
-            Visibility(
-                visible: reject,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 8.0),
+              child: Visibility(
+                  visible: showTextFields,
+                  child: Form(
+                    key: _formKey,
+                      child: Column(
                     children: [
                       TextFormField(
-                        validator: (val) => val!.isEmpty ? "Please enter reason why you cancelled this order" : null,
-                        controller: reasonTextController,
+                        validator: (val) => val!.isEmpty ? "Please specify the amount received from vendor" : null,
+                        onChanged: (val) {
+                          if (val.isEmpty ||
+                              int.parse(val) == widget.order.totalPrice) {
+                            duesTextController.clear();
+                            balanceTextController.clear();
+                          }
+                          if (int.parse(val) < widget.order.totalPrice) {
+                            balanceTextController.clear();
+                            int dues = widget.order.totalPrice - int.parse(val);
+                            duesTextController.text = dues.toString();
+                          } else {
+                            duesTextController.clear();
+                            int balance =
+                                int.parse(val) - widget.order.totalPrice;
+                            balanceTextController.text = balance.toString();
+                          }
+                        },
+                        controller: amountReceivedTextController,
+                        keyboardType: TextInputType.number,
                         decoration: textInputDecoration.copyWith(
-                            label: const Text("Reason")),
+                            label: const Text("Amount Received")),
+                      ),
+                      const SizedBox(height: 8.0),
+                      TextFormField(
+                        controller: duesTextController,
+                        readOnly: true,
+                        decoration: textInputDecoration.copyWith(
+                            label: const Text("Dues")),
+                      ),
+                      const SizedBox(height: 8.0),
+                      TextFormField(
+                        controller: balanceTextController,
+                        readOnly: true,
+                        decoration: textInputDecoration.copyWith(
+                            label: const Text("Balance")),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 20.0),
@@ -196,35 +208,23 @@ class _NewOrderTileState extends State<NewOrderTile> {
                           children: [
                             InkWell(
                               onTap: () async {
-                                bool result = await DatabaseService(user.uid)
-                                    .updateOrderStatus(widget.order.orderId, "rejected");
-                                if (result) {
-                                  if (!mounted) {
-                                    return;
+                                if(_formKey.currentState!.validate()) {
+                                  bool result = await DatabaseService(user.uid)
+                                      .updateOrderStatus(
+                                      widget.order.orderId, "completed");
+
+                                  if (result) {
+                                    amountReceivedTextController.clear();
+                                    balanceTextController.clear();
+                                    duesTextController.clear();
+                                    if (!mounted) {
+                                      return;
+                                    }
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                            content: Text("Order Completed")));
                                   }
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text("Order Accepted")));
                                 }
-                              },
-                              child: Container(
-                                height: 45,
-                                width: MediaQuery.of(context).size.width * 0.25,
-                                decoration: BoxDecoration(
-                                    color: Colors.red[400],
-                                    borderRadius: BorderRadius.circular(6)),
-                                child: const Center(
-                                    child: Text(
-                                      "Reject Order",
-                                      style: TextStyle(fontSize: 14, color: Colors.white),
-                                    )),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  reject = false;
-                                });
                               },
                               child: Container(
                                 height: 45,
@@ -234,19 +234,39 @@ class _NewOrderTileState extends State<NewOrderTile> {
                                     borderRadius: BorderRadius.circular(6)),
                                 child: const Center(
                                     child: Text(
-                                      "Cancel",
-                                      style: TextStyle(fontSize: 14, color: Colors.white),
-                                    )),
+                                  "Complete",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.white),
+                                )),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            InkWell(
+                              onTap: () {
+                                setState(() {
+                                  showTextFields = false;
+                                });
+                              },
+                              child: Container(
+                                height: 45,
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                decoration: BoxDecoration(
+                                    color: Colors.red[400],
+                                    borderRadius: BorderRadius.circular(6)),
+                                child: const Center(
+                                    child: Text(
+                                  "Cancel",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.white),
+                                )),
                               ),
                             ),
                           ],
                         ),
                       ),
-
-
                     ],
-                  ),
-                ))
+                  ))),
+            )
           ],
         ),
       ),

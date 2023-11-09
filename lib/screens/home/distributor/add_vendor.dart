@@ -233,7 +233,8 @@ class _AddVendorState extends State<AddVendor> {
                               ));
                         }
                       },
-                      child: Container(
+                      child:
+                      Container(
                         height: 45,
                         width: MediaQuery.of(context).size.width * 0.25,
                         decoration: BoxDecoration(

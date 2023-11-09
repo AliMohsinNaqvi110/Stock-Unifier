@@ -8,6 +8,8 @@ import 'package:inventory_management/models/items_model.dart';
 import 'package:inventory_management/support_files/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
+import '../models/orders.dart';
+
 class DatabaseService {
   var uuid = const Uuid();
 
@@ -45,16 +47,33 @@ class DatabaseService {
 
   Future<bool> createOrder(
       {required Map<String, dynamic> orderData,
-      required String distributorUid}) async {
+      required String distributorUid,
+      required String orderId}) async {
     try {
       await userCollection
           .doc(distributorUid)
           .collection("orders")
-          .add(orderData);
+          .doc(orderId)
+          .set(orderData);
       return true;
     } catch (error) {
       log('Error creating order: $error');
       return false;
+    }
+  }
+
+  Future<bool> updateOrderStatus(String orderId, String newStatus) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .collection("orders")
+          .doc(orderId)
+          .update({'status': newStatus});
+      return true; // Operation successful
+    } catch (e) {
+      print("Error updating order status: $e");
+      return false; // Operation failed
     }
   }
 
@@ -309,7 +328,8 @@ class DatabaseService {
   }
 
   Stream<List<Vendor>> get vendors async* {
-    final snapshot = await vendorCollection.get();
+    final snapshot =
+        await vendorCollection.where("distributor_uid", isEqualTo: uid).get();
 
     final vendorsList = snapshot.docs
         .map((doc) => Vendor(
@@ -319,5 +339,31 @@ class DatabaseService {
             distributorUid: doc['distributor_uid'] ?? ''))
         .toList();
     yield vendorsList;
+  }
+
+  Stream<List<Orders>> getOrderStream({required String status}) {
+    var ordersCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('orders')
+        .where("status", isEqualTo: status);
+
+    return ordersCollection.snapshots().map((querySnapshot) {
+      List<Orders> ordersList = [];
+      for (var document in querySnapshot.docs) {
+        var data = document.data();
+        Orders order = Orders(
+          orderId: data['order_id'] ?? '',
+          date: (data['date'] as Timestamp).toDate(),
+          selectedItemCount: data['selectedItemCount'] ?? 0,
+          totalPrice: data['totalPrice'] ?? 0,
+          selectedItems: data['selectedItems'] ?? [],
+          vendorName: data['vendor_name'] ?? "",
+          status: data['status'] ?? "new",
+        );
+        ordersList.add(order);
+      }
+      return ordersList;
+    });
   }
 }

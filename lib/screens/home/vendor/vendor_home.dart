@@ -46,7 +46,7 @@ class _VendorHomeState extends State<VendorHome> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<User?>(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -159,7 +159,7 @@ class _VendorHomeState extends State<VendorHome> {
                                   fontSize: 22, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              user.displayName ?? "User",
+                              user?.displayName ?? "User",
                               style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
@@ -167,7 +167,7 @@ class _VendorHomeState extends State<VendorHome> {
                             ),
                             Center(
                               child: FutureBuilder(
-                                future: DatabaseService(user.uid)
+                                future: DatabaseService(user!.uid)
                                     .getVendorData(vendorId),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==

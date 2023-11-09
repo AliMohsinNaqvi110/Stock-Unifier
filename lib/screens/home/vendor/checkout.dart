@@ -93,8 +93,13 @@ class _CheckoutState extends State<Checkout> {
               Map<String, dynamic> orderData = selectedItems.toMap();
               orderData["order_id"] = generateRandomItemId();
               orderData["date"] = DateTime.now();
+              orderData["status"] = "new";
+              orderData["vendor_name"] = user.displayName;
+
               bool result = await DatabaseService(user.uid).createOrder(
-                  orderData: orderData, distributorUid: distributorUid);
+                  orderData: orderData,
+                  distributorUid: distributorUid,
+                  orderId: orderData["order_id"]);
               if (result) {
                 CoolAlert.show(
                     context: context,

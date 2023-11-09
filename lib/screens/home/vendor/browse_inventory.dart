@@ -95,10 +95,13 @@ class _BrowseInventoryState extends State<BrowseInventory> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.only(top: 4.0),
                                     child: Text("Rs ${items[index].price.toString()}"),
                                   ),
-                                  Text("Available: ${items[index].price.toString()} Pieces"),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4.0),
+                                    child: Text("Available: ${items[index].price.toString()} Pieces"),
+                                  ),
                                 ],
                               ),
                               leading: Checkbox(value: isSelected, onChanged: (bool? value) {
