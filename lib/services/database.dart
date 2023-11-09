@@ -165,27 +165,28 @@ class DatabaseService {
     required int balance,
   }) async {
     try {
-      WriteBatch batch = FirebaseFirestore.instance.batch();
-
-      for (Items item in items) {
-        DocumentReference itemRef = FirebaseFirestore.instance
-            .collection("users")
-            .doc(uid)
-            .collection("inventory")
-            .doc(uid)
-            .collection("items")
-            .doc(item.itemId);
-
-        batch.update(itemRef, {
-          'quantity': FieldValue.increment(-item.quantity),
-        });
-
-        if (item.quantity <= 0) {
-          batch.delete(itemRef);
-        }
-      }
-
-      await batch.commit();
+      // WriteBatch batch = FirebaseFirestore.instance.batch();
+      //
+      // for (Items item in items) {
+      //   print("This it item" + item.toString());
+      //   DocumentReference itemRef = FirebaseFirestore.instance
+      //       .collection("users")
+      //       .doc(uid)
+      //       .collection("inventory")
+      //       .doc(uid)
+      //       .collection("items")
+      //       .doc(item.itemId);
+      //
+      //   batch.update(itemRef, {
+      //     'quantity': FieldValue.increment(-item.quantity),
+      //   });
+      //
+      //   if (item.quantity <= 0) {
+      //     batch.delete(itemRef);
+      //   }
+      // }
+      //
+      // await batch.commit();
 
       await FirebaseFirestore.instance
           .collection('vendors')
@@ -213,10 +214,12 @@ class DatabaseService {
       // Calculate monthly sales, profit earned, and pending payments
       int monthlySales = 0;
       int profitEarned = totalPrice;
-      int pendingPayments = totalPrice;
+      int pendingPayments = 0;
 
       for (QueryDocumentSnapshot<Map<String, dynamic>> orderDoc
           in ordersSnapshot.docs) {
+        pendingPayments = orderDoc["pending_payments"] as int;
+
         int orderTotalPrice = orderDoc['totalPrice'] as int;
         monthlySales += orderTotalPrice;
 
@@ -228,12 +231,10 @@ class DatabaseService {
       }
 
       // Update the dashboard stats in the database
-      await FirebaseFirestore.instance.collection('users').doc(uid).update({
-        'dashboardStats': {
+      await FirebaseFirestore.instance.collection('users').doc(uid).collection("inventory").doc(uid).update({
           'monthly_sales': monthlySales,
           'profit_earned': profitEarned,
           'pending_payments': pendingPayments,
-        },
       });
 
       return true; // Operation successful

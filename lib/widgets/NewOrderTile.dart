@@ -4,6 +4,8 @@ import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/constants/text_decoration.dart';
 import 'package:inventory_management/models/orders.dart';
 import 'package:inventory_management/services/database.dart';
+import 'package:inventory_management/widgets/OrderItemTile.dart';
+import 'package:inventory_management/widgets/item_tile.dart';
 import 'package:provider/provider.dart';
 
 class NewOrderTile extends StatefulWidget {
@@ -18,6 +20,7 @@ class NewOrderTile extends StatefulWidget {
 class _NewOrderTileState extends State<NewOrderTile> {
   Apptheme th = Apptheme();
   bool reject = false;
+  bool showDetails = false;
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController reasonTextController = TextEditingController();
@@ -117,7 +120,8 @@ class _NewOrderTileState extends State<NewOrderTile> {
                     InkWell(
                       onTap: () async {
                         bool result = await DatabaseService(user.uid)
-                            .updateOrderStatus(widget.order.orderId, "accepted");
+                            .updateOrderStatus(
+                                widget.order.orderId, "accepted");
                         if (result) {
                           if (!mounted) {
                             return;
@@ -168,13 +172,36 @@ class _NewOrderTileState extends State<NewOrderTile> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Text(
-                    "View Details",
-                    style: TextStyle(
-                        color: th.kDashboardCyan,
-                        decoration: TextDecoration.underline),
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        showDetails = !showDetails;
+                      });
+                    },
+                    child: Text(
+                      showDetails ? "Hide Details" : "Show Details",
+                      style: TextStyle(
+                          color: th.kDashboardCyan,
+                          decoration: TextDecoration.underline),
+                    ),
                   ),
                 ],
+              ),
+            ),
+            Visibility(
+              visible: showDetails,
+              child: SingleChildScrollView(
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: widget.order.items.length,
+                  itemBuilder: (context, index) => OrderItemTile(
+                      itemName: widget.order.items[index].name,
+                      quantity: widget.order.items[index].quantity,
+                      price: widget.order.items[index].price,
+                      itemId: widget.order.items[index].itemId,
+                      category: widget.order.items[index].category)
+                ),
               ),
             ),
             Visibility(
@@ -184,7 +211,9 @@ class _NewOrderTileState extends State<NewOrderTile> {
                   child: Column(
                     children: [
                       TextFormField(
-                        validator: (val) => val!.isEmpty ? "Please enter reason why you cancelled this order" : null,
+                        validator: (val) => val!.isEmpty
+                            ? "Please enter reason why you cancelled this order"
+                            : null,
                         controller: reasonTextController,
                         decoration: textInputDecoration.copyWith(
                             label: const Text("Reason")),
@@ -197,13 +226,15 @@ class _NewOrderTileState extends State<NewOrderTile> {
                             InkWell(
                               onTap: () async {
                                 bool result = await DatabaseService(user.uid)
-                                    .updateOrderStatus(widget.order.orderId, "rejected");
+                                    .updateOrderStatus(
+                                        widget.order.orderId, "rejected");
                                 if (result) {
                                   if (!mounted) {
                                     return;
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text("Order Accepted")));
+                                      const SnackBar(
+                                          content: Text("Order Accepted")));
                                 }
                               },
                               child: Container(
@@ -214,9 +245,10 @@ class _NewOrderTileState extends State<NewOrderTile> {
                                     borderRadius: BorderRadius.circular(6)),
                                 child: const Center(
                                     child: Text(
-                                      "Reject Order",
-                                      style: TextStyle(fontSize: 14, color: Colors.white),
-                                    )),
+                                  "Reject Order",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.white),
+                                )),
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -234,16 +266,15 @@ class _NewOrderTileState extends State<NewOrderTile> {
                                     borderRadius: BorderRadius.circular(6)),
                                 child: const Center(
                                     child: Text(
-                                      "Cancel",
-                                      style: TextStyle(fontSize: 14, color: Colors.white),
-                                    )),
+                                  "Cancel",
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.white),
+                                )),
                               ),
                             ),
                           ],
                         ),
                       ),
-
-
                     ],
                   ),
                 ))
