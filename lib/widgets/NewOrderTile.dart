@@ -80,9 +80,9 @@ class _NewOrderTileState extends State<NewOrderTile> {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Row(
                           children: [
-                            const Column(
+                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text(
                                   "Total Items",
                                   style: TextStyle(fontWeight: FontWeight.w700),
