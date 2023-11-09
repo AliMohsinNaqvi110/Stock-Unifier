@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cool_alert/cool_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +19,7 @@ class Checkout extends StatefulWidget {
 
 class _CheckoutState extends State<Checkout> {
   String distributorUid = "6mmaMLbY6iS2eiOAWbmJkduDBgH3";
+  String vendorId = "ddc0b417-7fa6-41b8-bd0d-f3d9bd595d49";
 
   Apptheme th = Apptheme();
 
@@ -27,19 +27,25 @@ class _CheckoutState extends State<Checkout> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _loadDistributorIdFromSharedPreferences();
+    _loadIdsFromSharedPreferences();
   }
 
-  Future<void> _loadDistributorIdFromSharedPreferences() async {
+  Future<void> _loadIdsFromSharedPreferences() async {
     var prefs = await SharedPreferences.getInstance();
     String? savedDistributorId = prefs.getString('distributor_uid');
+    String? savedVendorId = prefs.getString('vendor_id');
 
     if (savedDistributorId != null) {
       setState(() {
         distributorUid = savedDistributorId;
       });
+    }
+    if (savedVendorId != null) {
+      setState(() {
+        vendorId = savedVendorId;
+      });
     } else {
-      log('Distributor ID not found in SharedPreferences.');
+      log('There was a problem loading shared preferences.');
     }
   }
 
@@ -95,6 +101,7 @@ class _CheckoutState extends State<Checkout> {
               orderData["date"] = DateTime.now();
               orderData["status"] = "new";
               orderData["vendor_name"] = user.displayName;
+              orderData["vendor_id"] = vendorId;
 
               bool result = await DatabaseService(user.uid).createOrder(
                   orderData: orderData,

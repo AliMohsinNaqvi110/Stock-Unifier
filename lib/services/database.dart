@@ -145,7 +145,9 @@ class DatabaseService {
       if (itemId != null) {
         await itemReference.doc(itemId).update(itemData);
       } else {
-        await itemReference.doc(uuid.v4()).set(itemData);
+        String newId = uuid.v4();
+        itemData["item_id"] = newId;
+        await itemReference.doc(newId).set(itemData);
       }
       await updateInventoryStats();
       return true;
@@ -155,40 +157,185 @@ class DatabaseService {
     }
   }
 
-  void markItemAsSold(String itemId, int quantity) {
-    userCollection
-        .doc(uid)
-        .collection("inventory")
-        .doc(uid)
-        .collection("items")
-        .doc(itemId)
-        .get()
-        .then((doc) {
-      int currentQuantity = doc["quantity"];
-      if (currentQuantity > quantity) {
-        userCollection
+  Future<bool> completeOrder({
+    required List<Items> items,
+    required String vendorId,
+    required int totalPrice,
+    required int dues,
+    required int balance,
+  }) async {
+    try {
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      for (Items item in items) {
+        DocumentReference itemRef = FirebaseFirestore.instance
+            .collection("users")
             .doc(uid)
             .collection("inventory")
             .doc(uid)
             .collection("items")
-            .doc(itemId)
-            .update({"quantity": currentQuantity - quantity}).then((_) {
-          updateInventoryStats();
+            .doc(item.itemId);
+
+        batch.update(itemRef, {
+          'quantity': FieldValue.increment(-item.quantity),
         });
-      } else {
-        userCollection
-            .doc(uid)
-            .collection("inventory")
-            .doc(uid)
-            .collection("items")
-            .doc(itemId)
-            .delete()
-            .then((_) {
-          updateInventoryStats();
-        });
+
+        if (item.quantity <= 0) {
+          batch.delete(itemRef);
+        }
       }
-    });
+
+      await batch.commit();
+
+      await FirebaseFirestore.instance
+          .collection('vendors')
+          .doc(vendorId)
+          .update({
+        'balance': balance,
+        'dues': dues,
+      });
+      DateTime currentDate = DateTime.now();
+      DateTime firstDayOfMonth =
+          DateTime(currentDate.year, currentDate.month, 1);
+      DateTime lastDayOfMonth =
+          DateTime(currentDate.year, currentDate.month + 1, 0);
+
+      QuerySnapshot<Map<String, dynamic>> ordersSnapshot =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(uid)
+              .collection('orders')
+              .where('date',
+                  isGreaterThanOrEqualTo: firstDayOfMonth,
+                  isLessThanOrEqualTo: lastDayOfMonth)
+              .get();
+
+      // Calculate monthly sales, profit earned, and pending payments
+      int monthlySales = 0;
+      int profitEarned = totalPrice;
+      int pendingPayments = totalPrice;
+
+      for (QueryDocumentSnapshot<Map<String, dynamic>> orderDoc
+          in ordersSnapshot.docs) {
+        int orderTotalPrice = orderDoc['totalPrice'] as int;
+        monthlySales += orderTotalPrice;
+
+        // Subtract dues from pending payments
+        pendingPayments -= dues;
+
+        // Subtract balance from pending payments
+        pendingPayments -= balance;
+      }
+
+      // Update the dashboard stats in the database
+      await FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'dashboardStats': {
+          'monthly_sales': monthlySales,
+          'profit_earned': profitEarned,
+          'pending_payments': pendingPayments,
+        },
+      });
+
+      return true; // Operation successful
+    } catch (e) {
+      log("Error completing order: $e");
+      return false; // Operation failed
+    }
   }
+
+  // Future<bool> markItemsAsSold(List<dynamic> items) async {
+  //   try {
+  //     WriteBatch batch = FirebaseFirestore.instance.batch();
+  //
+  //     for (Items item in items) {
+  //       DocumentReference itemRef = FirebaseFirestore.instance
+  //           .collection("users")
+  //           .doc(uid)
+  //           .collection("inventory")
+  //           .doc(item.itemId);
+  //
+  //       batch.update(itemRef, {
+  //         'quantity': FieldValue.increment(-item.quantity),
+  //       });
+  //
+  //       if (item.quantity <= 0) {
+  //         batch.delete(itemRef);
+  //       }
+  //     }
+  //     await batch.commit();
+  //     return true; // Operation successful
+  //   } catch (e) {
+  //     log("Error marking items as sold: $e");
+  //     return false; // Operation failed
+  //   }
+  // }
+  //
+  // Future<void> updateVendorAccountDetails({
+  //   required String vendorId,
+  //   required int balance,
+  //   required int dues,
+  // }) async {
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection('vendors')
+  //         .doc(vendorId)
+  //         .update({
+  //       'balance': balance,
+  //       'dues': dues,
+  //     });
+  //
+  //     log('Vendor account details updated successfully.');
+  //   } catch (e) {
+  //     log('Error updating vendor account details: $e');
+  //   }
+  // }
+  //
+  // Future<void> updateSalesStats({
+  //   required int totalPrice,
+  //   required int dues,
+  //   required int balance,
+  // }) async {
+  //   // Get the current date to filter orders by the current month
+  //   DateTime currentDate = DateTime.now();
+  //   DateTime firstDayOfMonth = DateTime(currentDate.year, currentDate.month, 1);
+  //   DateTime lastDayOfMonth = DateTime(currentDate.year, currentDate.month + 1, 0);
+  //
+  //   // Fetch orders within the current month
+  //   QuerySnapshot<Map<String, dynamic>> ordersSnapshot = await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(uid)
+  //       .collection('orders')
+  //       .where('date', isGreaterThanOrEqualTo: firstDayOfMonth, isLessThanOrEqualTo: lastDayOfMonth)
+  //       .get();
+  //
+  //   // Calculate monthly sales, profit earned, and pending payments
+  //   int monthlySales = 0;
+  //   int profitEarned = totalPrice;
+  //   int pendingPayments = totalPrice;
+  //
+  //   for (QueryDocumentSnapshot<Map<String, dynamic>> orderDoc in ordersSnapshot.docs) {
+  //     int orderTotalPrice = orderDoc['totalPrice'] as int;
+  //     monthlySales += orderTotalPrice;
+  //
+  //     // Subtract dues from pending payments
+  //     pendingPayments -= dues;
+  //
+  //     // Subtract balance from pending payments
+  //     pendingPayments -= balance;
+  //   }
+  //
+  //   // Update the dashboard stats in the database
+  //   await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(uid)
+  //       .update({
+  //     'dashboardStats': {
+  //       'monthly_sales': monthlySales,
+  //       'profit_earned': profitEarned,
+  //       'pending_payments': pendingPayments,
+  //     }
+  //   });
+  // }
 
   Future<bool> updateInventoryStats() async {
     try {
@@ -352,12 +499,26 @@ class DatabaseService {
       List<Orders> ordersList = [];
       for (var document in querySnapshot.docs) {
         var data = document.data();
+
+        // Parse selectedItems list
+        List<dynamic> itemsData = data['selectedItems'] ?? [];
+        List<Items> itemsList = itemsData.map((item) {
+          return Items(
+            quantity: item['quantity'] ?? 0,
+            itemId: item['item_id'] ?? '',
+            // Make sure 'item_id' matches your Items class field
+            price: item['price'] ?? 0,
+            name: item['name'] ?? '',
+            category: item['category'] ?? '',
+          );
+        }).toList();
+
         Orders order = Orders(
           orderId: data['order_id'] ?? '',
           date: (data['date'] as Timestamp).toDate(),
           selectedItemCount: data['selectedItemCount'] ?? 0,
           totalPrice: data['totalPrice'] ?? 0,
-          selectedItems: data['selectedItems'] ?? [],
+          items: itemsList,
           vendorName: data['vendor_name'] ?? "",
           status: data['status'] ?? "new",
         );

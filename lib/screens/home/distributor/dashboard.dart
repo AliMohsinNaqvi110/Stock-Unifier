@@ -153,11 +153,78 @@ class _DashboardState extends State<Dashboard> {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.none ||
                           snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: th.kDarkBlue,
+                                    borderRadius: BorderRadius.circular(18)),
+                                height:
+                                    MediaQuery.of(context).size.height * 0.16,
+                                width: MediaQuery.of(context).size.width * 0.75,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "",
+                                      style: TextStyle(
+                                          color: th.kWhite,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 30),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      "Fetching Sales history..",
+                                      style: TextStyle(
+                                          color: th.kWhite,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 24),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 20.0),
+                                child: GridView(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisSpacing: 20,
+                                          mainAxisSpacing: 16,
+                                          crossAxisCount: 2,
+                                          mainAxisExtent: 120),
+                                  children: [
+                                    // Profit Earned
+                                    DashboardCard(
+                                        value: "",
+                                        color: th.kDashboardLime,
+                                        text: 'Fetching'),
+                                    DashboardCard(
+                                        value: "",
+                                        color: th.kDashboardMustard,
+                                        text: 'Pending payments'),
+                                    DashboardCard(
+                                      value: "",
+                                      color: th.kDashboardCyan,
+                                      text: 'Items in Inventory',
+                                    ),
+                                    DashboardCard(
+                                        value: "",
+                                        color: th.kDashboardPurple,
+                                        text: 'Total Inventory Cost'),
+                                  ],
+                                )),
+                          ],
+                        );
+                        // return const CircularProgressIndicator();
                       } else if (snapshot.hasData) {
                         DashboardStats data = snapshot.data!;
-                        return
-                          Column(
+                        return Column(
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(top: 20.0),
@@ -237,8 +304,56 @@ class _DashboardState extends State<Dashboard> {
                         if (snapshot.connectionState ==
                                 ConnectionState.waiting ||
                             snapshot.connectionState == ConnectionState.none) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Center(
+                              child: Column(
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Vendors",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 22),
+                                ),
+                              ),
+                              Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.8,
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(20),
+                                        topRight: Radius.circular(20)),
+                                    shape: BoxShape.rectangle,
+                                    color: th.kDarkBlue,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: 0,
+                                          itemBuilder: (context, index) =>
+                                              Column(
+                                                children: [
+                                                  const Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 16.0),
+                                                      child: Text(
+                                                          "Fetching vendors list")),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                        horizontal: 16.0),
+                                                    child: Divider(
+                                                      thickness: 0.8,
+                                                      color: th.kWhite,
+                                                    ),
+                                                  )
+                                                ],
+                                              )),
+                                    ],
+                                  )),
+                            ],
+                          ));
                         }
                         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                           dynamic data = snapshot.data;
@@ -297,7 +412,6 @@ class _DashboardState extends State<Dashboard> {
                                                   )
                                                 ],
                                               )),
-                                     
                                     ],
                                   )),
                             ],
