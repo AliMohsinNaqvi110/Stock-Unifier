@@ -5,7 +5,6 @@ import 'package:inventory_management/constants/text_decoration.dart';
 import 'package:inventory_management/models/orders.dart';
 import 'package:inventory_management/services/database.dart';
 import 'package:inventory_management/widgets/OrderItemTile.dart';
-import 'package:inventory_management/widgets/item_tile.dart';
 import 'package:provider/provider.dart';
 
 class NewOrderTile extends StatefulWidget {
@@ -81,9 +80,9 @@ class _NewOrderTileState extends State<NewOrderTile> {
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Row(
                           children: [
-                            Column(
+                            const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 Text(
                                   "Total Items",
                                   style: TextStyle(fontWeight: FontWeight.w700),
@@ -167,6 +166,7 @@ class _NewOrderTileState extends State<NewOrderTile> {
                 ),
               ),
             ),
+
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Row(
@@ -192,7 +192,7 @@ class _NewOrderTileState extends State<NewOrderTile> {
               visible: showDetails,
               child: SingleChildScrollView(
                 child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
+                  physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
                   itemCount: widget.order.items.length,
                   itemBuilder: (context, index) => OrderItemTile(

@@ -1,11 +1,11 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory_management/constants/colors.dart';
 import 'package:inventory_management/constants/text_decoration.dart';
 import 'package:inventory_management/models/orders.dart';
 import 'package:inventory_management/services/database.dart';
+import 'package:inventory_management/widgets/OrderItemTile.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +26,7 @@ class _AcceptedOrderTileState extends State<AcceptedOrderTile> {
   String distributorUid = "6mmaMLbY6iS2eiOAWbmJkduDBgH3";
   String vendorId = "ddc0b417-7fa6-41b8-bd0d-f3d9bd595d49";
   bool loading = false;
+  bool showDetails = false;
 
   TextEditingController amountReceivedTextController = TextEditingController();
   TextEditingController duesTextController = TextEditingController();
@@ -173,13 +174,35 @@ class _AcceptedOrderTileState extends State<AcceptedOrderTile> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text(
-                      "View Details",
-                      style: TextStyle(
-                          color: th.kDashboardCyan,
-                          decoration: TextDecoration.underline),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          showDetails = !showDetails;
+                        });
+                      },
+                      child: Text(
+                        showDetails ? "Hide Details" : "Show Details",
+                        style: TextStyle(
+                            color: th.kDashboardCyan,
+                            decoration: TextDecoration.underline),
+                      ),
                     ),
                   ],
+                ),
+              ),
+              Visibility(
+                visible: showDetails,
+                child: SingleChildScrollView(
+                  child: ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: widget.order.items.length,
+                      itemBuilder: (context, index) => OrderItemTile(
+                          itemName: widget.order.items[index].name,
+                          quantity: widget.order.items[index].quantity,
+                          price: widget.order.items[index].price,
+                          itemId: widget.order.items[index].itemId,
+                          category: widget.order.items[index].category)),
                 ),
               ),
               Padding(
@@ -253,8 +276,8 @@ class _AcceptedOrderTileState extends State<AcceptedOrderTile> {
                                         if (result) {
                                           DatabaseService(user.uid)
                                               .completeOrder(
-                                                  items: widget
-                                                      .order.items.toList(),
+                                                  items: widget.order.items
+                                                      .toList(),
                                                   vendorId: vendorId,
                                                   totalPrice:
                                                       widget.order.totalPrice,
